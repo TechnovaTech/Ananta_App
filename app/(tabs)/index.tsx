@@ -2,8 +2,7 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Colors } from '@/constants/theme';
 import { Dimensions, Image, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { useEffect, useRef } from 'react';
-import Svg, { Path, Circle } from 'react-native-svg';
+import Svg, { Path } from 'react-native-svg';
 
 const { width } = Dimensions.get('window');
 
@@ -22,32 +21,18 @@ const SettingsIcon = ({ color }: { color: string }) => (
 
 const BellIcon = ({ color }: { color: string }) => (
   <Svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-    <Path d="M12 2C13.1 2 14 2.9 14 4V8C14 10.21 15.79 12 18 12V14C18 14.55 17.55 15 17 15H7C6.45 15 6 14.55 6 14V12C8.21 12 10 10.21 10 8V4C10 2.9 10.9 2 12 2Z" stroke={color} strokeWidth="2" fill="none"/>
-    <Path d="M9 17V18C9 19.66 10.34 21 12 21C13.66 21 15 19.66 15 18V17" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+    <Path d="M18 8C18 6.4087 17.3679 4.88258 16.2426 3.75736C15.1174 2.63214 13.5913 2 12 2C10.4087 2 8.88258 2.63214 7.75736 3.75736C6.63214 4.88258 6 6.4087 6 8C6 15 3 17 3 17H21C21 17 18 15 18 8Z" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <Path d="M13.73 21C13.5542 21.3031 13.3019 21.5547 12.9982 21.7295C12.6946 21.9044 12.3504 21.9965 12 21.9965C11.6496 21.9965 11.3054 21.9044 11.0018 21.7295C10.6982 21.5547 10.4458 21.3031 10.27 21" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
   </Svg>
 );
 
 export default function HomeScreen() {
-  const scrollViewRef = useRef<ScrollView>(null);
   const bannerImages = [
     require('@/assets/images/xvv 1.png'),
     require('@/assets/images/h1.png.png'),
     require('@/assets/images/h2.png.png'),
     require('@/assets/images/h3.png.png'),
   ];
-
-  useEffect(() => {
-    let currentIndex = 0;
-    const interval = setInterval(() => {
-      currentIndex = (currentIndex + 1) % bannerImages.length;
-      scrollViewRef.current?.scrollTo({
-        x: currentIndex * width,
-        animated: true,
-      });
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, [bannerImages.length]);
 
   const videos = [
     { id: 1, title: '#joy with life partner', user: 'Rachel James', location: 'India', views: '23K', image: require('@/assets/images/h1.png.png') },
@@ -86,13 +71,7 @@ export default function HomeScreen() {
       </View>
       
       <ScrollView style={styles.content}>
-        <ScrollView 
-          ref={scrollViewRef}
-          horizontal 
-          showsHorizontalScrollIndicator={false} 
-          pagingEnabled 
-          style={styles.bannerContainer}
-        >
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} pagingEnabled style={styles.bannerContainer}>
           {bannerImages.map((image, index) => (
             <View key={index} style={styles.featuredVideo}>
               <Image source={image} style={styles.featuredImage} />
@@ -152,7 +131,7 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   titleContainer: {
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
   titleUnderline: {
     width: 100,
@@ -165,7 +144,11 @@ const styles = StyleSheet.create({
     gap: 15,
   },
   iconButton: {
-    padding: 8,
+    padding: 5,
+  },
+  icon: {
+    fontSize: 20,
+    color: '#127D96',
   },
   tabContainer: {
     flexDirection: 'row',
@@ -190,17 +173,18 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
+    paddingHorizontal: 20,
   },
   bannerContainer: {
     marginBottom: 20,
   },
   featuredVideo: {
-    width: width,
+    width: width - 40,
     height: 200,
     borderRadius: 15,
     overflow: 'hidden',
+    marginRight: 15,
     position: 'relative',
-    marginHorizontal: 20,
   },
   featuredImage: {
     width: '100%',
@@ -229,17 +213,14 @@ const styles = StyleSheet.create({
   videoGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    gap: 10,
+    gap: 15,
   },
   videoCard: {
-    width: (width - 50) / 2,
-    minHeight: 200,
+    width: '47%',
+    height: 200,
     borderRadius: 15,
     overflow: 'hidden',
     position: 'relative',
-    marginBottom: 15,
   },
   videoImage: {
     width: '100%',
@@ -252,9 +233,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     backgroundColor: 'rgba(0,0,0,0.7)',
-    padding: 12,
-    paddingBottom: 16,
-    minHeight: 85,
+    padding: 10,
   },
   viewCount: {
     position: 'absolute',
@@ -270,7 +249,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   videoInfo: {
-    gap: 6,
+    gap: 5,
   },
   videoTitle: {
     color: 'white',
@@ -279,10 +258,8 @@ const styles = StyleSheet.create({
   },
   userInfo: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     gap: 8,
-    flexWrap: 'wrap',
-    paddingRight: 8,
   },
   userAvatar: {
     width: 20,
@@ -293,22 +270,17 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 10,
     fontWeight: '600',
-    flexShrink: 1,
   },
   userLocation: {
     color: 'white',
     fontSize: 8,
-    flexShrink: 1,
   },
   followButton: {
     backgroundColor: Colors.light.primary,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 12,
-    alignSelf: 'flex-start',
-    marginTop: 6,
-    marginRight: 4,
-    minWidth: 50,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 10,
+    marginLeft: 'auto',
   },
   followText: {
     color: 'white',
