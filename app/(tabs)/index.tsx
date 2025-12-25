@@ -2,6 +2,7 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Colors } from '@/constants/theme';
 import { Dimensions, Image, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { router } from 'expo-router';
 
 const { width } = Dimensions.get('window');
 
@@ -60,7 +61,20 @@ export default function HomeScreen() {
         
         <View style={styles.videoGrid}>
           {videos.map((video, index) => (
-            <View key={video.id} style={styles.videoCard}>
+            <TouchableOpacity 
+              key={video.id} 
+              style={styles.videoCard}
+              onPress={() => router.push({
+                pathname: '/live/video',
+                params: {
+                  userImage: JSON.stringify(video.image),
+                  userName: video.user,
+                  title: video.title,
+                  location: video.location,
+                  views: video.views
+                }
+              })}
+            >
               <Image source={video.image} style={styles.videoImage} />
               <View style={styles.videoOverlay}>
                 <View style={styles.viewCount}>
@@ -80,7 +94,7 @@ export default function HomeScreen() {
                   </View>
                 </View>
               </View>
-            </View>
+            </TouchableOpacity>
           ))}
         </View>
       </ScrollView>
@@ -91,7 +105,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#E7E2E2',
+    backgroundColor: 'white',
   },
   header: {
     flexDirection: 'row',
