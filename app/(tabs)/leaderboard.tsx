@@ -18,10 +18,10 @@ export default function LeaderboardScreen() {
 
   const getRankColor = (rank: number) => {
     switch(rank) {
-      case 1: return '#FFD700';
-      case 2: return '#C0C0C0';
-      case 3: return '#CD7F32';
-      default: return '#DAA520';
+      case 1: return '#B8860B';
+      case 2: return '#696969';
+      case 3: return '#A0522D';
+      default: return '#B8860B';
     }
   };
 
@@ -29,28 +29,39 @@ export default function LeaderboardScreen() {
     <ThemedView style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity style={styles.backButton}>
-          <ThemedText style={styles.backIcon}>←</ThemedText>
+          <ThemedText style={styles.backIcon}>‹</ThemedText>
         </TouchableOpacity>
         <ThemedText style={styles.title}>Leaderboard</ThemedText>
       </View>
 
-      <ScrollView style={styles.content}>
+      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {topUsers.map((user, index) => (
           <View key={user.id} style={[styles.userCard, { backgroundColor: getRankColor(user.rank) }]}>
-            <View style={styles.rankBadge}>
-              <ThemedText style={styles.rankNumber}>{user.rank}</ThemedText>
-            </View>
             <Image source={{ uri: user.image }} style={styles.userImage} />
             <View style={styles.userInfo}>
               <ThemedText style={styles.userName}>@{user.name}</ThemedText>
               <ThemedText style={styles.userLocation}>{user.location}</ThemedText>
               <View style={styles.coinContainer}>
-                <ThemedText style={styles.coinIcon}>🪙</ThemedText>
-                <ThemedText style={styles.coinAmount}>{user.coins}</ThemedText>
+                <View style={styles.coinBadge}>
+                  <View style={styles.coinCircle}>
+                    <ThemedText style={styles.coinIcon}>$</ThemedText>
+                  </View>
+                  <ThemedText style={styles.coinAmount}>{user.coins}</ThemedText>
+                </View>
               </View>
             </View>
-            <View style={styles.trophy}>
-              <ThemedText style={styles.trophyIcon}>🏆</ThemedText>
+            <View style={styles.rightSection}>
+              <ThemedText style={styles.rankNumber}>{user.rank}</ThemedText>
+              <View style={styles.trophyContainer}>
+                <View style={styles.trophy}>
+                  <ThemedText style={styles.trophyIcon}>🏆</ThemedText>
+                </View>
+                <View style={styles.stars}>
+                  <ThemedText style={styles.star}>★</ThemedText>
+                  <ThemedText style={styles.star}>★</ThemedText>
+                  <ThemedText style={styles.star}>★</ThemedText>
+                </View>
+              </View>
             </View>
           </View>
         ))}
@@ -58,18 +69,31 @@ export default function LeaderboardScreen() {
         <View style={styles.divider} />
 
         {otherUsers.map((user, index) => (
-          <View key={user.id} style={[styles.userCard, { backgroundColor: '#DAA520' }]}>
+          <View key={user.id} style={[styles.userCard, { backgroundColor: getRankColor(1) }]}>
             <Image source={{ uri: user.image }} style={styles.userImage} />
             <View style={styles.userInfo}>
               <ThemedText style={styles.userName}>@{user.name}</ThemedText>
               <ThemedText style={styles.userLocation}>{user.location}</ThemedText>
               <View style={styles.coinContainer}>
-                <ThemedText style={styles.coinIcon}>🪙</ThemedText>
-                <ThemedText style={styles.coinAmount}>{user.coins}</ThemedText>
+                <View style={styles.coinBadge}>
+                  <View style={styles.coinCircle}>
+                    <ThemedText style={styles.coinIcon}>$</ThemedText>
+                  </View>
+                  <ThemedText style={styles.coinAmount}>{user.coins}</ThemedText>
+                </View>
               </View>
             </View>
-            <View style={styles.trophy}>
-              <ThemedText style={styles.trophyIcon}>🏆</ThemedText>
+            <View style={styles.rightSection}>
+              <View style={styles.trophyContainer}>
+                <View style={styles.trophy}>
+                  <ThemedText style={styles.trophyIcon}>🏆</ThemedText>
+                </View>
+                <View style={styles.stars}>
+                  <ThemedText style={styles.star}>★</ThemedText>
+                  <ThemedText style={styles.star}>★</ThemedText>
+                  <ThemedText style={styles.star}>★</ThemedText>
+                </View>
+              </View>
             </View>
           </View>
         ))}
@@ -81,7 +105,7 @@ export default function LeaderboardScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#F5F5F5',
   },
   header: {
     flexDirection: 'row',
@@ -89,52 +113,39 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 50,
     paddingBottom: 20,
+    backgroundColor: 'white',
   },
   backButton: {
     marginRight: 20,
   },
   backIcon: {
-    fontSize: 24,
+    fontSize: 28,
     color: 'black',
+    fontWeight: 'bold',
   },
   title: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
     color: 'black',
   },
   content: {
     flex: 1,
     paddingHorizontal: 20,
+    paddingTop: 20,
   },
   userCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 15,
+    padding: 20,
     borderRadius: 15,
-    marginBottom: 15,
+    marginBottom: 12,
     position: 'relative',
-  },
-  rankBadge: {
-    position: 'absolute',
-    top: -5,
-    left: -5,
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 1,
-  },
-  rankNumber: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: 'black',
+    overflow: 'hidden',
   },
   userImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     marginRight: 15,
   },
   userInfo: {
@@ -144,37 +155,96 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: 'white',
-    marginBottom: 2,
+    marginBottom: 4,
   },
   userLocation: {
     fontSize: 12,
     color: 'white',
     opacity: 0.9,
-    marginBottom: 5,
+    marginBottom: 8,
   },
   coinContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
+  coinBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,193,7,1)',
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 15,
+  },
+  coinCircle: {
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    backgroundColor: '#FF6B35',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 8,
+  },
   coinIcon: {
-    fontSize: 16,
-    marginRight: 5,
+    fontSize: 10,
+    color: 'white',
+    fontWeight: 'bold',
   },
   coinAmount: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
-    color: 'white',
+    color: 'black',
+  },
+  rightSection: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+    width: 80,
+    height: 80,
+  },
+  rankNumber: {
+    fontSize: 80,
+    fontWeight: '900',
+    color: 'rgba(255,255,255,0.15)',
+    position: 'absolute',
+    right: 5,
+    top: -5,
+    zIndex: 0,
+  },
+  trophyContainer: {
+    alignItems: 'center',
+    zIndex: 1,
+    position: 'absolute',
+    right: 15,
+    top: 10,
   },
   trophy: {
-    marginLeft: 10,
+    backgroundColor: '#1E88E5',
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 4,
   },
   trophyIcon: {
-    fontSize: 30,
+    fontSize: 20,
+  },
+  stars: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  star: {
+    fontSize: 8,
+    color: '#FFD700',
+    marginHorizontal: 0.5,
   },
   divider: {
     height: 1,
     backgroundColor: '#E0E0E0',
-    marginVertical: 20,
+    marginVertical: 15,
+    marginHorizontal: 0,
     borderStyle: 'dashed',
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
   },
 });
