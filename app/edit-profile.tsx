@@ -123,11 +123,22 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     paddingBottom: 20,
     backgroundColor: 'white',
+    borderBottomWidth: 2,
+    borderBottomColor: '#127d96',
   },
   headerTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#333',
+  },
+  titleContainer: {
+    alignItems: 'flex-start',
+  },
+  titleUnderline: {
+    width: 60,
+    height: 2,
+    backgroundColor: '#127d96',
+    marginTop: 4,
   },
   placeholder: {
     width: 24,

@@ -1,4 +1,4 @@
-import { StyleSheet, ScrollView, TouchableOpacity, View, Dimensions } from 'react-native';
+import { StyleSheet, ScrollView, TouchableOpacity, View, Dimensions, Text } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Colors } from '@/constants/theme';
@@ -81,10 +81,8 @@ export default function SettingsScreen() {
     { id: 4, title: 'Daily tasks', icon: <TaskIcon /> },
     { id: 5, title: 'Room admin', icon: <AdminIcon /> },
     { id: 6, title: 'Entries & Fremes', icon: <FrameIcon /> },
-    { id: 7, title: 'Back Pack', icon: <BackpackIcon /> },
-    { id: 8, title: 'Settings', icon: <SettingsIcon /> },
-    { id: 9, title: 'Invitation Rewards', icon: <GiftIcon /> },
-    { id: 10, title: 'Logout', icon: <LogoutIcon /> },
+    { id: 7, title: 'Invitation Rewards', icon: <GiftIcon /> },
+    { id: 8, title: 'Logout', icon: <LogoutIcon /> },
   ];
 
   return (
@@ -96,10 +94,8 @@ export default function SettingsScreen() {
         >
           <BackIcon />
         </TouchableOpacity>
-        <View style={styles.titleContainer}>
-          <ThemedText style={styles.title}>Settings</ThemedText>
-          <View style={styles.titleUnderline} />
-        </View>
+        <Text style={styles.title}>Settings</Text>
+        <View style={styles.placeholder} />
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
@@ -116,6 +112,14 @@ export default function SettingsScreen() {
                 router.push('/level-management');
               } else if (item.title === 'Daily tasks') {
                 router.push('/daily-tasks');
+              } else if (item.title === 'Room admin') {
+                router.push('/room-admin');
+              } else if (item.title === 'Entries & Fremes') {
+                router.push('/entries-frames');
+              } else if (item.title === 'Back Pack') {
+                router.push('/back-pack');
+              } else if (item.title === 'Logout') {
+                router.replace('/auth/login');
               } else if (item.title === 'Invitation Rewards') {
                 router.push('/invitation-rewards');
               }
@@ -140,28 +144,24 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingTop: 50,
     paddingBottom: 20,
     backgroundColor: 'white',
+    borderBottomWidth: 2,
+    borderBottomColor: '#127d96',
   },
   backButton: {
-    marginRight: 20,
     padding: 5,
   },
-  titleContainer: {
-    alignItems: 'flex-start',
+  placeholder: {
+    width: 24,
   },
   title: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
-    color: 'black',
-  },
-  titleUnderline: {
-    width: 60,
-    height: 2,
-    backgroundColor: Colors.light.primary,
-    marginTop: 4,
+    color: '#333',
   },
   content: {
     flex: 1,

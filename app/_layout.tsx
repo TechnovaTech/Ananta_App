@@ -25,6 +25,9 @@ export default function RootLayout() {
           <Stack.Screen name="settings" />
           <Stack.Screen name="followers" />
           <Stack.Screen name="following" />
+          <Stack.Screen name="room-admin" />
+          <Stack.Screen name="entries-frames" />
+          <Stack.Screen name="back-pack" />
           <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
         </Stack>
         <StatusBar style="auto" />

@@ -125,6 +125,15 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#333',
   },
+  titleContainer: {
+    alignItems: 'flex-start',
+  },
+  titleUnderline: {
+    width: 60,
+    height: 2,
+    backgroundColor: '#127d96',
+    marginTop: 4,
+  },
   placeholder: {
     width: 24,
   },
