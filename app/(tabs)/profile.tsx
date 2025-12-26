@@ -47,12 +47,6 @@ export default function ProfileScreen() {
               <Ionicons name="camera-outline" size={24} color="white" />
             </TouchableOpacity>
             <View style={styles.topRightIcons}>
-              <TouchableOpacity style={styles.iconButton}>
-                <Ionicons name="search" size={24} color="white" />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.iconButton}>
-                <Ionicons name="settings-outline" size={24} color="white" />
-              </TouchableOpacity>
             </View>
           </View>
         </View>
