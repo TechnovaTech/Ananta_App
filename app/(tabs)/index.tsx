@@ -80,7 +80,7 @@ export default function HomeScreen() {
           >
             <SettingsIcon color="#127D96" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.iconButton}>
+          <TouchableOpacity style={styles.iconButton} onPress={() => router.push('/notification')}>
             <BellIcon color="#127D96" />
           </TouchableOpacity>
         </View>

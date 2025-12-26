@@ -28,6 +28,7 @@ export default function RootLayout() {
           <Stack.Screen name="room-admin" />
           <Stack.Screen name="entries-frames" />
           <Stack.Screen name="back-pack" />
+          <Stack.Screen name="notification" />
           <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
         </Stack>
         <StatusBar style="auto" />
