@@ -11,6 +11,10 @@ export default function VideoLiveScreen() {
   const location = params.location as string || 'Location';
   const views = params.views as string || '20';
   
+  const [likes, setLikes] = useState(15000);
+  const [isLiked, setIsLiked] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(false);
+  
   const [liveComments, setLiveComments] = useState<any[]>([
     { id: 1, user: 'Johnson joy', message: 'Great stream!', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50' },
     { id: 2, user: 'Henny', message: 'Love this song', avatar: 'https://images.unsplash.com/photo-1494790108755-2616c9c0e0e0?w=50' },
@@ -26,6 +30,20 @@ export default function VideoLiveScreen() {
     { id: 4, user: 'Johnson joy', message: 'How are you?', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50' },
     { id: 5, user: 'Henny', message: 'Im good, How are you?', avatar: 'https://images.unsplash.com/photo-1494790108755-2616c9c0e0e0?w=50' },
   ];
+
+  const handleFollow = () => {
+    setIsFollowing(!isFollowing);
+  };
+
+  const handleLike = () => {
+    if (isLiked) {
+      setLikes(prev => prev - 1);
+      setIsLiked(false);
+    } else {
+      setLikes(prev => prev + 1);
+      setIsLiked(true);
+    }
+  };
 
   const sendMessage = () => {
     if (messageText.trim()) {
@@ -53,7 +71,7 @@ export default function VideoLiveScreen() {
   return (
     <View style={styles.container}>
       <Image 
-        source={{ uri: 'https://images.unsplash.com/photo-1494790108755-2616c9c0e0e0?w=400' }}
+        source={require('../../assets/images/video image.png')}
         style={styles.backgroundImage}
       />
       
@@ -61,34 +79,39 @@ export default function VideoLiveScreen() {
         <View style={styles.header}>
           <View style={styles.userInfo}>
             <Image 
-              source={{ uri: 'https://images.unsplash.com/photo-1494790108755-2616c9c0e0e0?w=50' }}
+              source={{ uri: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop&crop=face' }}
               style={styles.userAvatar}
             />
-            <View>
+            <View style={styles.userDetails}>
               <ThemedText style={styles.username}>@{user}</ThemedText>
               <ThemedText style={styles.liveText}>{title}</ThemedText>
             </View>
-            <TouchableOpacity style={styles.followButton}>
-              <ThemedText style={styles.followText}>Follow</ThemedText>
-            </TouchableOpacity>
           </View>
           
-          <TouchableOpacity 
-            style={styles.closeButton}
-            onPress={() => router.back()}
-          >
-            <ThemedText style={styles.closeText}>×</ThemedText>
-          </TouchableOpacity>
+          <View style={styles.headerRight}>
+            <TouchableOpacity style={[styles.followButton, isFollowing && styles.followingButton]} onPress={handleFollow}>
+              <ThemedText style={[styles.followText, isFollowing && styles.followingText]}>
+                {isFollowing ? 'Following' : 'Follow'}
+              </ThemedText>
+            </TouchableOpacity>
+            
+            <TouchableOpacity 
+              style={styles.closeButton}
+              onPress={() => router.back()}
+            >
+              <ThemedText style={styles.closeText}>×</ThemedText>
+            </TouchableOpacity>
+          </View>
         </View>
 
         <View style={styles.stats}>
           <View style={styles.statItem}>
-            <ThemedText style={styles.statIcon}>👁</ThemedText>
+            <ThemedText style={[styles.statIcon, { color: 'white' }]}>👁</ThemedText>
             <ThemedText style={styles.statText}>{views} Viewers</ThemedText>
           </View>
           <View style={styles.statItem}>
             <ThemedText style={styles.statIcon}>💛</ThemedText>
-            <ThemedText style={styles.statText}>15k</ThemedText>
+            <ThemedText style={styles.statText}>{likes.toLocaleString()}</ThemedText>
           </View>
           <View style={styles.statItem}>
             <ThemedText style={styles.statIcon}>🎯</ThemedText>
@@ -100,8 +123,10 @@ export default function VideoLiveScreen() {
           {liveComments.map((comment) => (
             <View key={comment.id} style={styles.liveCommentItem}>
               <Image source={{ uri: comment.avatar }} style={styles.liveCommentAvatar} />
-              <Text style={styles.liveCommentUser}>@{comment.user}: </Text>
-              <Text style={styles.liveCommentText}>{comment.message}</Text>
+              <View style={styles.liveCommentContent}>
+                <Text style={styles.liveCommentUser}>@{comment.user}</Text>
+                <Text style={styles.liveCommentText}>{comment.message}</Text>
+              </View>
             </View>
           ))}
         </View>
@@ -128,8 +153,8 @@ export default function VideoLiveScreen() {
             <TouchableOpacity style={styles.actionButton}>
               <ThemedText style={styles.actionIcon}>🎁</ThemedText>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.actionButton}>
-              <ThemedText style={styles.actionIcon}>❤️</ThemedText>
+            <TouchableOpacity style={[styles.actionButton, isLiked && styles.likedButton]} onPress={handleLike}>
+              <ThemedText style={[styles.actionIcon, { color: isLiked ? '#ff4444' : 'white' }]}>❤️</ThemedText>
             </TouchableOpacity>
           </View>
         </View>
@@ -169,6 +194,16 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 20,
     marginRight: 10,
+    borderWidth: 2,
+    borderColor: 'white',
+  },
+  userDetails: {
+    flex: 1,
+  },
+  headerRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
   },
   username: {
     color: 'white',
@@ -191,6 +226,12 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 12,
     fontWeight: '600',
+  },
+  followingButton: {
+    backgroundColor: '#4CAF50',
+  },
+  followingText: {
+    color: 'white',
   },
   closeButton: {
     width: 30,
@@ -238,21 +279,8 @@ const styles = StyleSheet.create({
   },
   liveCommentItem: {
     flexDirection: 'row',
-    marginBottom: 4,
-    alignItems: 'center',
-  },
-  liveCommentAvatar: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    marginRight: 6,
-  },
-  commentBubble: {
-    flexDirection: 'row',
+    marginBottom: 8,
     alignItems: 'flex-start',
-  },
-  liveCommentContent: {
-    flex: 1,
   },
   liveCommentAvatar: {
     width: 24,
@@ -260,15 +288,19 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginRight: 8,
   },
+  liveCommentContent: {
+    flex: 1,
+  },
   liveCommentUser: {
     color: '#FFFFFF',
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: 'bold',
+    marginBottom: 2,
   },
   liveCommentText: {
-    color: 'rgba(255,255,255,0.7)',
-    fontSize: 14,
-    flex: 1,
+    color: 'rgba(255,255,255,0.9)',
+    fontSize: 13,
+    lineHeight: 16,
   },
   bottomSection: {
     position: 'absolute',
@@ -315,6 +347,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.2)',
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 2,
+    borderColor: 'transparent',
+  },
+  likedButton: {
+    borderColor: '#ff4444',
   },
   actionIcon: {
     fontSize: 18,
