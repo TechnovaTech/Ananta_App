@@ -50,24 +50,24 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors.light.primary,
-        tabBarInactiveTintColor: '#666666',
+        tabBarActiveTintColor: '#127D96',
+        tabBarInactiveTintColor: '#999999',
         tabBarStyle: {
           backgroundColor: 'white',
           borderTopWidth: 1,
           borderTopColor: '#E0E0E0',
           paddingBottom: Math.max(insets.bottom, 20),
           paddingTop: 10,
-          height: 60 + Math.max(insets.bottom, 20),
+          height: 70 + Math.max(insets.bottom, 20),
         },
         tabBarLabelStyle: {
-          fontSize: 10,
-          fontWeight: '500',
+          fontSize: 12,
+          fontWeight: '600',
           marginTop: 2,
-          marginBottom: 5,
+          marginBottom: 0,
         },
         tabBarIconStyle: {
-          marginBottom: 2,
+          marginBottom: 0,
         },
         headerShown: false,
         tabBarButton: HapticTab,
@@ -82,7 +82,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="leaderboard"
         options={{
-          title: 'Leaderboard',
+          title: 'Board',
           tabBarIcon: ({ color }) => <TrophyIcon color={color} />,
         }}
       />
@@ -91,13 +91,6 @@ export default function TabLayout() {
         options={{
           title: 'Live',
           tabBarIcon: ({ color }) => <LiveIcon color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Message',
-          tabBarIcon: ({ color }) => <MessageIcon color={color} />,
         }}
       />
       <Tabs.Screen

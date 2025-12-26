@@ -3,6 +3,8 @@ import { ThemedView } from '@/components/themed-view';
 import { Colors } from '@/constants/theme';
 import { Dimensions, Image, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
+import { useState } from 'react';
+import { router } from 'expo-router';
 
 const { width } = Dimensions.get('window');
 
@@ -27,6 +29,15 @@ const BellIcon = ({ color }: { color: string }) => (
 );
 
 export default function HomeScreen() {
+  const [followedUsers, setFollowedUsers] = useState<number[]>([]);
+
+  const handleFollow = (userId: number) => {
+    setFollowedUsers(prev => 
+      prev.includes(userId) 
+        ? prev.filter(id => id !== userId)
+        : [...prev, userId]
+    );
+  };
   const bannerImages = [
     require('@/assets/images/xvv 1.png'),
     require('@/assets/images/h1.png.png'),
@@ -84,7 +95,11 @@ export default function HomeScreen() {
         
         <View style={styles.videoGrid}>
           {videos.map((video, index) => (
-            <View key={video.id} style={styles.videoCard}>
+            <TouchableOpacity 
+              key={video.id} 
+              style={styles.videoCard}
+              onPress={() => router.push('/live')}
+            >
               <Image source={video.image} style={styles.videoImage} />
               <View style={styles.videoOverlay}>
                 <View style={styles.viewCount}>
@@ -98,13 +113,21 @@ export default function HomeScreen() {
                       <ThemedText style={styles.userName}>{video.user}</ThemedText>
                       <ThemedText style={styles.userLocation}>{video.location}</ThemedText>
                     </View>
-                    <TouchableOpacity style={styles.followButton}>
-                      <ThemedText style={styles.followText}>Follow</ThemedText>
+                    <TouchableOpacity 
+                      style={[
+                        styles.followButton,
+                        followedUsers.includes(video.id) && styles.followingButton
+                      ]}
+                      onPress={() => handleFollow(video.id)}
+                    >
+                      <ThemedText style={styles.followText}>
+                        {followedUsers.includes(video.id) ? 'Following' : 'Follow'}
+                      </ThemedText>
                     </TouchableOpacity>
                   </View>
                 </View>
               </View>
-            </View>
+            </TouchableOpacity>
           ))}
         </View>
       </ScrollView>
@@ -115,7 +138,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#E7E2E2',
+    backgroundColor: 'white',
   },
   header: {
     flexDirection: 'row',
@@ -277,13 +300,20 @@ const styles = StyleSheet.create({
   },
   followButton: {
     backgroundColor: Colors.light.primary,
-    paddingHorizontal: 8,
-    paddingVertical: 2,
+    paddingHorizontal: 12,
+    paddingVertical: 4,
     borderRadius: 10,
     marginLeft: 'auto',
+    minWidth: 60,
+    alignItems: 'center',
   },
   followText: {
     color: 'white',
-    fontSize: 10,
+    fontSize: 9,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  followingButton: {
+    backgroundColor: Colors.light.primary,
   },
 });
