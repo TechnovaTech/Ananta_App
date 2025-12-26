@@ -1,16 +1,37 @@
-import { StyleSheet, TextInput, TouchableOpacity, ImageBackground, View, Image, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { useFonts, Inter_400Regular, Inter_700Bold } from '@expo-google-fonts/inter';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { Colors, Fonts } from '@/constants/theme';
+import { Colors } from '@/constants/theme';
+import { Inter_400Regular, Inter_700Bold, useFonts } from '@expo-google-fonts/inter';
+import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
+import { Image, ImageBackground, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TextInput, TouchableOpacity, View, Alert } from 'react-native';
 
 export default function LoginScreen() {
   const [fontsLoaded] = useFonts({
     Inter_400Regular,
     Inter_700Bold,
   });
+
+  const handleGoogleSignIn = () => {
+    Alert.alert(
+      'Google Sign In',
+      'Choose your Google account',
+      [
+        {
+          text: 'user@gmail.com',
+          onPress: () => {
+            Alert.alert('Success', 'Signed in successfully!', [
+              { text: 'OK', onPress: () => router.push('/(tabs)') }
+            ]);
+          }
+        },
+        {
+          text: 'Cancel',
+          style: 'cancel'
+        }
+      ]
+    );
+  };
 
   if (!fontsLoaded) {
     return null;
@@ -20,6 +41,7 @@ export default function LoginScreen() {
     <ImageBackground 
       source={require('@/assets/images/auth-bg.png')}
       style={styles.container}
+      resizeMode="cover"
     >
       <KeyboardAvoidingView 
         style={styles.keyboardView}
@@ -54,7 +76,10 @@ export default function LoginScreen() {
           
           <ThemedText style={styles.orText}>OR</ThemedText>
           
-          <TouchableOpacity style={styles.googleButton}>
+          <TouchableOpacity 
+            style={styles.googleButton}
+            onPress={handleGoogleSignIn}
+          >
             <View style={styles.googleContent}>
               <Image 
                 source={require('@/assets/images/Google-icon.png')}
@@ -74,6 +99,8 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: '100%',
+    height: '100%',
   },
   keyboardView: {
     flex: 1,
@@ -83,7 +110,7 @@ const styles = StyleSheet.create({
   },
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.7)',
+    backgroundColor: 'rgba(0,0,0,0.8)',
     justifyContent: 'center',
     padding: 20,
     minHeight: '100%',

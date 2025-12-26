@@ -1,11 +1,11 @@
-import { StyleSheet, TextInput, TouchableOpacity, ImageBackground, View, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { useFonts, Inter_400Regular, Inter_700Bold } from '@expo-google-fonts/inter';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Colors } from '@/constants/theme';
+import { Inter_400Regular, Inter_700Bold, useFonts } from '@expo-google-fonts/inter';
+import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useRef, useState } from 'react';
+import { ImageBackground, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 
 export default function OTPScreen() {
   const [otp, setOtp] = useState(['', '', '', '', '']);
@@ -34,6 +34,7 @@ export default function OTPScreen() {
     <ImageBackground 
       source={require('@/assets/images/auth-bg.png')}
       style={styles.container}
+      resizeMode="cover"
     >
       <KeyboardAvoidingView 
         style={styles.keyboardView}
@@ -55,7 +56,7 @@ export default function OTPScreen() {
             {[0,1,2,3,4].map((index) => (
               <TextInput
                 key={index}
-                ref={(ref) => inputRefs.current[index] = ref}
+                ref={(ref) => { inputRefs.current[index] = ref; }}
                 style={styles.otpInput}
                 maxLength={1}
                 keyboardType="numeric"
@@ -87,6 +88,8 @@ export default function OTPScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: '100%',
+    height: '100%',
   },
   keyboardView: {
     flex: 1,
@@ -96,7 +99,7 @@ const styles = StyleSheet.create({
   },
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.7)',
+    backgroundColor: 'rgba(0,0,0,0.8)',
     justifyContent: 'center',
     padding: 20,
     minHeight: '100%',
