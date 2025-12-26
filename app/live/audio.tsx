@@ -11,6 +11,8 @@ export default function AudioLiveScreen() {
   const location = params.location as string || 'Location';
   const listeners = params.listeners as string || '1.2K';
   
+  const [isFollowing, setIsFollowing] = useState(false);
+  
   const [liveComments, setLiveComments] = useState<any[]>([
     { id: 1, user: 'Johnson joy', message: 'Great stream!', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50' },
     { id: 2, user: 'Henny', message: 'Love this song', avatar: 'https://images.unsplash.com/photo-1494790108755-2616c9c0e0e0?w=50' },
@@ -26,6 +28,10 @@ export default function AudioLiveScreen() {
     { id: 4, user: 'Johnson joy', message: 'How are you?', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50' },
     { id: 5, user: 'Henny', message: 'Im good, How are you?', avatar: 'https://images.unsplash.com/photo-1494790108755-2616c9c0e0e0?w=50' },
   ];
+
+  const handleFollow = () => {
+    setIsFollowing(!isFollowing);
+  };
 
   const addFloatingHeart = () => {
     const newHeart = {
@@ -64,9 +70,8 @@ export default function AudioLiveScreen() {
   }, []);
 
   return (
-    <KeyboardAvoidingView 
+    <View 
       style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <Image 
         source={{ uri: 'https://images.unsplash.com/photo-1494790108755-2616c9c0e0e0?w=400' }}
@@ -85,20 +90,29 @@ export default function AudioLiveScreen() {
             <ThemedText style={styles.username}>@{user}</ThemedText>
             <ThemedText style={styles.liveText}>{title}</ThemedText>
           </View>
-          <TouchableOpacity style={styles.followButton}>
-            <ThemedText style={styles.followText}>Follow</ThemedText>
-          </TouchableOpacity>
         </View>
         
-        <TouchableOpacity 
-          style={styles.closeButton}
-          onPress={() => router.back()}
-        >
-          <ThemedText style={styles.closeText}>×</ThemedText>
-        </TouchableOpacity>
+        <View style={styles.headerRight}>
+          <TouchableOpacity style={[styles.followButton, isFollowing && styles.followingButton]} onPress={handleFollow}>
+            <ThemedText style={[styles.followText, isFollowing && styles.followingText]}>
+              {isFollowing ? 'Following' : 'Follow'}
+            </ThemedText>
+          </TouchableOpacity>
+          
+          <TouchableOpacity 
+            style={styles.closeButton}
+            onPress={() => router.back()}
+          >
+            <ThemedText style={styles.closeText}>×</ThemedText>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <View style={styles.stats}>
+        <View style={styles.statItem}>
+          <ThemedText style={styles.statIcon}>👁</ThemedText>
+          <ThemedText style={styles.statText}>20 Viewers</ThemedText>
+        </View>
         <View style={styles.statItem}>
           <ThemedText style={styles.statIcon}>💛</ThemedText>
           <ThemedText style={styles.statText}>15k</ThemedText>
@@ -112,7 +126,7 @@ export default function AudioLiveScreen() {
       <View style={styles.audioVisualization}>
         <View style={styles.profileContainer}>
           <Image 
-            source={{ uri: 'https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500' }}
+            source={require('../../assets/images/audio image.webp')}
             style={styles.hostImage}
           />
           <View style={styles.profileBorder}></View>
@@ -124,8 +138,10 @@ export default function AudioLiveScreen() {
         {liveComments.map((comment) => (
           <View key={comment.id} style={styles.liveCommentItem}>
             <Image source={{ uri: comment.avatar }} style={styles.liveCommentAvatar} />
-            <Text style={styles.liveCommentUser}>@{comment.user}: </Text>
-            <Text style={styles.liveCommentText}>{comment.message}</Text>
+            <View style={styles.liveCommentContent}>
+              <Text style={styles.liveCommentUser}>@{comment.user}</Text>
+              <Text style={styles.liveCommentText}>{comment.message}</Text>
+            </View>
           </View>
         ))}
       </View>
@@ -172,7 +188,7 @@ export default function AudioLiveScreen() {
         </View>
       </View>
       </View>
-    </KeyboardAvoidingView>
+    </View>
   );
 }
 
@@ -230,6 +246,17 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '600',
   },
+  followingButton: {
+    backgroundColor: '#4CAF50',
+  },
+  followingText: {
+    color: 'white',
+  },
+  headerRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
   closeButton: {
     width: 30,
     height: 30,
@@ -267,7 +294,7 @@ const styles = StyleSheet.create({
   },
   audioVisualization: {
     position: 'absolute',
-    top: '50%',
+    top: '40%',
     left: '50%',
     transform: [{ translateX: -100 }, { translateY: -100 }],
     alignItems: 'center',
@@ -291,7 +318,7 @@ const styles = StyleSheet.create({
     height: 240,
     borderRadius: 120,
     borderWidth: 4,
-    borderColor: '#00FF00',
+    borderColor: '#127d96',
     opacity: 0.8,
   },
   audioRing: {
@@ -300,7 +327,7 @@ const styles = StyleSheet.create({
     height: 260,
     borderRadius: 130,
     borderWidth: 2,
-    borderColor: '#00FF00',
+    borderColor: '#127d96',
     opacity: 0.5,
   },
   commentsSection: {
@@ -313,27 +340,28 @@ const styles = StyleSheet.create({
   },
   liveCommentItem: {
     flexDirection: 'row',
-    marginBottom: 4,
-    alignItems: 'center',
+    marginBottom: 8,
+    alignItems: 'flex-start',
   },
   liveCommentAvatar: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    marginRight: 6,
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    marginRight: 8,
   },
   liveCommentContent: {
     flex: 1,
   },
   liveCommentUser: {
     color: '#000000',
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: 'bold',
+    marginBottom: 2,
   },
   liveCommentText: {
-    color: 'rgba(0,0,0,0.7)',
-    fontSize: 14,
-    flex: 1,
+    color: 'rgba(0,0,0,0.8)',
+    fontSize: 13,
+    lineHeight: 16,
   },
   floatingHeartsContainer: {
     position: 'absolute',
