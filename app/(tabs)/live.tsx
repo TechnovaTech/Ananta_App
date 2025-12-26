@@ -72,7 +72,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   header: {
-    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
@@ -83,15 +82,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 32,
+    fontSize: 24,
     fontWeight: 'bold',
     color: 'black',
   },
   titleUnderline: {
-    width: 120,
-    height: 4,
+    width: 100,
+    height: 3,
     backgroundColor: Colors.light.primary,
-    marginTop: 4,
+    marginTop: 2,
   },
   content: {
     flex: 1,
