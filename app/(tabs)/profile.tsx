@@ -1,49 +1,302 @@
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
+import React, { useState } from 'react';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StatusBar,
+  ScrollView,
+  Alert,
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import * as ImagePicker from 'expo-image-picker';
+import { router } from 'expo-router';
+import { useProfile } from '../../contexts/ProfileContext';
 
 export default function ProfileScreen() {
+  const { profileData, updateProfile } = useProfile();
+
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [16, 9],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      updateProfile({ headerBackground: result.assets[0].uri });
+    }
+  };
   return (
-    <ThemedView style={styles.container}>
-      <View style={styles.header}>
-        <ThemedText style={styles.title}>Profile</ThemedText>
+    <View style={styles.container}>
+      <StatusBar barStyle="light-content" />
+      
+      {/* Header with background image */}
+      <View style={styles.headerContainer}>
+        <Image 
+          source={{ uri: profileData.headerBackground }}
+          style={styles.headerBackgroundImage}
+        />
+        <View style={styles.headerOverlay}>
+          {/* Top navigation */}
+          <View style={styles.topNav}>
+            <TouchableOpacity onPress={pickImage}>
+              <Ionicons name="camera-outline" size={24} color="white" />
+            </TouchableOpacity>
+            <View style={styles.topRightIcons}>
+              <TouchableOpacity style={styles.iconButton}>
+                <Ionicons name="search" size={24} color="white" />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.iconButton}>
+                <Ionicons name="settings-outline" size={24} color="white" />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
       </View>
       
-      <View style={styles.content}>
-        <ThemedText style={styles.comingSoon}>Profile Screen</ThemedText>
-        <ThemedText style={styles.description}>Coming Soon...</ThemedText>
+      {/* Profile info card */}
+      <View style={styles.profileCard}>
+        <View style={styles.profileInfo}>
+          <Image
+            source={{ uri: profileData.profileImage }}
+            style={styles.profileAvatar}
+          />
+          <View style={styles.userInfo}>
+            <Text style={styles.username}>{profileData.name}</Text>
+            <Text style={styles.userTitle}>{profileData.title}</Text>
+            <Text style={styles.userBio}>{profileData.bio}</Text>
+          </View>
+        </View>
+        
+        <TouchableOpacity style={styles.editButton} onPress={() => router.push('/edit-profile')}>
+          <Text style={styles.editButtonText}>Edit Profile</Text>
+        </TouchableOpacity>
       </View>
-    </ThemedView>
+      
+      {/* Stats section */}
+      <View style={styles.statsContainer}>
+        <TouchableOpacity style={styles.statItem} onPress={() => router.push('/followers')}>
+          <Text style={styles.statNumber}>10K</Text>
+          <Text style={styles.statLabel}>Followers</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.statItem} onPress={() => router.push('/following')}>
+          <Text style={styles.statNumber}>20k</Text>
+          <Text style={styles.statLabel}>Following</Text>
+        </TouchableOpacity>
+        <View style={styles.statItem}>
+          <Text style={styles.statNumber}>200</Text>
+          <Text style={styles.statLabel}>Coins</Text>
+        </View>
+        <View style={styles.statItem}>
+          <Text style={styles.statNumber}>35</Text>
+          <Text style={styles.statLabel}>Diamonds</Text>
+        </View>
+      </View>
+      
+      {/* Action buttons */}
+      <View style={styles.actionGrid}>
+        {/* First row - 3 icons */}
+        <View style={styles.actionRow}>
+          <TouchableOpacity style={styles.actionButton}>
+            <View style={[styles.actionIcon, { backgroundColor: '#127d96' }]}>
+              <Ionicons name="person-outline" size={24} color="white" />
+            </View>
+            <Text style={styles.actionText}>Post</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity style={styles.actionButton}>
+            <View style={[styles.actionIcon, { backgroundColor: '#127d96' }]}>
+              <Ionicons name="cash-outline" size={24} color="white" />
+            </View>
+            <Text style={styles.actionText}>Earnings</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity style={styles.actionButton}>
+            <View style={[styles.actionIcon, { backgroundColor: '#127d96' }]}>
+              <Ionicons name="card-outline" size={24} color="white" />
+            </View>
+            <Text style={styles.actionText}>Recharge</Text>
+          </TouchableOpacity>
+        </View>
+        
+        {/* Second row - 3 icons */}
+        <View style={styles.actionRow}>
+          <TouchableOpacity style={styles.actionButton}>
+            <View style={[styles.actionIcon, { backgroundColor: '#127d96' }]}>
+              <Ionicons name="chatbubbles-outline" size={24} color="white" />
+            </View>
+            <Text style={styles.actionText}>Messages</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity style={styles.actionButton}>
+            <View style={[styles.actionIcon, { backgroundColor: '#127d96' }]}>
+              <Ionicons name="bar-chart-outline" size={24} color="white" />
+            </View>
+            <Text style={styles.actionText}>Live Data</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity style={styles.actionButton}>
+            <View style={[styles.actionIcon, { backgroundColor: '#127d96' }]}>
+              <Ionicons name="checkmark-circle-outline" size={24} color="white" />
+            </View>
+            <Text style={styles.actionText}>Verify</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#f8f9fa',
   },
-  header: {
+  headerContainer: {
+    height: 280,
+  },
+  headerBackgroundImage: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
+  headerOverlay: {
+    flex: 1,
     paddingHorizontal: 20,
-    paddingTop: 50,
-    paddingBottom: 20,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'black',
+  topNav: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 20,
+    paddingTop: 40,
   },
-  content: {
+  topRightIcons: {
+    flexDirection: 'row',
+    gap: 15,
+  },
+  iconButton: {
+    padding: 5,
+  },
+  profileImageContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  comingSoon: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
+  backgroundProfileImage: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    borderWidth: 3,
+    borderColor: 'white',
   },
-  description: {
+  profileCard: {
+    backgroundColor: 'white',
+    marginHorizontal: 20,
+    marginTop: -60,
+    borderRadius: 20,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 5,
+  },
+  profileInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  profileAvatar: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    marginRight: 15,
+  },
+  userInfo: {
+    flex: 1,
+  },
+  username: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 2,
+  },
+  userTitle: {
+    fontSize: 14,
+    color: '#666',
+    marginBottom: 4,
+  },
+  userBio: {
+    fontSize: 12,
+    color: '#888',
+    lineHeight: 16,
+  },
+  editButton: {
+    backgroundColor: '#e9ecef',
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    borderRadius: 25,
+    alignItems: 'center',
+  },
+  editButtonText: {
     fontSize: 16,
-    opacity: 0.7,
+    fontWeight: '600',
+    color: '#333',
+  },
+  statsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: 25,
+    paddingHorizontal: 20,
+  },
+  statItem: {
+    alignItems: 'center',
+  },
+  statNumber: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 4,
+  },
+  statLabel: {
+    fontSize: 12,
+    color: '#666',
+  },
+  actionGrid: {
+    paddingHorizontal: 20,
+  },
+  actionRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 30,
+  },
+  actionButton: {
+    alignItems: 'center',
+    flex: 1,
+  },
+  actionIcon: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#f8f9fa',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 8,
+    borderWidth: 1,
+    borderColor: '#e9ecef',
+  },
+  actionText: {
+    fontSize: 12,
+    color: '#333',
+    fontWeight: '500',
   },
 });
