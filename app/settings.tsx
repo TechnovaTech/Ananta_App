@@ -104,7 +104,23 @@ export default function SettingsScreen() {
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {settingsItems.map((item) => (
-          <TouchableOpacity key={item.id} style={styles.settingItem}>
+          <TouchableOpacity 
+            key={item.id} 
+            style={styles.settingItem}
+            onPress={() => {
+              if (item.title === 'Live data & History') {
+                router.push('/live-history');
+              } else if (item.title === 'Help & Feedback') {
+                router.push('/help-feedback');
+              } else if (item.title === 'Level') {
+                router.push('/level-management');
+              } else if (item.title === 'Daily tasks') {
+                router.push('/daily-tasks');
+              } else if (item.title === 'Invitation Rewards') {
+                router.push('/invitation-rewards');
+              }
+            }}
+          >
             <View style={styles.iconContainer}>
               {item.icon}
             </View>
