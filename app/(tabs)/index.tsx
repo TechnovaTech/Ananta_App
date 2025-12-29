@@ -1,10 +1,10 @@
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Colors } from '@/constants/theme';
+import { router } from 'expo-router';
+import { useState } from 'react';
 import { Dimensions, Image, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
-import { useState } from 'react';
-import { router } from 'expo-router';
 
 const { width } = Dimensions.get('window');
 
@@ -30,7 +30,7 @@ const BellIcon = ({ color }: { color: string }) => (
 
 export default function HomeScreen() {
   const [followedUsers, setFollowedUsers] = useState<number[]>([]);
-  const [activeTab, setActiveTab] = useState<'video' | 'audio'>('video');
+  const [activeTab, setActiveTab] = useState<'video' | 'audio' | 'followers' | 'following'>('video');
 
   const handleFollow = (userId: number) => {
     setFollowedUsers(prev => 
@@ -58,6 +58,17 @@ export default function HomeScreen() {
     { id: 2, title: 'Jazz Evening', user: 'Mike Johnson', location: 'USA', listeners: '850', image: require('@/assets/images/h2.png.png') },
     { id: 3, title: 'Podcast Talk', user: 'Emma Davis', location: 'UK', listeners: '2.1K', image: require('@/assets/images/h3.png.png') },
     { id: 4, title: 'Music Lounge', user: 'Alex Chen', location: 'Canada', listeners: '950', image: require('@/assets/images/h4.png.png') },
+  ];
+
+  const followersData = [
+    { id: 1, name: 'Sarah Wilson', username: '@sarah_w', image: require('@/assets/images/h1.png.png') },
+    { id: 2, name: 'Mike Johnson', username: '@mike_j', image: require('@/assets/images/h2.png.png') },
+    { id: 3, name: 'Emma Davis', username: '@emma_d', image: require('@/assets/images/h3.png.png') },
+  ];
+
+  const followingData = [
+    { id: 1, name: 'Alex Chen', username: '@alex_c', image: require('@/assets/images/h4.png.png') },
+    { id: 2, name: 'Rachel James', username: '@rachel_j', image: require('@/assets/images/h1.png.png') },
   ];
 
   return (
@@ -99,6 +110,18 @@ export default function HomeScreen() {
         >
           <ThemedText style={[styles.tabText, activeTab === 'audio' && styles.activeTabText]}>Audio Live</ThemedText>
         </TouchableOpacity>
+        <TouchableOpacity 
+          style={[styles.tab, activeTab === 'followers' && styles.activeTab]}
+          onPress={() => setActiveTab('followers')}
+        >
+          <ThemedText style={[styles.tabText, activeTab === 'followers' && styles.activeTabText]}>Followers</ThemedText>
+        </TouchableOpacity>
+        <TouchableOpacity 
+          style={[styles.tab, activeTab === 'following' && styles.activeTab]}
+          onPress={() => setActiveTab('following')}
+        >
+          <ThemedText style={[styles.tabText, activeTab === 'following' && styles.activeTabText]}>Following</ThemedText>
+        </TouchableOpacity>
       </View>
       
       <ScrollView style={styles.content}>
@@ -114,7 +137,7 @@ export default function HomeScreen() {
         </ScrollView>
         
         <View style={styles.videoGrid}>
-          {(activeTab === 'video' ? videos : audioStreams).map((item, index) => (
+          {(activeTab === 'video' || activeTab === 'audio') && (activeTab === 'video' ? videos : audioStreams).map((item, index) => (
             <TouchableOpacity 
               key={item.id} 
               style={styles.videoCard}
@@ -185,6 +208,22 @@ export default function HomeScreen() {
               </View>
             </TouchableOpacity>
           ))}
+          {(activeTab === 'followers' || activeTab === 'following') && (
+            <View style={styles.usersList}>
+              {(activeTab === 'followers' ? followersData : followingData).map((user) => (
+                <View key={user.id} style={styles.userItem}>
+                  <Image source={user.image} style={styles.profileImage} />
+                  <View style={styles.userNameContainer}>
+                    <ThemedText style={styles.profileName}>{user.name}</ThemedText>
+                    <ThemedText style={styles.profileUsername}>{user.username}</ThemedText>
+                  </View>
+                  <TouchableOpacity style={styles.messageButton}>
+                    <ThemedText style={styles.messageText}>Message</ThemedText>
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </View>
+          )}
         </View>
       </ScrollView>
     </ThemedView>
@@ -231,13 +270,13 @@ const styles = StyleSheet.create({
   },
   tabContainer: {
     flexDirection: 'row',
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     marginBottom: 20,
   },
   tab: {
     paddingVertical: 8,
-    paddingHorizontal: 20,
-    marginRight: 20,
+    paddingHorizontal: 12,
+    marginRight: 8,
   },
   activeTab: {
     borderBottomWidth: 2,
@@ -249,6 +288,7 @@ const styles = StyleSheet.create({
   },
   tabText: {
     color: '#666',
+    fontSize: 12,
   },
   content: {
     flex: 1,
@@ -259,7 +299,7 @@ const styles = StyleSheet.create({
   },
   featuredVideo: {
     width: width - 40,
-    height: 200,
+    height: 130,
     borderRadius: 15,
     overflow: 'hidden',
     marginRight: 15,
@@ -415,5 +455,56 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 8,
     fontWeight: 'bold',
+  },
+  emptyState: {
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 50,
+  },
+  emptyText: {
+    color: '#666',
+    fontSize: 16,
+  },
+  usersList: {
+    width: '100%',
+  },
+  userItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
+  },
+  profileImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 12,
+  },
+  userNameContainer: {
+    flex: 1,
+  },
+  profileName: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: 'black',
+  },
+  profileUsername: {
+    fontSize: 14,
+    color: '#666',
+    marginTop: 2,
+  },
+  messageButton: {
+    backgroundColor: Colors.light.primary,
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    borderRadius: 6,
+  },
+  messageText: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight: '600',
   },
 });
