@@ -1,4 +1,4 @@
-import { StyleSheet, TextInput, TouchableOpacity, View, Image, ScrollView, KeyboardAvoidingView, Platform, Alert } from 'react-native';
+import { StyleSheet, TextInput, TouchableOpacity, View, Image, ScrollView, KeyboardAvoidingView, Platform, Alert, StatusBar } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -6,6 +6,7 @@ import { Colors } from '@/constants/theme';
 import { router } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function ProfileScreen() {
   const [profileImage, setProfileImage] = useState<string | null>(null);
@@ -30,8 +31,20 @@ export default function ProfileScreen() {
   };
 
   return (
+    <View style={styles.container}>
+      <StatusBar barStyle="dark-content" />
+      
+      {/* Header */}
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => router.back()}>
+          <Ionicons name="chevron-back" size={24} color="#333" />
+        </TouchableOpacity>
+        <ThemedText style={styles.headerTitle}>Profile</ThemedText>
+        <View style={styles.placeholder} />
+      </View>
+
     <KeyboardAvoidingView 
-      style={styles.container}
+      style={styles.keyboardContainer}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
     >
@@ -59,8 +72,8 @@ export default function ProfileScreen() {
           />
           <TextInput
             style={styles.input}
-            placeholder="Enter Full name"
-            placeholderTextColor="#999"
+            placeholder="Full Name"
+            placeholderTextColor="#666"
           />
         </View>
         
@@ -71,8 +84,8 @@ export default function ProfileScreen() {
           />
           <TextInput
             style={styles.input}
-            placeholder="Enter Username"
-            placeholderTextColor="#999"
+            placeholder="Username"
+            placeholderTextColor="#666"
           />
         </View>
         
@@ -83,8 +96,8 @@ export default function ProfileScreen() {
           />
           <TextInput
             style={styles.input}
-            placeholder="User Bio/Hashtages"
-            placeholderTextColor="#999"
+            placeholder="Bio / Hashtags"
+            placeholderTextColor="#666"
           />
         </View>
         
@@ -95,8 +108,8 @@ export default function ProfileScreen() {
           />
           <TextInput
             style={styles.input}
-            placeholder="Enter Location"
-            placeholderTextColor="#999"
+            placeholder="Location"
+            placeholderTextColor="#666"
           />
         </View>
         
@@ -107,8 +120,8 @@ export default function ProfileScreen() {
           />
           <TextInput
             style={styles.input}
-            placeholder="Enter Birthdate"
-            placeholderTextColor="#999"
+            placeholder="Birthdate"
+            placeholderTextColor="#666"
           />
         </View>
       </View>
@@ -126,18 +139,42 @@ export default function ProfileScreen() {
           </TouchableOpacity>
         </ScrollView>
     </KeyboardAvoidingView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#f8f9fa',
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingTop: 50,
+    paddingBottom: 15,
     backgroundColor: 'white',
+    borderBottomWidth: 2,
+    borderBottomColor: '#126996',
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  placeholder: {
+    width: 24,
+  },
+  keyboardContainer: {
+    flex: 1,
   },
   scrollContainer: {
     paddingHorizontal: 20,
-    paddingTop: 60,
+    paddingTop: 30,
     paddingBottom: 150,
+    backgroundColor: 'white',
   },
   avatarContainer: {
     alignItems: 'center',
@@ -191,7 +228,8 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 16,
-    color: '#000',
+    color: '#333',
+    fontWeight: '500',
   },
   nextButtonContainer: {
     marginTop: 40,
