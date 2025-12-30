@@ -1,103 +1,51 @@
-import React, { useState } from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Image,
-  StatusBar,
-  FlatList,
-} from 'react-native';
+import React from 'react';
+import { StyleSheet, View, Text, FlatList, Image, TouchableOpacity, StatusBar } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
+import { useTheme } from '../contexts/ThemeContext';
+
+const followingData = [
+  { id: '1', name: 'Alex Brown', username: '@alexb', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face', isFollowing: true },
+  { id: '2', name: 'Emma Davis', username: '@emmad', avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face', isFollowing: true },
+  { id: '3', name: 'Chris Wilson', username: '@chrisw', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face', isFollowing: true },
+  { id: '4', name: 'Lisa Garcia', username: '@lisag', avatar: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=100&h=100&fit=crop&crop=face', isFollowing: true },
+];
 
 export default function FollowingScreen() {
-  const [searchText, setSearchText] = useState('');
-  const [following, setFollowing] = useState([
-    {
-      id: 1,
-      name: '@Micale clarke',
-      location: 'Indiapole, In , USA',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face'
-    },
-    {
-      id: 2,
-      name: '@Miston Gasdumbe',
-      location: 'Indiapole, In , USA',
-      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face'
-    },
-    {
-      id: 3,
-      name: '@Helsinki nairobi',
-      location: 'Indiapole, In , USA',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face'
-    },
-    {
-      id: 4,
-      name: '@Micale clarke',
-      location: 'Noida, interpole UK',
-      image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop&crop=face'
-    }
-  ]);
-  
-  const removeFollowing = (id) => {
-    setFollowing(following.filter(person => person.id !== id));
-  };
-  
-  const filteredFollowing = following.filter(person => 
-    person.name.toLowerCase().includes(searchText.toLowerCase()) ||
-    person.location.toLowerCase().includes(searchText.toLowerCase())
-  );
+  const { isDark } = useTheme();
 
   const renderFollowing = ({ item }) => (
-    <View style={styles.followingItem}>
-      <View style={styles.followingLeft}>
-        <Image source={{ uri: item.image }} style={styles.followingImage} />
-        <View style={styles.followingInfo}>
-          <Text style={styles.followingName}>{item.name}</Text>
-          <Text style={styles.followingLocation}>{item.location}</Text>
-        </View>
+    <View style={[styles.followingItem, { backgroundColor: isDark ? '#333' : 'white' }]}>
+      <Image source={{ uri: item.avatar }} style={styles.avatar} />
+      <View style={styles.userInfo}>
+        <Text style={[styles.name, { color: isDark ? 'white' : '#333' }]}>{item.name}</Text>
+        <Text style={[styles.username, { color: isDark ? '#ccc' : '#666' }]}>{item.username}</Text>
       </View>
-      <TouchableOpacity style={styles.removeButton} onPress={() => removeFollowing(item.id)}>
-        <Text style={styles.removeButtonText}>Remove</Text>
+      <TouchableOpacity 
+        style={[styles.unfollowButton, { backgroundColor: isDark ? '#444' : '#e9ecef' }]}
+      >
+        <Text style={[styles.unfollowText, { color: isDark ? 'white' : '#333' }]}>Unfollow</Text>
       </TouchableOpacity>
     </View>
   );
 
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle="dark-content" />
+    <View style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f8f9fa' }]}>
+      <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
       
-      {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { backgroundColor: isDark ? '#1a1a1a' : 'white', borderBottomColor: isDark ? '#333' : '#127d96' }]}>
         <TouchableOpacity onPress={() => router.back()}>
-          <Ionicons name="chevron-back" size={24} color="#333" />
+          <Ionicons name="chevron-back" size={24} color={isDark ? 'white' : '#333'} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Following</Text>
+        <Text style={[styles.headerTitle, { color: isDark ? 'white' : '#333' }]}>Following</Text>
         <View style={styles.placeholder} />
       </View>
-      
-      {/* Search Bar */}
-      <View style={styles.searchContainer}>
-        <View style={styles.searchBar}>
-          <Ionicons name="search" size={20} color="#666" style={styles.searchIcon} />
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search Followings..."
-            value={searchText}
-            onChangeText={setSearchText}
-            placeholderTextColor="#666"
-          />
-        </View>
-      </View>
-      
-      {/* Following List */}
+
       <FlatList
-        data={filteredFollowing}
+        data={followingData}
         renderItem={renderFollowing}
-        keyExtractor={(item) => item.id.toString()}
-        style={styles.followingList}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.listContainer}
         showsVerticalScrollIndicator={false}
       />
     </View>
@@ -107,7 +55,6 @@ export default function FollowingScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
   },
   header: {
     flexDirection: 'row',
@@ -115,95 +62,55 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingTop: 50,
-    paddingVertical: 15,
-    backgroundColor: 'white',
+    paddingBottom: 20,
     borderBottomWidth: 2,
-    borderBottomColor: '#126996',
   },
   headerTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
-  },
-  titleContainer: {
-    alignItems: 'flex-start',
-  },
-  titleUnderline: {
-    width: 60,
-    height: 2,
-    backgroundColor: '#127d96',
-    marginTop: 4,
   },
   placeholder: {
     width: 24,
   },
-  searchContainer: {
-    paddingHorizontal: 20,
-    paddingVertical: 15,
-    backgroundColor: 'white',
-  },
-  searchBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#e9ecef',
-    borderRadius: 10,
-    paddingHorizontal: 15,
-    paddingVertical: 12,
-  },
-  searchIcon: {
-    marginRight: 10,
-  },
-  searchInput: {
-    flex: 1,
-    fontSize: 16,
-    color: '#333',
-  },
-  followingList: {
-    flex: 1,
-    backgroundColor: 'white',
+  listContainer: {
+    padding: 20,
   },
   followingItem: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    padding: 15,
+    borderRadius: 15,
+    marginBottom: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
-  followingLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  followingImage: {
+  avatar: {
     width: 50,
     height: 50,
     borderRadius: 25,
     marginRight: 15,
   },
-  followingInfo: {
+  userInfo: {
     flex: 1,
   },
-  followingName: {
+  name: {
     fontSize: 16,
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: 4,
+    fontWeight: 'bold',
+    marginBottom: 2,
   },
-  followingLocation: {
+  username: {
     fontSize: 14,
-    color: '#666',
   },
-  removeButton: {
-    backgroundColor: '#ff4444',
-    paddingHorizontal: 15,
+  unfollowButton: {
+    paddingHorizontal: 20,
     paddingVertical: 8,
-    borderRadius: 15,
+    borderRadius: 20,
   },
-  removeButtonText: {
-    color: 'white',
-    fontSize: 12,
+  unfollowText: {
+    fontSize: 14,
     fontWeight: '600',
   },
 });

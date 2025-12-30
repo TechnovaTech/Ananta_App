@@ -4,29 +4,35 @@ import { router } from 'expo-router';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import Svg, { Path } from 'react-native-svg';
+import { useTheme } from '@/contexts/ThemeContext';
 
-const BackIcon = ({ color }: { color: string }) => (
+const BackIcon = ({ color, isDark }: { color: string; isDark?: boolean }) => (
   <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <Path d="M19 12H5M12 19L5 12L12 5" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <Path d="M19 12H5M12 19L5 12L12 5" stroke={isDark ? '#127D96' : color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
   </Svg>
 );
 
 export default function SearchScreen() {
+  const { isDark } = useTheme();
   const [searchQuery, setSearchQuery] = useState('');
 
   return (
-    <ThemedView style={styles.container}>
-      <View style={styles.header}>
+    <ThemedView style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}>
+      <View style={[styles.header, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-          <BackIcon color="#127D96" />
+          <BackIcon color="#127D96" isDark={isDark} />
         </TouchableOpacity>
-        <ThemedText style={styles.title}>Search</ThemedText>
+        <ThemedText style={[styles.title, { color: isDark ? 'white' : 'black' }]}>Search</ThemedText>
       </View>
       
       <View style={styles.searchContainer}>
         <TextInput
-          style={styles.searchInput}
+          style={[styles.searchInput, { 
+            backgroundColor: isDark ? '#333' : '#F5F5F5',
+            color: isDark ? 'white' : 'black'
+          }]}
           placeholder="Search videos, users..."
+          placeholderTextColor={isDark ? '#999' : '#666'}
           value={searchQuery}
           onChangeText={setSearchQuery}
           autoFocus
@@ -34,7 +40,7 @@ export default function SearchScreen() {
       </View>
       
       <View style={styles.content}>
-        <ThemedText style={styles.emptyText}>
+        <ThemedText style={[styles.emptyText, { color: isDark ? '#ccc' : '#666' }]}>
           {searchQuery ? `Searching for "${searchQuery}"...` : 'Start typing to search'}
         </ThemedText>
       </View>

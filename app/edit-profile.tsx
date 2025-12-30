@@ -15,9 +15,11 @@ import {
   View,
 } from 'react-native';
 import { useProfile } from '../contexts/ProfileContext';
+import { useTheme } from '../contexts/ThemeContext';
 
 export default function EditProfileScreen() {
   const { profileData, updateProfile } = useProfile();
+  const { isDark } = useTheme();
   const [profileImage, setProfileImage] = useState(profileData.profilePhoto || profileData.profileImage);
   const [name, setName] = useState(profileData.name);
   const [bio, setBio] = useState(profileData.bio);
@@ -65,23 +67,23 @@ export default function EditProfileScreen() {
 
   return (
     <KeyboardAvoidingView 
-      style={styles.container}
+      style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f8f9fa' }]}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <StatusBar barStyle="dark-content" />
+      <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
       
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { backgroundColor: isDark ? '#1a1a1a' : 'white', borderBottomColor: isDark ? '#333' : '#127d96' }]}>
         <TouchableOpacity onPress={() => router.back()}>
-          <Ionicons name="chevron-back" size={24} color="#333" />
+          <Ionicons name="chevron-back" size={24} color={isDark ? 'white' : '#333'} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Edit Profile</Text>
+        <Text style={[styles.headerTitle, { color: isDark ? 'white' : '#333' }]}>Edit Profile</Text>
         <View style={styles.placeholder} />
       </View>
       
       <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
         {/* Profile Image */}
-        <View style={styles.profileImageSection}>
+        <View style={[styles.profileImageSection, { backgroundColor: isDark ? '#333' : 'white' }]}>
           <View style={styles.profileImageContainer}>
             <Image source={{ uri: profileImage }} style={styles.profileImage} />
             <TouchableOpacity style={styles.editImageButton} onPress={pickImage}>
@@ -93,130 +95,185 @@ export default function EditProfileScreen() {
         {/* Form Fields */}
         <View style={styles.formContainer}>
           {/* Personal Information */}
-          <Text style={styles.sectionTitle}>Personal Information</Text>
+          <Text style={[styles.sectionTitle, { color: isDark ? 'white' : '#333' }]}>Personal Information</Text>
           
           <View style={styles.fieldContainer}>
-            <Text style={styles.fieldLabel}>Username :</Text>
+            <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Username :</Text>
             <TextInput
-              style={styles.textInput}
+              style={[styles.textInput, { 
+                backgroundColor: isDark ? '#444' : '#e9ecef',
+                color: isDark ? 'white' : '#333',
+                borderColor: isDark ? '#555' : '#127d96'
+              }]}
               value={userName}
               onChangeText={setUserName}
               placeholder="Enter your username"
+              placeholderTextColor={isDark ? '#888' : '#666'}
             />
           </View>
           
           <View style={styles.fieldContainer}>
-            <Text style={styles.fieldLabel}>Name :</Text>
+            <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Name :</Text>
             <TextInput
-              style={styles.textInput}
+              style={[styles.textInput, { 
+                backgroundColor: isDark ? '#444' : '#e9ecef',
+                color: isDark ? 'white' : '#333',
+                borderColor: isDark ? '#555' : '#127d96'
+              }]}
               value={name}
               onChangeText={setName}
               placeholder="Enter your name"
+              placeholderTextColor={isDark ? '#888' : '#666'}
             />
           </View>
           
           <View style={styles.fieldContainer}>
-            <Text style={styles.fieldLabel}>Gender :</Text>
+            <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Gender :</Text>
             <TextInput
-              style={styles.textInput}
+              style={[styles.textInput, { 
+                backgroundColor: isDark ? '#444' : '#e9ecef',
+                color: isDark ? 'white' : '#333',
+                borderColor: isDark ? '#555' : '#127d96'
+              }]}
               value={gender}
               onChangeText={setGender}
               placeholder="Enter your gender"
+              placeholderTextColor={isDark ? '#888' : '#666'}
             />
           </View>
           
           <View style={styles.fieldContainer}>
-            <Text style={styles.fieldLabel}>Birthday :</Text>
+            <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Birthday :</Text>
             <TextInput
-              style={styles.textInput}
+              style={[styles.textInput, { 
+                backgroundColor: isDark ? '#444' : '#e9ecef',
+                color: isDark ? 'white' : '#333',
+                borderColor: isDark ? '#555' : '#127d96'
+              }]}
               value={birthday}
               onChangeText={setBirthday}
               placeholder="Enter your birthday (DD/MM/YYYY)"
+              placeholderTextColor={isDark ? '#888' : '#666'}
             />
           </View>
           
           <View style={styles.fieldContainer}>
-            <Text style={styles.fieldLabel}>Bio :</Text>
+            <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Bio :</Text>
             <TextInput
-              style={styles.textInput}
+              style={[styles.textInput, { 
+                backgroundColor: isDark ? '#444' : '#e9ecef',
+                color: isDark ? 'white' : '#333',
+                borderColor: isDark ? '#555' : '#127d96'
+              }]}
               value={bio}
               onChangeText={setBio}
               placeholder="Enter your bio"
+              placeholderTextColor={isDark ? '#888' : '#666'}
               multiline
             />
           </View>
           
           {/* Address Information */}
-          <Text style={styles.sectionTitle}>Address Information</Text>
+          <Text style={[styles.sectionTitle, { color: isDark ? 'white' : '#333' }]}>Address Information</Text>
           
           <View style={styles.fieldContainer}>
-            <Text style={styles.fieldLabel}>Address Line 1 :</Text>
+            <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Address Line 1 :</Text>
             <TextInput
-              style={styles.textInput}
+              style={[styles.textInput, { 
+                backgroundColor: isDark ? '#444' : '#e9ecef',
+                color: isDark ? 'white' : '#333',
+                borderColor: isDark ? '#555' : '#127d96'
+              }]}
               value={addressLine1}
               onChangeText={setAddressLine1}
               placeholder="Enter your address"
+              placeholderTextColor={isDark ? '#888' : '#666'}
             />
           </View>
           
           <View style={styles.fieldContainer}>
-            <Text style={styles.fieldLabel}>City :</Text>
+            <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>City :</Text>
             <TextInput
-              style={styles.textInput}
+              style={[styles.textInput, { 
+                backgroundColor: isDark ? '#444' : '#e9ecef',
+                color: isDark ? 'white' : '#333',
+                borderColor: isDark ? '#555' : '#127d96'
+              }]}
               value={city}
               onChangeText={setCity}
               placeholder="Enter your city"
+              placeholderTextColor={isDark ? '#888' : '#666'}
             />
           </View>
           
           <View style={styles.fieldContainer}>
-            <Text style={styles.fieldLabel}>State :</Text>
+            <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>State :</Text>
             <TextInput
-              style={styles.textInput}
+              style={[styles.textInput, { 
+                backgroundColor: isDark ? '#444' : '#e9ecef',
+                color: isDark ? 'white' : '#333',
+                borderColor: isDark ? '#555' : '#127d96'
+              }]}
               value={state}
               onChangeText={setState}
               placeholder="Enter your state"
+              placeholderTextColor={isDark ? '#888' : '#666'}
             />
           </View>
           
           <View style={styles.fieldContainer}>
-            <Text style={styles.fieldLabel}>Country :</Text>
+            <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Country :</Text>
             <TextInput
-              style={styles.textInput}
+              style={[styles.textInput, { 
+                backgroundColor: isDark ? '#444' : '#e9ecef',
+                color: isDark ? 'white' : '#333',
+                borderColor: isDark ? '#555' : '#127d96'
+              }]}
               value={country}
               onChangeText={setCountry}
               placeholder="Enter your country"
+              placeholderTextColor={isDark ? '#888' : '#666'}
             />
           </View>
           
           <View style={styles.fieldContainer}>
-            <Text style={styles.fieldLabel}>Pin Code :</Text>
+            <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Pin Code :</Text>
             <TextInput
-              style={styles.textInput}
+              style={[styles.textInput, { 
+                backgroundColor: isDark ? '#444' : '#e9ecef',
+                color: isDark ? 'white' : '#333',
+                borderColor: isDark ? '#555' : '#127d96'
+              }]}
               value={pinCode}
               onChangeText={setPinCode}
               placeholder="Enter your pin code"
+              placeholderTextColor={isDark ? '#888' : '#666'}
               keyboardType="numeric"
             />
           </View>
           
           {/* Other Information */}
-          <Text style={styles.sectionTitle}>Other Information</Text>
+          <Text style={[styles.sectionTitle, { color: isDark ? 'white' : '#333' }]}>Other Information</Text>
           
           <View style={styles.fieldContainer}>
-            <Text style={styles.fieldLabel}>Location :</Text>
+            <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Location :</Text>
             <TextInput
-              style={styles.textInput}
+              style={[styles.textInput, { 
+                backgroundColor: isDark ? '#444' : '#e9ecef',
+                color: isDark ? 'white' : '#333',
+                borderColor: isDark ? '#555' : '#127d96'
+              }]}
               value={location}
               onChangeText={setLocation}
               placeholder="Enter your location"
+              placeholderTextColor={isDark ? '#888' : '#666'}
             />
           </View>
         </View>
       </ScrollView>
       
       {/* Save Button */}
-      <View style={styles.buttonContainer}>
+      <View style={[styles.buttonContainer, { backgroundColor: isDark ? '#333' : 'white' }]}>
         <TouchableOpacity style={styles.saveButton} onPress={saveProfile}>
           <Text style={styles.saveButtonText}>Save Profile</Text>
         </TouchableOpacity>
@@ -261,7 +318,6 @@ const styles = StyleSheet.create({
   profileImageSection: {
     alignItems: 'center',
     paddingVertical: 30,
-    backgroundColor: 'white',
   },
   profileImageContainer: {
     position: 'relative',
@@ -296,7 +352,6 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
     marginBottom: 15,
     marginTop: 20,
   },
@@ -306,16 +361,13 @@ const styles = StyleSheet.create({
   fieldLabel: {
     fontSize: 16,
     fontWeight: '500',
-    color: '#333',
     marginBottom: 8,
   },
   textInput: {
-    backgroundColor: '#e9ecef',
     borderRadius: 25,
     paddingHorizontal: 20,
     paddingVertical: 15,
     fontSize: 16,
-    color: '#333',
     borderWidth: 2,
     borderColor: '#127d96',
   },
@@ -323,7 +375,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 15,
     paddingBottom: 30,
-    backgroundColor: 'white',
   },
   saveButton: {
     backgroundColor: '#127d96',

@@ -6,17 +6,19 @@ import { Dimensions, Image, ScrollView, StyleSheet, TouchableOpacity, View } fro
 import Svg, { Path } from 'react-native-svg';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useTheme } from '@/contexts/ThemeContext';
 
 const { width } = Dimensions.get('window');
 
-const BackIcon = () => (
+const BackIcon = ({ isDark }: { isDark: boolean }) => (
   <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <Path d="M15 18L9 12L15 6" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <Path d="M15 18L9 12L15 6" stroke={isDark ? "white" : "black"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
   </Svg>
 );
 
 export default function LeaderboardScreen() {
   const router = useRouter();
+  const { isDark } = useTheme();
   const [activeTab, setActiveTab] = useState('earning');
   const [timeFilter, setTimeFilter] = useState('today');
 
@@ -48,52 +50,52 @@ export default function LeaderboardScreen() {
   ];
 
   return (
-    <ThemedView style={styles.container}>
-      <View style={styles.header}>
+    <ThemedView style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}>
+      <View style={[styles.header, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}>
         <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-          <BackIcon />
+          <BackIcon isDark={isDark} />
         </TouchableOpacity>
         <View style={styles.titleContainer}>
-          <ThemedText style={styles.title}>Leaderboard</ThemedText>
+          <ThemedText style={[styles.title, { color: isDark ? 'white' : 'black' }]}>Leaderboard</ThemedText>
           <View style={styles.titleUnderline} />
         </View>
       </View>
 
       {/* Main Navigation - Earning/Live */}
-      <View style={styles.mainNavContainer}>
+      <View style={[styles.mainNavContainer, { backgroundColor: isDark ? '#1a1a1a' : 'white', borderBottomColor: isDark ? '#333' : '#f0f0f0' }]}>
         <TouchableOpacity 
           style={[styles.mainNavTab, activeTab === 'earning' && styles.activeMainNav]}
           onPress={() => setActiveTab('earning')}
         >
-          <ThemedText style={[styles.mainNavText, activeTab === 'earning' && styles.activeMainNavText]}>Earning</ThemedText>
+          <ThemedText style={[styles.mainNavText, { color: isDark ? '#ccc' : '#666' }, activeTab === 'earning' && styles.activeMainNavText]}>Earning</ThemedText>
         </TouchableOpacity>
         <TouchableOpacity 
           style={[styles.mainNavTab, activeTab === 'live' && styles.activeMainNav]}
           onPress={() => setActiveTab('live')}
         >
-          <ThemedText style={[styles.mainNavText, activeTab === 'live' && styles.activeMainNavText]}>Live</ThemedText>
+          <ThemedText style={[styles.mainNavText, { color: isDark ? '#ccc' : '#666' }, activeTab === 'live' && styles.activeMainNavText]}>Live</ThemedText>
         </TouchableOpacity>
       </View>
 
       {/* Time Filter */}
-      <View style={styles.filterContainer}>
+      <View style={[styles.filterContainer, { backgroundColor: isDark ? '#333' : '#f8f9fa' }]}>
         <TouchableOpacity 
           style={[styles.filterButton, timeFilter === 'today' && styles.activeFilter]}
           onPress={() => setTimeFilter('today')}
         >
-          <ThemedText style={[styles.filterText, timeFilter === 'today' && styles.activeFilterText]}>Today</ThemedText>
+          <ThemedText style={[styles.filterText, { color: isDark ? '#ccc' : '#666' }, timeFilter === 'today' && styles.activeFilterText]}>Today</ThemedText>
         </TouchableOpacity>
         <TouchableOpacity 
           style={[styles.filterButton, timeFilter === 'weekly' && styles.activeFilter]}
           onPress={() => setTimeFilter('weekly')}
         >
-          <ThemedText style={[styles.filterText, timeFilter === 'weekly' && styles.activeFilterText]}>Weekly</ThemedText>
+          <ThemedText style={[styles.filterText, { color: isDark ? '#ccc' : '#666' }, timeFilter === 'weekly' && styles.activeFilterText]}>Weekly</ThemedText>
         </TouchableOpacity>
         <TouchableOpacity 
           style={[styles.filterButton, timeFilter === 'monthly' && styles.activeFilter]}
           onPress={() => setTimeFilter('monthly')}
         >
-          <ThemedText style={[styles.filterText, timeFilter === 'monthly' && styles.activeFilterText]}>Monthly</ThemedText>
+          <ThemedText style={[styles.filterText, { color: isDark ? '#ccc' : '#666' }, timeFilter === 'monthly' && styles.activeFilterText]}>Monthly</ThemedText>
         </TouchableOpacity>
       </View>
 

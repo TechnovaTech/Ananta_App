@@ -6,6 +6,7 @@ import { Inter_400Regular, Inter_600SemiBold, useFonts } from '@expo-google-font
 
 import { HapticTab } from '@/components/haptic-tab';
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import { useTheme } from '@/contexts/ThemeContext';
 
 const HomeIcon = ({ color }: { color: string }) => (
   <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -38,6 +39,7 @@ const ProfileIcon = ({ color }: { color: string }) => (
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const { isDark } = useTheme();
   const insets = useSafeAreaInsets();
   
   const [fontsLoaded] = useFonts({
@@ -53,11 +55,11 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: '#127D96',
-        tabBarInactiveTintColor: '#666666',
+        tabBarInactiveTintColor: isDark ? '#999' : '#666666',
         tabBarStyle: {
-          backgroundColor: 'white',
+          backgroundColor: isDark ? '#1a1a1a' : 'white',
           borderTopWidth: 1,
-          borderTopColor: '#E0E0E0',
+          borderTopColor: isDark ? '#333' : '#E0E0E0',
           paddingBottom: Math.max(insets.bottom, 20),
           paddingTop: 10,
           height: 70 + Math.max(insets.bottom, 20),
@@ -68,6 +70,7 @@ export default function TabLayout() {
           marginTop: 4,
           marginBottom: 2,
           fontFamily: 'Inter_600SemiBold',
+          color: isDark ? '#ccc' : undefined,
         },
         tabBarIconStyle: {
           marginBottom: 0,

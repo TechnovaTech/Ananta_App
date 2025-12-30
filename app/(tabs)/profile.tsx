@@ -16,9 +16,11 @@ import { LinearGradient } from 'expo-linear-gradient';
 import * as ImagePicker from 'expo-image-picker';
 import { router } from 'expo-router';
 import { useProfile } from '../../contexts/ProfileContext';
+import { useTheme } from '../../contexts/ThemeContext';
 
 export default function ProfileScreen() {
   const { profileData, updateProfile } = useProfile();
+  const { isDark } = useTheme();
 
   const handleVerification = () => {
     setIsVerified(!isVerified);
@@ -38,8 +40,8 @@ export default function ProfileScreen() {
     }
   };
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle="light-content" />
+    <View style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f8f9fa' }]}>
+      <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
       
       {/* Header with background image */}
       <View style={styles.headerContainer}>
@@ -60,37 +62,37 @@ export default function ProfileScreen() {
       </View>
       
       {/* Profile info card */}
-      <View style={styles.profileCard}>
+      <View style={[styles.profileCard, { backgroundColor: isDark ? '#333' : 'white' }]}>
         <View style={styles.profileInfo}>
           <Image
             source={{ uri: profileData.profileImage }}
             style={styles.profileAvatar}
           />
           <View style={styles.userInfo}>
-            <Text style={styles.username}>{profileData.name}</Text>
-            <Text style={styles.userTitle}>{profileData.title}</Text>
-            <Text style={styles.userBio}>{profileData.bio}</Text>
+            <Text style={[styles.username, { color: isDark ? 'white' : '#333' }]}>{profileData.name}</Text>
+            <Text style={[styles.userTitle, { color: isDark ? '#ccc' : '#666' }]}>{profileData.title}</Text>
+            <Text style={[styles.userBio, { color: isDark ? '#aaa' : '#888' }]}>{profileData.bio}</Text>
           </View>
         </View>
         
-        <TouchableOpacity style={styles.editButton} onPress={() => router.push('/edit-profile')}>
-          <Text style={styles.editButtonText}>Edit Profile</Text>
+        <TouchableOpacity style={[styles.editButton, { backgroundColor: isDark ? '#444' : '#e9ecef' }]} onPress={() => router.push('/edit-profile')}>
+          <Text style={[styles.editButtonText, { color: isDark ? 'white' : '#333' }]}>Edit Profile</Text>
         </TouchableOpacity>
       </View>
       
       {/* Stats section */}
       <View style={styles.statsContainer}>
         <TouchableOpacity style={styles.statItem} onPress={() => router.push('/followers')}>
-          <Text style={styles.statNumber}>10K</Text>
-          <Text style={styles.statLabel}>Followers</Text>
+          <Text style={[styles.statNumber, { color: isDark ? 'white' : '#333' }]}>10K</Text>
+          <Text style={[styles.statLabel, { color: isDark ? '#ccc' : '#666' }]}>Followers</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.statItem} onPress={() => router.push('/following')}>
-          <Text style={styles.statNumber}>20k</Text>
-          <Text style={styles.statLabel}>Following</Text>
+          <Text style={[styles.statNumber, { color: isDark ? 'white' : '#333' }]}>20k</Text>
+          <Text style={[styles.statLabel, { color: isDark ? '#ccc' : '#666' }]}>Following</Text>
         </TouchableOpacity>
         <View style={styles.statItem}>
-          <Text style={styles.statNumber}>200</Text>
-          <Text style={styles.statLabel}>Coins</Text>
+          <Text style={[styles.statNumber, { color: isDark ? 'white' : '#333' }]}>200</Text>
+          <Text style={[styles.statLabel, { color: isDark ? '#ccc' : '#666' }]}>Coins</Text>
         </View>
       </View>
       
@@ -102,21 +104,21 @@ export default function ProfileScreen() {
             <View style={[styles.actionIcon, { backgroundColor: '#127d96' }]}>
               <Ionicons name="checkmark-circle-outline" size={24} color="white" />
             </View>
-            <Text style={styles.actionText}>Verify</Text>
+            <Text style={[styles.actionText, { color: isDark ? 'white' : '#333' }]}>Verify</Text>
           </TouchableOpacity>
           
           <TouchableOpacity style={styles.actionButton} onPress={() => router.push('/live-history')}>
             <View style={[styles.actionIcon, { backgroundColor: '#127d96' }]}>
               <Ionicons name="bar-chart-outline" size={24} color="white" />
             </View>
-            <Text style={styles.actionText}>Live Data</Text>
+            <Text style={[styles.actionText, { color: isDark ? 'white' : '#333' }]}>Live Data</Text>
           </TouchableOpacity>
           
           <TouchableOpacity style={styles.actionButton} onPress={() => router.push('/messages')}>
             <View style={[styles.actionIcon, { backgroundColor: '#127d96' }]}>
               <Ionicons name="chatbubbles-outline" size={24} color="white" />
             </View>
-            <Text style={styles.actionText}>Messages</Text>
+            <Text style={[styles.actionText, { color: isDark ? 'white' : '#333' }]}>Messages</Text>
           </TouchableOpacity>
         </View>
         
@@ -126,21 +128,21 @@ export default function ProfileScreen() {
             <View style={[styles.actionIcon, { backgroundColor: '#127d96' }]}>
               <Ionicons name="person-outline" size={24} color="white" />
             </View>
-            <Text style={styles.actionText}>Post</Text>
+            <Text style={[styles.actionText, { color: isDark ? 'white' : '#333' }]}>Post</Text>
           </TouchableOpacity>
           
           <TouchableOpacity style={styles.actionButton} onPress={() => router.push('/earnings')}>
             <View style={[styles.actionIcon, { backgroundColor: '#127d96' }]}>
               <Ionicons name="cash-outline" size={24} color="white" />
             </View>
-            <Text style={styles.actionText}>Earnings</Text>
+            <Text style={[styles.actionText, { color: isDark ? 'white' : '#333' }]}>Earnings</Text>
           </TouchableOpacity>
           
           <TouchableOpacity style={styles.actionButton} onPress={() => router.push('/recharge')}>
             <View style={[styles.actionIcon, { backgroundColor: '#127d96' }]}>
               <Ionicons name="card-outline" size={24} color="white" />
             </View>
-            <Text style={styles.actionText}>Recharge</Text>
+            <Text style={[styles.actionText, { color: isDark ? 'white' : '#333' }]}>Recharge</Text>
           </TouchableOpacity>
         </View>
       </View>

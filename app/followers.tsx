@@ -1,103 +1,53 @@
-import React, { useState } from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Image,
-  StatusBar,
-  FlatList,
-} from 'react-native';
+import React from 'react';
+import { StyleSheet, View, Text, FlatList, Image, TouchableOpacity, StatusBar } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
+import { useTheme } from '../contexts/ThemeContext';
+
+const followersData = [
+  { id: '1', name: 'John Doe', username: '@johndoe', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face', isFollowing: true },
+  { id: '2', name: 'Jane Smith', username: '@janesmith', avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face', isFollowing: false },
+  { id: '3', name: 'Mike Johnson', username: '@mikej', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face', isFollowing: true },
+  { id: '4', name: 'Sarah Wilson', username: '@sarahw', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face', isFollowing: false },
+];
 
 export default function FollowersScreen() {
-  const [searchText, setSearchText] = useState('');
-  const [followers, setFollowers] = useState([
-    {
-      id: 1,
-      name: '@Micale clarke',
-      location: 'Indiapole, In , USA',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face'
-    },
-    {
-      id: 2,
-      name: '@Miston Gasdumbe',
-      location: 'Indiapole, In , USA',
-      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face'
-    },
-    {
-      id: 3,
-      name: '@Helsinki nairobi',
-      location: 'Indiapole, In , USA',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face'
-    },
-    {
-      id: 4,
-      name: '@Micale clarke',
-      location: 'Noida, interpole UK',
-      image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop&crop=face'
-    }
-  ]);
-  
-  const removeFollower = (id) => {
-    setFollowers(followers.filter(follower => follower.id !== id));
-  };
-  
-  const filteredFollowers = followers.filter(follower => 
-    follower.name.toLowerCase().includes(searchText.toLowerCase()) ||
-    follower.location.toLowerCase().includes(searchText.toLowerCase())
-  );
+  const { isDark } = useTheme();
 
   const renderFollower = ({ item }) => (
-    <View style={styles.followerItem}>
-      <View style={styles.followerLeft}>
-        <Image source={{ uri: item.image }} style={styles.followerImage} />
-        <View style={styles.followerInfo}>
-          <Text style={styles.followerName}>{item.name}</Text>
-          <Text style={styles.followerLocation}>{item.location}</Text>
-        </View>
+    <View style={[styles.followerItem, { backgroundColor: isDark ? '#333' : 'white' }]}>
+      <Image source={{ uri: item.avatar }} style={styles.avatar} />
+      <View style={styles.userInfo}>
+        <Text style={[styles.name, { color: isDark ? 'white' : '#333' }]}>{item.name}</Text>
+        <Text style={[styles.username, { color: isDark ? '#ccc' : '#666' }]}>{item.username}</Text>
       </View>
-      <TouchableOpacity style={styles.removeButton} onPress={() => removeFollower(item.id)}>
-        <Text style={styles.removeButtonText}>Remove</Text>
+      <TouchableOpacity 
+        style={[styles.followButton, { backgroundColor: item.isFollowing ? '#127d96' : 'transparent', borderColor: '#127d96' }]}
+      >
+        <Text style={[styles.followText, { color: item.isFollowing ? 'white' : '#127d96' }]}>
+          {item.isFollowing ? 'Following' : 'Follow'}
+        </Text>
       </TouchableOpacity>
     </View>
   );
 
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle="dark-content" />
+    <View style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f8f9fa' }]}>
+      <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
       
-      {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { backgroundColor: isDark ? '#1a1a1a' : 'white', borderBottomColor: isDark ? '#333' : '#127d96' }]}>
         <TouchableOpacity onPress={() => router.back()}>
-          <Ionicons name="chevron-back" size={24} color="#333" />
+          <Ionicons name="chevron-back" size={24} color={isDark ? 'white' : '#333'} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Followers</Text>
+        <Text style={[styles.headerTitle, { color: isDark ? 'white' : '#333' }]}>Followers</Text>
         <View style={styles.placeholder} />
       </View>
-      
-      {/* Search Bar */}
-      <View style={styles.searchContainer}>
-        <View style={styles.searchBar}>
-          <Ionicons name="search" size={20} color="#666" style={styles.searchIcon} />
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Search Followers..."
-            value={searchText}
-            onChangeText={setSearchText}
-            placeholderTextColor="#666"
-          />
-        </View>
-      </View>
-      
-      {/* Followers List */}
+
       <FlatList
-        data={filteredFollowers}
+        data={followersData}
         renderItem={renderFollower}
-        keyExtractor={(item) => item.id.toString()}
-        style={styles.followersList}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.listContainer}
         showsVerticalScrollIndicator={false}
       />
     </View>
@@ -107,7 +57,6 @@ export default function FollowersScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
   },
   header: {
     flexDirection: 'row',
@@ -115,95 +64,56 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingTop: 50,
-    paddingVertical: 15,
-    backgroundColor: 'white',
+    paddingBottom: 20,
     borderBottomWidth: 2,
-    borderBottomColor: '#126996',
   },
   headerTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
-  },
-  titleContainer: {
-    alignItems: 'flex-start',
-  },
-  titleUnderline: {
-    width: 60,
-    height: 2,
-    backgroundColor: '#127d96',
-    marginTop: 4,
   },
   placeholder: {
     width: 24,
   },
-  searchContainer: {
-    paddingHorizontal: 20,
-    paddingVertical: 15,
-    backgroundColor: 'white',
-  },
-  searchBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#e9ecef',
-    borderRadius: 10,
-    paddingHorizontal: 15,
-    paddingVertical: 12,
-  },
-  searchIcon: {
-    marginRight: 10,
-  },
-  searchInput: {
-    flex: 1,
-    fontSize: 16,
-    color: '#333',
-  },
-  followersList: {
-    flex: 1,
-    backgroundColor: 'white',
+  listContainer: {
+    padding: 20,
   },
   followerItem: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    padding: 15,
+    borderRadius: 15,
+    marginBottom: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
-  followerLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  followerImage: {
+  avatar: {
     width: 50,
     height: 50,
     borderRadius: 25,
     marginRight: 15,
   },
-  followerInfo: {
+  userInfo: {
     flex: 1,
   },
-  followerName: {
+  name: {
     fontSize: 16,
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: 4,
+    fontWeight: 'bold',
+    marginBottom: 2,
   },
-  followerLocation: {
+  username: {
     fontSize: 14,
-    color: '#666',
   },
-  removeButton: {
-    backgroundColor: '#ff4444',
-    paddingHorizontal: 15,
+  followButton: {
+    paddingHorizontal: 20,
     paddingVertical: 8,
-    borderRadius: 15,
+    borderRadius: 20,
+    borderWidth: 1,
   },
-  removeButtonText: {
-    color: 'white',
-    fontSize: 12,
+  followText: {
+    fontSize: 14,
     fontWeight: '600',
   },
 });

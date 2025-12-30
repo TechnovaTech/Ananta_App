@@ -1,14 +1,21 @@
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { router } from 'expo-router';
-import { Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View, Switch } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
+import { useTheme } from '@/contexts/ThemeContext';
 
 const { width } = Dimensions.get('window');
 
-const BackIcon = () => (
+const BackIcon = ({ isDark }: { isDark: boolean }) => (
   <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <Path d="M15 18L9 12L15 6" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <Path d="M15 18L9 12L15 6" stroke={isDark ? "white" : "black"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+  </Svg>
+);
+
+const ThemeIcon = () => (
+  <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <Path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20V4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20Z" fill="#127D96"/>
   </Svg>
 );
 
@@ -73,7 +80,10 @@ const LogoutIcon = () => (
 );
 
 export default function SettingsScreen() {
+  const { theme, toggleTheme, isDark } = useTheme();
+  
   const settingsItems = [
+    { id: 1, title: 'Theme', icon: <ThemeIcon />, isToggle: true },
     { id: 2, title: 'Help & Feedback', icon: <HelpIcon /> },
     { id: 3, title: 'Level', icon: <LevelIcon /> },
     { id: 4, title: 'Daily tasks', icon: <TaskIcon /> },
@@ -84,15 +94,15 @@ export default function SettingsScreen() {
   ];
 
   return (
-    <ThemedView style={styles.container}>
-      <View style={styles.header}>
+    <ThemedView style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}>
+      <View style={[styles.header, { backgroundColor: isDark ? '#1a1a1a' : 'white', borderBottomColor: isDark ? '#333' : '#127d96' }]}>
         <TouchableOpacity 
           style={styles.backButton}
           onPress={() => router.push('/(tabs)')}
         >
-          <BackIcon />
+          <BackIcon isDark={isDark} />
         </TouchableOpacity>
-        <Text style={styles.title}>Settings</Text>
+        <Text style={[styles.title, { color: isDark ? 'white' : '#333' }]}>Settings</Text>
         <View style={styles.placeholder} />
       </View>
 
@@ -100,9 +110,11 @@ export default function SettingsScreen() {
         {settingsItems.map((item) => (
           <TouchableOpacity 
             key={item.id} 
-            style={styles.settingItem}
+            style={[styles.settingItem, { backgroundColor: isDark ? '#333' : '#F5F5F5' }]}
             onPress={() => {
-              if (item.title === 'Help & Feedback') {
+              if (item.title === 'Theme') {
+                toggleTheme();
+              } else if (item.title === 'Help & Feedback') {
                 router.push('/help-feedback');
               } else if (item.title === 'Level') {
                 router.push('/level-management');
@@ -122,7 +134,15 @@ export default function SettingsScreen() {
             <View style={styles.iconContainer}>
               {item.icon}
             </View>
-            <ThemedText style={styles.settingText}>{item.title}</ThemedText>
+            <ThemedText style={[styles.settingText, { color: isDark ? 'white' : 'black' }]}>{item.title}</ThemedText>
+            {item.isToggle && (
+              <Switch
+                value={isDark}
+                onValueChange={toggleTheme}
+                trackColor={{ false: '#767577', true: '#127d96' }}
+                thumbColor={isDark ? '#f4f3f4' : '#f4f3f4'}
+              />
+            )}
           </TouchableOpacity>
         ))}
       </ScrollView>
@@ -165,6 +185,7 @@ const styles = StyleSheet.create({
   settingItem: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     backgroundColor: '#F5F5F5',
     paddingVertical: 16,
     paddingHorizontal: 20,
@@ -178,5 +199,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'black',
     fontWeight: '500',
+    flex: 1,
   },
 });

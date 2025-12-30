@@ -5,8 +5,10 @@ import { ThemedView } from '@/components/themed-view';
 import { Colors } from '@/constants/theme';
 import { router } from 'expo-router';
 import { useState } from 'react';
+import { useTheme } from '@/contexts/ThemeContext';
 
 export default function LiveScreen() {
+  const { isDark } = useTheme();
   const [selectedType, setSelectedType] = useState<'video' | 'audio' | null>(null);
 
   const handleStartLive = () => {
@@ -18,10 +20,10 @@ export default function LiveScreen() {
   };
 
   return (
-    <ThemedView style={styles.container}>
-      <View style={styles.header}>
+    <ThemedView style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}>
+      <View style={[styles.header, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}>
         <View style={styles.titleContainer}>
-          <ThemedText style={styles.title}>Ananta</ThemedText>
+          <ThemedText style={[styles.title, { color: isDark ? 'white' : 'black' }]}>Ananta</ThemedText>
           <View style={styles.titleUnderline} />
         </View>
       </View>
@@ -35,7 +37,7 @@ export default function LiveScreen() {
             <View style={[styles.optionIcon, selectedType === 'video' && styles.selectedIcon]}>
               <ThemedText style={styles.optionIconText}>📹</ThemedText>
             </View>
-            <ThemedText style={styles.optionText}>Video live</ThemedText>
+            <ThemedText style={[styles.optionText, { color: isDark ? 'white' : 'black' }]}>Video live</ThemedText>
           </TouchableOpacity>
 
           <TouchableOpacity 
@@ -45,7 +47,7 @@ export default function LiveScreen() {
             <View style={[styles.optionIcon, selectedType === 'audio' && styles.selectedIcon]}>
               <ThemedText style={styles.optionIconText}>🎤</ThemedText>
             </View>
-            <ThemedText style={styles.optionText}>Audio live</ThemedText>
+            <ThemedText style={[styles.optionText, { color: isDark ? 'white' : 'black' }]}>Audio live</ThemedText>
           </TouchableOpacity>
         </View>
 

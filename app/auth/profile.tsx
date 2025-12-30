@@ -7,8 +7,10 @@ import { router } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
+import { useTheme } from '../../contexts/ThemeContext';
 
 export default function ProfileScreen() {
+  const { isDark } = useTheme();
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [name, setName] = useState('');
   const [userName, setUserName] = useState('');
@@ -42,15 +44,15 @@ export default function ProfileScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle="dark-content" />
+    <View style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f8f9fa' }]}>
+      <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
       
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { backgroundColor: isDark ? '#1a1a1a' : 'white', borderBottomColor: isDark ? '#333' : '#126996' }]}>
         <TouchableOpacity onPress={() => router.back()}>
-          <Ionicons name="chevron-back" size={24} color="#333" />
+          <Ionicons name="chevron-back" size={24} color={isDark ? 'white' : '#333'} />
         </TouchableOpacity>
-        <ThemedText style={styles.headerTitle}>Profile</ThemedText>
+        <ThemedText style={[styles.headerTitle, { color: isDark ? 'white' : '#333' }]}>Profile</ThemedText>
         <View style={styles.placeholder} />
       </View>
 
@@ -60,91 +62,91 @@ export default function ProfileScreen() {
       keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
     >
       <ScrollView 
-        contentContainerStyle={styles.scrollContainer}
+        contentContainerStyle={[styles.scrollContainer, { backgroundColor: isDark ? '#1a1a1a' : '#f8f9fa' }]}
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
           <TouchableOpacity style={styles.avatarContainer} onPress={pickImage}>
-            <View style={styles.avatar}>
+            <View style={[styles.avatar, { borderColor: isDark ? '#555' : Colors.light.primary }]}>
               {profileImage ? (
                 <Image source={{ uri: profileImage }} style={styles.profileImage} />
               ) : (
-                <ThemedText style={styles.plusIcon}>+</ThemedText>
+                <ThemedText style={[styles.plusIcon, { color: isDark ? '#555' : Colors.light.primary }]}>+</ThemedText>
               )}
             </View>
-            <ThemedText style={styles.galleryText}>Tap to select from gallery</ThemedText>
+            <ThemedText style={[styles.galleryText, { color: isDark ? '#555' : Colors.light.primary }]}>Tap to select from gallery</ThemedText>
           </TouchableOpacity>
       
       <View style={styles.formContainer}>
         {/* Personal Information */}
         <View style={styles.sectionContainer}>
-          <ThemedText style={styles.sectionTitle}>Personal Information</ThemedText>
+          <ThemedText style={[styles.sectionTitle, { color: isDark ? 'white' : Colors.light.primary }]}>Personal Information</ThemedText>
           
-          <View style={styles.inputContainer}>
+          <View style={[styles.inputContainer, { backgroundColor: isDark ? '#333' : '#f8f9fa', borderColor: isDark ? '#555' : '#e9ecef' }]}>
             <Image 
               source={{ uri: 'https://cdn-icons-png.flaticon.com/512/561/561127.png' }} 
-              style={styles.iconImage} 
+              style={[styles.iconImage, { tintColor: isDark ? '#555' : Colors.light.primary }]} 
             />
             <TextInput
-              style={styles.input}
+              style={[styles.input, { color: isDark ? 'white' : '#333' }]}
               placeholder="Username"
-              placeholderTextColor="#666"
+              placeholderTextColor={isDark ? '#888' : '#666'}
               value={userName}
               onChangeText={setUserName}
             />
           </View>
           
-          <View style={styles.inputContainer}>
+          <View style={[styles.inputContainer, { backgroundColor: isDark ? '#333' : '#f8f9fa', borderColor: isDark ? '#555' : '#e9ecef' }]}>
             <Image 
               source={{ uri: 'https://cdn-icons-png.flaticon.com/512/1077/1077012.png' }} 
-              style={styles.iconImage} 
+              style={[styles.iconImage, { tintColor: isDark ? '#555' : Colors.light.primary }]} 
             />
             <TextInput
-              style={styles.input}
+              style={[styles.input, { color: isDark ? 'white' : '#333' }]}
               placeholder="Full Name"
-              placeholderTextColor="#666"
+              placeholderTextColor={isDark ? '#888' : '#666'}
               value={name}
               onChangeText={setName}
             />
           </View>
           
-          <View style={styles.inputContainer}>
+          <View style={[styles.inputContainer, { backgroundColor: isDark ? '#333' : '#f8f9fa', borderColor: isDark ? '#555' : '#e9ecef' }]}>
             <Image 
               source={{ uri: 'https://cdn-icons-png.flaticon.com/512/1077/1077114.png' }} 
-              style={styles.iconImage} 
+              style={[styles.iconImage, { tintColor: isDark ? '#555' : Colors.light.primary }]} 
             />
             <TextInput
-              style={styles.input}
+              style={[styles.input, { color: isDark ? 'white' : '#333' }]}
               placeholder="Gender"
-              placeholderTextColor="#666"
+              placeholderTextColor={isDark ? '#888' : '#666'}
               value={gender}
               onChangeText={setGender}
             />
           </View>
           
-          <View style={styles.inputContainer}>
+          <View style={[styles.inputContainer, { backgroundColor: isDark ? '#333' : '#f8f9fa', borderColor: isDark ? '#555' : '#e9ecef' }]}>
             <Image 
               source={{ uri: 'https://cdn-icons-png.flaticon.com/512/2693/2693507.png' }} 
-              style={styles.iconImage} 
+              style={[styles.iconImage, { tintColor: isDark ? '#555' : Colors.light.primary }]} 
             />
             <TextInput
-              style={styles.input}
+              style={[styles.input, { color: isDark ? 'white' : '#333' }]}
               placeholder="Birthday (DD/MM/YYYY)"
-              placeholderTextColor="#666"
+              placeholderTextColor={isDark ? '#888' : '#666'}
               value={birthday}
               onChangeText={setBirthday}
             />
           </View>
           
-          <View style={styles.inputContainer}>
+          <View style={[styles.inputContainer, { backgroundColor: isDark ? '#333' : '#f8f9fa', borderColor: isDark ? '#555' : '#e9ecef' }]}>
             <Image 
               source={{ uri: 'https://cdn-icons-png.flaticon.com/512/3616/3616729.png' }} 
-              style={styles.iconImage} 
+              style={[styles.iconImage, { tintColor: isDark ? '#555' : Colors.light.primary }]} 
             />
             <TextInput
-              style={styles.input}
+              style={[styles.input, { color: isDark ? 'white' : '#333' }]}
               placeholder="Bio / Hashtags"
-              placeholderTextColor="#666"
+              placeholderTextColor={isDark ? '#888' : '#666'}
               value={bio}
               onChangeText={setBio}
             />
@@ -153,73 +155,73 @@ export default function ProfileScreen() {
         
         {/* Address Information */}
         <View style={styles.sectionContainer}>
-          <ThemedText style={styles.sectionTitle}>Address Information</ThemedText>
+          <ThemedText style={[styles.sectionTitle, { color: isDark ? 'white' : Colors.light.primary }]}>Address Information</ThemedText>
           
-          <View style={styles.inputContainer}>
+          <View style={[styles.inputContainer, { backgroundColor: isDark ? '#333' : '#f8f9fa', borderColor: isDark ? '#555' : '#e9ecef' }]}>
             <Image 
               source={{ uri: 'https://cdn-icons-png.flaticon.com/512/684/684908.png' }} 
-              style={styles.iconImage} 
+              style={[styles.iconImage, { tintColor: isDark ? '#555' : Colors.light.primary }]} 
             />
             <TextInput
-              style={styles.input}
+              style={[styles.input, { color: isDark ? 'white' : '#333' }]}
               placeholder="Address Line 1"
-              placeholderTextColor="#666"
+              placeholderTextColor={isDark ? '#888' : '#666'}
               value={addressLine1}
               onChangeText={setAddressLine1}
             />
           </View>
           
-          <View style={styles.inputContainer}>
+          <View style={[styles.inputContainer, { backgroundColor: isDark ? '#333' : '#f8f9fa', borderColor: isDark ? '#555' : '#e9ecef' }]}>
             <Image 
               source={{ uri: 'https://cdn-icons-png.flaticon.com/512/684/684908.png' }} 
-              style={styles.iconImage} 
+              style={[styles.iconImage, { tintColor: isDark ? '#555' : Colors.light.primary }]} 
             />
             <TextInput
-              style={styles.input}
+              style={[styles.input, { color: isDark ? 'white' : '#333' }]}
               placeholder="City"
-              placeholderTextColor="#666"
+              placeholderTextColor={isDark ? '#888' : '#666'}
               value={city}
               onChangeText={setCity}
             />
           </View>
           
-          <View style={styles.inputContainer}>
+          <View style={[styles.inputContainer, { backgroundColor: isDark ? '#333' : '#f8f9fa', borderColor: isDark ? '#555' : '#e9ecef' }]}>
             <Image 
               source={{ uri: 'https://cdn-icons-png.flaticon.com/512/684/684908.png' }} 
-              style={styles.iconImage} 
+              style={[styles.iconImage, { tintColor: isDark ? '#555' : Colors.light.primary }]} 
             />
             <TextInput
-              style={styles.input}
+              style={[styles.input, { color: isDark ? 'white' : '#333' }]}
               placeholder="State"
-              placeholderTextColor="#666"
+              placeholderTextColor={isDark ? '#888' : '#666'}
               value={state}
               onChangeText={setState}
             />
           </View>
           
-          <View style={styles.inputContainer}>
+          <View style={[styles.inputContainer, { backgroundColor: isDark ? '#333' : '#f8f9fa', borderColor: isDark ? '#555' : '#e9ecef' }]}>
             <Image 
               source={{ uri: 'https://cdn-icons-png.flaticon.com/512/684/684908.png' }} 
-              style={styles.iconImage} 
+              style={[styles.iconImage, { tintColor: isDark ? '#555' : Colors.light.primary }]} 
             />
             <TextInput
-              style={styles.input}
+              style={[styles.input, { color: isDark ? 'white' : '#333' }]}
               placeholder="Country"
-              placeholderTextColor="#666"
+              placeholderTextColor={isDark ? '#888' : '#666'}
               value={country}
               onChangeText={setCountry}
             />
           </View>
           
-          <View style={styles.inputContainer}>
+          <View style={[styles.inputContainer, { backgroundColor: isDark ? '#333' : '#f8f9fa', borderColor: isDark ? '#555' : '#e9ecef' }]}>
             <Image 
               source={{ uri: 'https://cdn-icons-png.flaticon.com/512/684/684908.png' }} 
-              style={styles.iconImage} 
+              style={[styles.iconImage, { tintColor: isDark ? '#555' : Colors.light.primary }]} 
             />
             <TextInput
-              style={styles.input}
+              style={[styles.input, { color: isDark ? 'white' : '#333' }]}
               placeholder="Pin Code"
-              placeholderTextColor="#666"
+              placeholderTextColor={isDark ? '#888' : '#666'}
               value={pinCode}
               onChangeText={setPinCode}
               keyboardType="numeric"
@@ -229,17 +231,17 @@ export default function ProfileScreen() {
         
         {/* Other Information */}
         <View style={styles.sectionContainer}>
-          <ThemedText style={styles.sectionTitle}>Other Information</ThemedText>
+          <ThemedText style={[styles.sectionTitle, { color: isDark ? 'white' : Colors.light.primary }]}>Other Information</ThemedText>
           
-          <View style={styles.inputContainer}>
+          <View style={[styles.inputContainer, { backgroundColor: isDark ? '#333' : '#f8f9fa', borderColor: isDark ? '#555' : '#e9ecef' }]}>
             <Image 
               source={{ uri: 'https://cdn-icons-png.flaticon.com/512/684/684908.png' }} 
-              style={styles.iconImage} 
+              style={[styles.iconImage, { tintColor: isDark ? '#555' : Colors.light.primary }]} 
             />
             <TextInput
-              style={styles.input}
+              style={[styles.input, { color: isDark ? 'white' : '#333' }]}
               placeholder="Location"
-              placeholderTextColor="#666"
+              placeholderTextColor={isDark ? '#888' : '#666'}
               value={location}
               onChangeText={setLocation}
             />
@@ -267,7 +269,6 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
   },
   header: {
     flexDirection: 'row',
@@ -276,14 +277,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 50,
     paddingBottom: 15,
-    backgroundColor: 'white',
     borderBottomWidth: 2,
-    borderBottomColor: '#126996',
   },
   headerTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
   },
   placeholder: {
     width: 24,
@@ -295,7 +293,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 30,
     paddingBottom: 150,
-    backgroundColor: '#f8f9fa',
   },
   avatarContainer: {
     alignItems: 'center',
@@ -306,7 +303,6 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 50,
     borderWidth: 2,
-    borderColor: Colors.light.primary,
     borderStyle: 'dashed',
     justifyContent: 'center',
     alignItems: 'center',
@@ -319,12 +315,10 @@ const styles = StyleSheet.create({
   },
   plusIcon: {
     fontSize: 30,
-    color: Colors.light.primary,
     fontWeight: 'bold',
   },
   galleryText: {
     fontSize: 12,
-    color: Colors.light.primary,
     marginTop: 8,
     textAlign: 'center',
   },
@@ -334,7 +328,6 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: Colors.light.primary,
     marginBottom: 20,
     textAlign: 'center',
   },
@@ -344,24 +337,20 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#f8f9fa',
     borderRadius: 25,
     paddingHorizontal: 20,
     height: 55,
     marginBottom: 15,
     borderWidth: 1,
-    borderColor: '#e9ecef',
   },
   iconImage: {
     width: 22,
     height: 22,
     marginRight: 15,
-    tintColor: Colors.light.primary,
   },
   input: {
     flex: 1,
     fontSize: 16,
-    color: '#333',
     fontWeight: '500',
   },
   nextButtonContainer: {

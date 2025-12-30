@@ -3,8 +3,10 @@ import { Colors } from '@/constants/theme';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Image, Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useTheme } from '../../contexts/ThemeContext';
 
 export default function AudioLiveScreen() {
+  const { isDark } = useTheme();
   const params = useLocalSearchParams();
   const title = params.title as string || '#Love me like you do';
   const user = params.user as string || 'Micale clarke';
@@ -95,7 +97,7 @@ export default function AudioLiveScreen() {
         resizeMode="cover"
       />
       
-      <View style={styles.overlay}>
+      <View style={[styles.overlay, { backgroundColor: isDark ? 'rgba(0,0,0,0.9)' : 'rgba(255,255,255,0.9)' }]}>
       <View style={styles.header}>
         <View style={styles.userInfo}>
           <Image 
@@ -181,7 +183,7 @@ export default function AudioLiveScreen() {
           <TextInput
             style={styles.messageInput}
             placeholder="Say Something..."
-            placeholderTextColor="rgba(0,0,0,0.5)"
+            placeholderTextColor="rgba(255,255,255,0.7)"
             value={messageText}
             onChangeText={setMessageText}
             onSubmitEditing={sendMessage}
@@ -219,7 +221,6 @@ const styles = StyleSheet.create({
   },
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(255,255,255,0.9)',
     padding: 20,
   },
   header: {
@@ -241,12 +242,12 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   username: {
-    color: 'black',
+    color: 'white',
     fontSize: 14,
     fontWeight: 'bold',
   },
   liveText: {
-    color: 'black',
+    color: 'white',
     fontSize: 12,
     opacity: 0.8,
   },
@@ -282,7 +283,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   closeText: {
-    color: 'black',
+    color: 'white',
     fontSize: 20,
     fontWeight: 'bold',
   },
@@ -304,7 +305,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   statText: {
-    color: 'black',
+    color: 'white',
     fontSize: 14,
     fontWeight: '600',
   },
@@ -369,13 +370,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   liveCommentUser: {
-    color: '#000000',
+    color: 'white',
     fontSize: 13,
     fontWeight: 'bold',
     marginBottom: 2,
   },
   liveCommentText: {
-    color: 'rgba(0,0,0,0.8)',
+    color: 'rgba(255,255,255,0.8)',
     fontSize: 13,
     lineHeight: 16,
   },
@@ -418,7 +419,7 @@ const styles = StyleSheet.create({
   },
   messageInput: {
     flex: 1,
-    color: 'black',
+    color: 'white',
     fontSize: 14,
     paddingVertical: 10,
   },
@@ -426,7 +427,7 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   sendIcon: {
-    color: 'black',
+    color: 'white',
     fontSize: 16,
   },
   actionButtons: {
