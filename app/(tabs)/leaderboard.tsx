@@ -1,8 +1,11 @@
-import { StyleSheet, ScrollView, TouchableOpacity, View, Image, Dimensions } from 'react-native';
+import { useState } from 'react';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Colors } from '@/constants/theme';
+import { Dimensions, Image, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
+import { useRouter } from 'expo-router';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const { width } = Dimensions.get('window');
 
@@ -13,14 +16,29 @@ const BackIcon = () => (
 );
 
 export default function LeaderboardScreen() {
-  const leaderboardData = [
+  const router = useRouter();
+  const [activeTab, setActiveTab] = useState('earning');
+  const [timeFilter, setTimeFilter] = useState('today');
+
+  const earningData = [
     { id: 1, name: 'Rachel James', location: 'Jamnagar, Gujarat, India', coins: 30600, rank: 1, color: '#D4AF37' },
     { id: 2, name: 'Micale clarke', location: 'Gujarat, India', coins: 29000, rank: 2, color: '#C0C0C0' },
     { id: 3, name: 'Sergio martin', location: 'Ahmedabad, Gujarat, India', coins: 24893, rank: 3, color: '#CD7F32' },
-    { id: 4, name: 'Sergio martin', location: 'Ahmedabad, Gujarat, India', coins: 24893, rank: 4, color: '#D4AF37' },
-    { id: 5, name: 'Micale clarke', location: 'Gujarat, India', coins: 29000, rank: 5, color: '#D4AF37' },
-    { id: 6, name: 'Micale clarke', location: 'Gujarat, India', coins: 29000, rank: 6, color: '#D4AF37' },
+    { id: 4, name: 'John Doe', location: 'Mumbai, India', coins: 22000, rank: 4, color: '#D4AF37' },
+    { id: 5, name: 'Jane Smith', location: 'Delhi, India', coins: 20000, rank: 5, color: '#D4AF37' },
+    { id: 6, name: 'Mike Wilson', location: 'Pune, India', coins: 18000, rank: 6, color: '#D4AF37' },
   ];
+
+  const liveData = [
+    { id: 1, name: 'Alex Johnson', location: 'Bangalore, India', coins: 35000, rank: 1, color: '#D4AF37' },
+    { id: 2, name: 'Sarah Connor', location: 'Chennai, India', coins: 32000, rank: 2, color: '#C0C0C0' },
+    { id: 3, name: 'David Brown', location: 'Hyderabad, India', coins: 28000, rank: 3, color: '#CD7F32' },
+    { id: 4, name: 'Emma Davis', location: 'Kolkata, India', coins: 25000, rank: 4, color: '#D4AF37' },
+    { id: 5, name: 'Chris Evans', location: 'Surat, India', coins: 23000, rank: 5, color: '#D4AF37' },
+    { id: 6, name: 'Lisa Anderson', location: 'Jaipur, India', coins: 21000, rank: 6, color: '#D4AF37' },
+  ];
+
+  const currentData = activeTab === 'earning' ? earningData : liveData;
 
   const avatars = [
     require('@/assets/images/h1.png.png'),
@@ -32,7 +50,7 @@ export default function LeaderboardScreen() {
   return (
     <ThemedView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton}>
+        <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
           <BackIcon />
         </TouchableOpacity>
         <View style={styles.titleContainer}>
@@ -41,63 +59,98 @@ export default function LeaderboardScreen() {
         </View>
       </View>
 
+      {/* Main Navigation - Earning/Live */}
+      <View style={styles.mainNavContainer}>
+        <TouchableOpacity 
+          style={[styles.mainNavTab, activeTab === 'earning' && styles.activeMainNav]}
+          onPress={() => setActiveTab('earning')}
+        >
+          <ThemedText style={[styles.mainNavText, activeTab === 'earning' && styles.activeMainNavText]}>Earning</ThemedText>
+        </TouchableOpacity>
+        <TouchableOpacity 
+          style={[styles.mainNavTab, activeTab === 'live' && styles.activeMainNav]}
+          onPress={() => setActiveTab('live')}
+        >
+          <ThemedText style={[styles.mainNavText, activeTab === 'live' && styles.activeMainNavText]}>Live</ThemedText>
+        </TouchableOpacity>
+      </View>
+
+      {/* Time Filter */}
+      <View style={styles.filterContainer}>
+        <TouchableOpacity 
+          style={[styles.filterButton, timeFilter === 'today' && styles.activeFilter]}
+          onPress={() => setTimeFilter('today')}
+        >
+          <ThemedText style={[styles.filterText, timeFilter === 'today' && styles.activeFilterText]}>Today</ThemedText>
+        </TouchableOpacity>
+        <TouchableOpacity 
+          style={[styles.filterButton, timeFilter === 'weekly' && styles.activeFilter]}
+          onPress={() => setTimeFilter('weekly')}
+        >
+          <ThemedText style={[styles.filterText, timeFilter === 'weekly' && styles.activeFilterText]}>Weekly</ThemedText>
+        </TouchableOpacity>
+        <TouchableOpacity 
+          style={[styles.filterButton, timeFilter === 'monthly' && styles.activeFilter]}
+          onPress={() => setTimeFilter('monthly')}
+        >
+          <ThemedText style={[styles.filterText, timeFilter === 'monthly' && styles.activeFilterText]}>Monthly</ThemedText>
+        </TouchableOpacity>
+      </View>
+
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {leaderboardData.slice(0, 3).map((user, index) => (
-          <View key={user.id} style={[styles.userCard, { backgroundColor: user.color }]}>
-            <Image source={avatars[index]} style={styles.userImage} />
-            <View style={styles.userInfo}>
-              <ThemedText style={styles.userName}>@{user.name}</ThemedText>
-              <ThemedText style={styles.userLocation}>{user.location}</ThemedText>
-              <View style={styles.coinBadge}>
-                <View style={styles.coinIcon}>
-                  <ThemedText style={styles.dollarSign}>$</ThemedText>
+        {currentData.map((user, index) => (
+          <View key={user.id} style={styles.userCard}>
+            {user.rank <= 3 ? (
+              <LinearGradient
+                colors={[user.color, `${user.color}80`]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.gradientCard}
+              >
+                <View style={styles.leftRankSection}>
+                  <ThemedText style={styles.leftRankNumber}>{user.rank}</ThemedText>
                 </View>
-                <ThemedText style={styles.coinAmount}>{user.coins}</ThemedText>
-              </View>
-            </View>
-            <View style={styles.rightSection}>
-              <ThemedText style={styles.rankNumber}>{user.rank}</ThemedText>
-              <View style={styles.stars}>
-                <ThemedText style={styles.star}>★</ThemedText>
-                <ThemedText style={styles.star}>★</ThemedText>
-                <ThemedText style={styles.star}>★</ThemedText>
-              </View>
-              <View style={styles.trophySection}>
-                <View style={styles.trophyContainer}>
-                  <ThemedText style={styles.trophyIcon}>🏆</ThemedText>
+                <Image source={avatars[index]} style={styles.userImage} />
+                <View style={styles.userInfo}>
+                  <ThemedText style={styles.userName}>@{user.name}</ThemedText>
+                  <ThemedText style={styles.userLocation}>{user.location}</ThemedText>
+                  <View style={styles.coinBadge}>
+                    <View style={styles.coinIcon}>
+                      <ThemedText style={styles.dollarSign}>$</ThemedText>
+                    </View>
+                    <ThemedText style={styles.coinAmount}>{user.coins}</ThemedText>
+                  </View>
                 </View>
-              </View>
-            </View>
-          </View>
-        ))}
-
-        <View style={styles.divider} />
-
-        {leaderboardData.slice(3).map((user, index) => (
-          <View key={user.id} style={[styles.userCard, { backgroundColor: user.color }]}>
-            <Image source={avatars[(index + 1) % avatars.length]} style={styles.userImage} />
-            <View style={styles.userInfo}>
-              <ThemedText style={styles.userName}>@{user.name}</ThemedText>
-              <ThemedText style={styles.userLocation}>{user.location}</ThemedText>
-              <View style={styles.coinBadge}>
-                <View style={styles.coinIcon}>
-                  <ThemedText style={styles.dollarSign}>$</ThemedText>
+                <View style={styles.rightSection}>
+                  <View style={styles.trophySection}>
+                    <View style={styles.trophyContainer}>
+                      <ThemedText style={styles.trophyIcon}>🏆</ThemedText>
+                    </View>
+                  </View>
                 </View>
-                <ThemedText style={styles.coinAmount}>{user.coins}</ThemedText>
-              </View>
-            </View>
-            <View style={styles.rightSection}>
-              <View style={styles.stars}>
-                <ThemedText style={styles.star}>★</ThemedText>
-                <ThemedText style={styles.star}>★</ThemedText>
-                <ThemedText style={styles.star}>★</ThemedText>
-              </View>
-              <View style={styles.trophySection}>
-                <View style={styles.trophyContainer}>
-                  <ThemedText style={styles.trophyIcon}>🏆</ThemedText>
+              </LinearGradient>
+            ) : (
+              <View style={[styles.solidCard, { backgroundColor: user.color }]}>
+                <Image source={avatars[index]} style={styles.userImage} />
+                <View style={styles.userInfo}>
+                  <ThemedText style={styles.userName}>@{user.name}</ThemedText>
+                  <ThemedText style={styles.userLocation}>{user.location}</ThemedText>
+                  <View style={styles.coinBadge}>
+                    <View style={styles.coinIcon}>
+                      <ThemedText style={styles.dollarSign}>$</ThemedText>
+                    </View>
+                    <ThemedText style={styles.coinAmount}>{user.coins}</ThemedText>
+                  </View>
+                </View>
+                <View style={styles.rightSection}>
+                  <View style={styles.trophySection}>
+                    <View style={styles.trophyContainer}>
+                      <ThemedText style={styles.trophyIcon}>🏆</ThemedText>
+                    </View>
+                  </View>
                 </View>
               </View>
-            </View>
+            )}
           </View>
         ))}
       </ScrollView>
@@ -130,25 +183,113 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'black',
   },
+  filterContainer: {
+    flexDirection: 'row',
+    backgroundColor: '#f8f9fa',
+    marginHorizontal: 20,
+    borderRadius: 20,
+    padding: 3,
+    marginTop: 15,
+    marginBottom: 20,
+  },
+  filterButton: {
+    flex: 1,
+    paddingVertical: 8,
+    alignItems: 'center',
+    borderRadius: 17,
+  },
+  activeFilter: {
+    backgroundColor: Colors.light.primary,
+  },
+  filterText: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#666',
+  },
+  activeFilterText: {
+    color: 'white',
+  },
+  mainNavContainer: {
+    flexDirection: 'row',
+    backgroundColor: 'white',
+    paddingHorizontal: 20,
+    paddingBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
+  },
+  mainNavTab: {
+    flex: 1,
+    paddingVertical: 15,
+    alignItems: 'center',
+    borderBottomWidth: 3,
+    borderBottomColor: 'transparent',
+  },
+  activeMainNav: {
+    borderBottomColor: Colors.light.primary,
+  },
+  mainNavText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#666',
+  },
+  activeMainNavText: {
+    color: Colors.light.primary,
+  },
   titleUnderline: {
     width: 80,
     height: 2,
     backgroundColor: Colors.light.primary,
     marginTop: 4,
   },
+  tabContainer: {
+    flexDirection: 'row',
+    backgroundColor: '#f0f0f0',
+    marginHorizontal: 20,
+    borderRadius: 25,
+    padding: 4,
+    marginBottom: 20,
+  },
+  tab: {
+    flex: 1,
+    paddingVertical: 12,
+    alignItems: 'center',
+    borderRadius: 20,
+  },
+  activeTab: {
+    backgroundColor: Colors.light.primary,
+  },
+  tabText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#666',
+  },
+  activeTabText: {
+    color: 'white',
+  },
   content: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingTop: 20,
   },
   userCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 20,
     borderRadius: 15,
     marginBottom: 12,
     position: 'relative',
     overflow: 'visible',
+    minHeight: 100,
+  },
+  gradientCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 20,
+    borderRadius: 15,
+    position: 'relative',
+  },
+  solidCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 20,
+    borderRadius: 15,
+    position: 'relative',
   },
   userImage: {
     width: 50,
@@ -181,39 +322,66 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   coinIcon: {
-    width: 16,
-    height: 16,
-    borderRadius: 8,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
     backgroundColor: '#FF6B35',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 6,
   },
   dollarSign: {
-    fontSize: 10,
+    fontSize: 12,
     color: 'white',
     fontWeight: 'bold',
+    textAlign: 'center',
+    lineHeight: 20,
   },
   coinAmount: {
     fontSize: 14,
     fontWeight: 'bold',
     color: 'black',
   },
+  leftRankSection: {
+    position: 'absolute',
+    left: -10,
+    top: -10,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  leftRankNumber: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#127d96',
+  },
   rightSection: {
     position: 'relative',
-    width: 100,
-    height: 90,
+    width: 120,
+    height: 100,
     justifyContent: 'center',
     alignItems: 'center',
   },
   rankNumber: {
-    fontSize: 70,
+    fontSize: 80,
     fontWeight: '900',
-    color: 'rgba(255,255,255,0.25)',
+    color: 'rgba(255,255,255,0.4)',
     position: 'absolute',
     right: 10,
-    top: -10,
+    top: -5,
     zIndex: 1,
+    textShadowColor: 'rgba(0,0,0,0.2)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
   },
   trophySection: {
     position: 'absolute',
@@ -226,39 +394,40 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 5,
     top: 5,
-    width: 24,
-    height: 24,
-    borderRadius: 12,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: 'rgba(255,255,255,0.9)',
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 3,
+    borderWidth: 2,
+    borderColor: '#127d96',
   },
   rankText: {
-    fontSize: 12,
+    fontSize: 16,
     fontWeight: 'bold',
-    color: 'black',
+    color: '#127d96',
   },
   trophyContainer: {
     backgroundColor: '#127d96',
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 5,
   },
   trophyIcon: {
-    fontSize: 20,
+    fontSize: 30,
   },
   stars: {
     flexDirection: 'row',
-    position: 'absolute',
-    right: 5,
-    top: 5,
-    zIndex: 2,
+    justifyContent: 'center',
   },
   star: {
-    fontSize: 10,
-    color: '#FFD700',
+    fontSize: 12,
+    color: '#FF6B35',
     marginHorizontal: 1,
   },
   divider: {
