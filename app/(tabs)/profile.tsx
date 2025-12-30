@@ -22,11 +22,6 @@ export default function ProfileScreen() {
   const { profileData, updateProfile } = useProfile();
   const { isDark } = useTheme();
 
-  const handleVerification = () => {
-    setIsVerified(!isVerified);
-    Alert.alert('Verification', isVerified ? 'Verification removed' : 'Account verified successfully!');
-  };
-
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,

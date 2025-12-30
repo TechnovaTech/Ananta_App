@@ -10,8 +10,10 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
+import { useTheme } from '../contexts/ThemeContext';
 
 export default function NotificationScreen() {
+  const { isDark } = useTheme();
   const notifications = [
     {
       id: 1,
@@ -43,7 +45,7 @@ export default function NotificationScreen() {
   ];
 
   const renderNotification = (notification) => (
-    <View key={notification.id} style={styles.notificationItem}>
+    <View key={notification.id} style={[styles.notificationItem, { borderBottomColor: isDark ? '#555' : '#f0f0f0' }]}>
       <View style={styles.avatarContainer}>
         <Image source={{ uri: notification.avatar }} style={styles.avatar} />
         {notification.type === 'follow' && (
@@ -61,14 +63,14 @@ export default function NotificationScreen() {
       <View style={styles.notificationContent}>
         <View style={styles.messageContainer}>
           <Text style={styles.notificationText}>
-            <Text style={styles.userName}>{notification.user} </Text>
-            <Text style={styles.messageText}>{notification.message}</Text>
+            <Text style={[styles.userName, { color: isDark ? 'white' : '#333' }]}>{notification.user} </Text>
+            <Text style={[styles.messageText, { color: isDark ? '#ccc' : '#333' }]}>{notification.message}</Text>
           </Text>
-          <Text style={styles.timeText}>{notification.time}</Text>
+          <Text style={[styles.timeText, { color: isDark ? '#aaa' : '#666' }]}>{notification.time}</Text>
         </View>
         
         {notification.hasAction && (
-          <TouchableOpacity style={styles.acceptButton}>
+          <TouchableOpacity style={[styles.acceptButton, { backgroundColor: isDark ? '#555' : '#333' }]}>
             <Text style={styles.acceptButtonText}>Accept</Text>
           </TouchableOpacity>
         )}
@@ -76,27 +78,27 @@ export default function NotificationScreen() {
       
       <View style={styles.rightSection}>
         <TouchableOpacity style={styles.moreButton}>
-          <Text style={styles.moreIcon}>•</Text>
+          <Text style={[styles.moreIcon, { color: isDark ? '#ccc' : '#666' }]}>•</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle="dark-content" />
+    <View style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f8f9fa' }]}>
+      <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
       
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { backgroundColor: isDark ? '#333' : 'white', borderBottomColor: isDark ? '#555' : '#127d96' }]}>
         <TouchableOpacity onPress={() => router.back()}>
-          <Ionicons name="chevron-back" size={24} color="#333" />
+          <Ionicons name="chevron-back" size={24} color={isDark ? 'white' : '#333'} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Notification</Text>
+        <Text style={[styles.headerTitle, { color: isDark ? 'white' : '#333' }]}>Notification</Text>
         <View style={styles.placeholder} />
       </View>
       
       {/* Notifications List */}
-      <ScrollView style={styles.content}>
+      <ScrollView style={[styles.content, { backgroundColor: isDark ? '#333' : 'white' }]}>
         {notifications.map(renderNotification)}
       </ScrollView>
     </View>
@@ -106,7 +108,6 @@ export default function NotificationScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
   },
   header: {
     flexDirection: 'row',
@@ -115,21 +116,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 50,
     paddingVertical: 15,
-    backgroundColor: 'white',
     borderBottomWidth: 2,
-    borderBottomColor: '#127d96',
   },
   headerTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
   },
   placeholder: {
     width: 24,
   },
   content: {
     flex: 1,
-    backgroundColor: 'white',
     paddingTop: 10,
   },
   notificationItem: {
@@ -137,7 +134,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
   },
   avatarContainer: {
     position: 'relative',
@@ -188,17 +184,13 @@ const styles = StyleSheet.create({
   },
   userName: {
     fontWeight: 'bold',
-    color: '#333',
   },
   messageText: {
-    color: '#333',
   },
   timeText: {
     fontSize: 12,
-    color: '#666',
   },
   acceptButton: {
-    backgroundColor: '#333',
     paddingHorizontal: 15,
     paddingVertical: 6,
     borderRadius: 15,
@@ -220,7 +212,6 @@ const styles = StyleSheet.create({
   },
   moreIcon: {
     fontSize: 20,
-    color: '#666',
     fontWeight: 'bold',
   },
 });

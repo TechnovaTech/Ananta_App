@@ -12,8 +12,10 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { router } from 'expo-router';
+import { useTheme } from '../contexts/ThemeContext';
 
 export default function VerificationScreen() {
+  const { isDark } = useTheme();
   const [selectedDocType, setSelectedDocType] = useState('');
   const [documentImage, setDocumentImage] = useState(null);
   const [formData, setFormData] = useState({
@@ -58,35 +60,40 @@ export default function VerificationScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
+    <View style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f8f9fa' }]}>
+      <View style={[styles.header, { backgroundColor: isDark ? '#333' : 'white', borderBottomColor: isDark ? '#555' : '#127d96' }]}>
         <TouchableOpacity onPress={() => router.replace('/(tabs)/profile')}>
-          <Ionicons name="arrow-back" size={24} color="#333" />
+          <Ionicons name="arrow-back" size={24} color={isDark ? 'white' : '#333'} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>KYC Verification</Text>
+        <Text style={[styles.headerTitle, { color: isDark ? 'white' : '#333' }]}>KYC Verification</Text>
         <View style={{ width: 24 }} />
       </View>
 
       <ScrollView style={styles.content}>
-        <Text style={styles.sectionTitle}>Select Document Type</Text>
+        <Text style={[styles.sectionTitle, { color: isDark ? 'white' : '#333' }]}>Select Document Type</Text>
         <View style={styles.documentTypes}>
           {documentTypes.map((doc) => (
             <TouchableOpacity
               key={doc.id}
               style={[
                 styles.docTypeButton,
-                selectedDocType === doc.id && styles.selectedDocType
+                selectedDocType === doc.id && styles.selectedDocType,
+                { 
+                  backgroundColor: selectedDocType === doc.id ? '#127d96' : (isDark ? '#444' : 'white'),
+                  borderColor: isDark ? '#555' : '#127d96'
+                }
               ]}
               onPress={() => setSelectedDocType(doc.id)}
             >
               <Ionicons 
                 name={doc.icon} 
                 size={20} 
-                color={selectedDocType === doc.id ? '#fff' : '#127d96'} 
+                color={selectedDocType === doc.id ? '#fff' : (isDark ? 'white' : '#127d96')} 
               />
               <Text style={[
                 styles.docTypeText,
-                selectedDocType === doc.id && styles.selectedDocTypeText
+                selectedDocType === doc.id && styles.selectedDocTypeText,
+                { color: selectedDocType === doc.id ? '#fff' : (isDark ? 'white' : '#127d96') }
               ]}>
                 {doc.name}
               </Text>
@@ -94,44 +101,67 @@ export default function VerificationScreen() {
           ))}
         </View>
 
-        <Text style={styles.sectionTitle}>Upload Document</Text>
-        <TouchableOpacity style={styles.uploadArea} onPress={pickDocument}>
+        <Text style={[styles.sectionTitle, { color: isDark ? 'white' : '#333' }]}>Upload Document</Text>
+        <TouchableOpacity style={[styles.uploadArea, { backgroundColor: isDark ? '#333' : 'white' }]} onPress={pickDocument}>
           {documentImage ? (
             <Image source={{ uri: documentImage }} style={styles.uploadedImage} />
           ) : (
-            <View style={styles.uploadPlaceholder}>
-              <Ionicons name="cloud-upload-outline" size={40} color="#666" />
-              <Text style={styles.uploadText}>Tap to upload document</Text>
+            <View style={[styles.uploadPlaceholder, { 
+              borderColor: isDark ? '#555' : '#dee2e6',
+              backgroundColor: isDark ? '#444' : '#f8f9fa'
+            }]}>
+              <Ionicons name="cloud-upload-outline" size={40} color={isDark ? '#ccc' : '#666'} />
+              <Text style={[styles.uploadText, { color: isDark ? '#ccc' : '#666' }]}>Tap to upload document</Text>
             </View>
           )}
         </TouchableOpacity>
 
-        <Text style={styles.sectionTitle}>Document Details</Text>
-        <View style={styles.form}>
+        <Text style={[styles.sectionTitle, { color: isDark ? 'white' : '#333' }]}>Document Details</Text>
+        <View style={[styles.form, { backgroundColor: isDark ? '#333' : 'white' }]}>
           <TextInput
-            style={styles.input}
+            style={[styles.input, { 
+              backgroundColor: isDark ? '#444' : '#f8f9fa',
+              borderColor: isDark ? '#555' : '#dee2e6',
+              color: isDark ? 'white' : '#333'
+            }]}
             placeholder="Full Name *"
+            placeholderTextColor={isDark ? '#888' : '#666'}
             value={formData.fullName}
             onChangeText={(text) => setFormData(prev => ({ ...prev, fullName: text }))}
           />
           
           <TextInput
-            style={styles.input}
+            style={[styles.input, { 
+              backgroundColor: isDark ? '#444' : '#f8f9fa',
+              borderColor: isDark ? '#555' : '#dee2e6',
+              color: isDark ? 'white' : '#333'
+            }]}
             placeholder={`${selectedDocType === 'aadhar' ? 'Aadhar' : selectedDocType === 'pan' ? 'PAN' : 'License'} Number *`}
+            placeholderTextColor={isDark ? '#888' : '#666'}
             value={formData.documentNumber}
             onChangeText={(text) => setFormData(prev => ({ ...prev, documentNumber: text }))}
           />
           
           <TextInput
-            style={styles.input}
+            style={[styles.input, { 
+              backgroundColor: isDark ? '#444' : '#f8f9fa',
+              borderColor: isDark ? '#555' : '#dee2e6',
+              color: isDark ? 'white' : '#333'
+            }]}
             placeholder="Date of Birth (DD/MM/YYYY)"
+            placeholderTextColor={isDark ? '#888' : '#666'}
             value={formData.dateOfBirth}
             onChangeText={(text) => setFormData(prev => ({ ...prev, dateOfBirth: text }))}
           />
           
           <TextInput
-            style={[styles.input, styles.textArea]}
+            style={[styles.input, styles.textArea, { 
+              backgroundColor: isDark ? '#444' : '#f8f9fa',
+              borderColor: isDark ? '#555' : '#dee2e6',
+              color: isDark ? 'white' : '#333'
+            }]}
             placeholder="Address"
+            placeholderTextColor={isDark ? '#888' : '#666'}
             value={formData.address}
             onChangeText={(text) => setFormData(prev => ({ ...prev, address: text }))}
             multiline
@@ -150,7 +180,6 @@ export default function VerificationScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
   },
   header: {
     flexDirection: 'row',
@@ -159,14 +188,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 15,
     paddingTop: 50,
-    backgroundColor: 'white',
     borderBottomWidth: 2,
-    borderBottomColor: '#127d96',
   },
   headerTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
   },
   content: {
     flex: 1,
@@ -175,7 +201,6 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#333',
     marginBottom: 15,
     marginTop: 10,
   },
@@ -194,15 +219,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#127d96',
-    backgroundColor: 'white',
   },
   selectedDocType: {
     backgroundColor: '#127d96',
   },
   docTypeText: {
     fontSize: 12,
-    color: '#127d96',
     marginLeft: 5,
     fontWeight: '500',
   },
@@ -210,7 +232,6 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   uploadArea: {
-    backgroundColor: 'white',
     borderRadius: 15,
     padding: 20,
     marginBottom: 25,
@@ -224,14 +245,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 40,
     borderWidth: 2,
-    borderColor: '#dee2e6',
     borderStyle: 'dashed',
     borderRadius: 10,
-    backgroundColor: '#f8f9fa',
   },
   uploadText: {
     fontSize: 14,
-    color: '#666',
     marginTop: 10,
   },
   uploadedImage: {
@@ -240,7 +258,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   form: {
-    backgroundColor: 'white',
     borderRadius: 15,
     padding: 20,
     marginBottom: 25,
@@ -252,13 +269,11 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: '#dee2e6',
     borderRadius: 10,
     paddingHorizontal: 15,
     paddingVertical: 12,
     fontSize: 16,
     marginBottom: 15,
-    backgroundColor: '#f8f9fa',
   },
   textArea: {
     height: 80,

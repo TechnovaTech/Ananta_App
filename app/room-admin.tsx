@@ -11,8 +11,10 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
+import { useTheme } from '../contexts/ThemeContext';
 
 export default function RoomAdminScreen() {
+  const { isDark } = useTheme();
   const [micEnabled, setMicEnabled] = useState(true);
   const [cameraEnabled, setCameraEnabled] = useState(true);
   const [chatEnabled, setChatEnabled] = useState(true);
@@ -54,11 +56,11 @@ export default function RoomAdminScreen() {
   ];
 
   const renderUser = (user) => (
-    <View key={user.id} style={styles.userItem}>
+    <View key={user.id} style={[styles.userItem, { borderBottomColor: isDark ? '#555' : '#f0f0f0' }]}>
       <View style={styles.userLeft}>
         <Image source={{ uri: user.avatar }} style={styles.userAvatar} />
         <View style={styles.userInfo}>
-          <Text style={styles.userName}>{user.name}</Text>
+          <Text style={[styles.userName, { color: isDark ? 'white' : '#333' }]}>{user.name}</Text>
           <Text style={styles.userRole}>{user.role}</Text>
         </View>
       </View>
@@ -78,27 +80,27 @@ export default function RoomAdminScreen() {
   );
 
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle="dark-content" />
+    <View style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f8f9fa' }]}>
+      <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
       
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { backgroundColor: isDark ? '#333' : 'white', borderBottomColor: isDark ? '#555' : '#127d96' }]}>
         <TouchableOpacity onPress={() => router.back()}>
-          <Ionicons name="chevron-back" size={24} color="#333" />
+          <Ionicons name="chevron-back" size={24} color={isDark ? 'white' : '#333'} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Room Admin</Text>
+        <Text style={[styles.headerTitle, { color: isDark ? 'white' : '#333' }]}>Room Admin</Text>
         <View style={styles.placeholder} />
       </View>
       
       <ScrollView style={styles.content}>
         {/* Room Controls */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Room Controls</Text>
+        <View style={[styles.section, { backgroundColor: isDark ? '#333' : 'white' }]}>
+          <Text style={[styles.sectionTitle, { color: isDark ? 'white' : '#333' }]}>Room Controls</Text>
           
-          <View style={styles.controlItem}>
+          <View style={[styles.controlItem, { borderBottomColor: isDark ? '#555' : '#f0f0f0' }]}>
             <View style={styles.controlLeft}>
               <Ionicons name="mic" size={20} color="#127d96" />
-              <Text style={styles.controlText}>Enable Microphone</Text>
+              <Text style={[styles.controlText, { color: isDark ? 'white' : '#333' }]}>Enable Microphone</Text>
             </View>
             <Switch
               value={micEnabled}
@@ -108,10 +110,10 @@ export default function RoomAdminScreen() {
             />
           </View>
           
-          <View style={styles.controlItem}>
+          <View style={[styles.controlItem, { borderBottomColor: isDark ? '#555' : '#f0f0f0' }]}>
             <View style={styles.controlLeft}>
               <Ionicons name="videocam" size={20} color="#127d96" />
-              <Text style={styles.controlText}>Enable Camera</Text>
+              <Text style={[styles.controlText, { color: isDark ? 'white' : '#333' }]}>Enable Camera</Text>
             </View>
             <Switch
               value={cameraEnabled}
@@ -121,10 +123,10 @@ export default function RoomAdminScreen() {
             />
           </View>
           
-          <View style={styles.controlItem}>
+          <View style={[styles.controlItem, { borderBottomColor: isDark ? '#555' : '#f0f0f0' }]}>
             <View style={styles.controlLeft}>
               <Ionicons name="chatbubbles" size={20} color="#127d96" />
-              <Text style={styles.controlText}>Enable Chat</Text>
+              <Text style={[styles.controlText, { color: isDark ? 'white' : '#333' }]}>Enable Chat</Text>
             </View>
             <Switch
               value={chatEnabled}
@@ -134,10 +136,10 @@ export default function RoomAdminScreen() {
             />
           </View>
           
-          <View style={styles.controlItem}>
+          <View style={[styles.controlItem, { borderBottomColor: isDark ? '#555' : '#f0f0f0' }]}>
             <View style={styles.controlLeft}>
               <Ionicons name="gift" size={20} color="#127d96" />
-              <Text style={styles.controlText}>Enable Gifts</Text>
+              <Text style={[styles.controlText, { color: isDark ? 'white' : '#333' }]}>Enable Gifts</Text>
             </View>
             <Switch
               value={giftEnabled}
@@ -149,37 +151,37 @@ export default function RoomAdminScreen() {
         </View>
 
         {/* Room Stats */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Live Stats</Text>
+        <View style={[styles.section, { backgroundColor: isDark ? '#333' : 'white' }]}>
+          <Text style={[styles.sectionTitle, { color: isDark ? 'white' : '#333' }]}>Live Stats</Text>
           <View style={styles.statsContainer}>
             <View style={styles.statItem}>
               <Text style={styles.statNumber}>1.2K</Text>
-              <Text style={styles.statLabel}>Viewers</Text>
+              <Text style={[styles.statLabel, { color: isDark ? '#ccc' : '#666' }]}>Viewers</Text>
             </View>
             <View style={styles.statItem}>
               <Text style={styles.statNumber}>45</Text>
-              <Text style={styles.statLabel}>Likes</Text>
+              <Text style={[styles.statLabel, { color: isDark ? '#ccc' : '#666' }]}>Likes</Text>
             </View>
             <View style={styles.statItem}>
               <Text style={styles.statNumber}>12</Text>
-              <Text style={styles.statLabel}>Gifts</Text>
+              <Text style={[styles.statLabel, { color: isDark ? '#ccc' : '#666' }]}>Gifts</Text>
             </View>
             <View style={styles.statItem}>
               <Text style={styles.statNumber}>2:15</Text>
-              <Text style={styles.statLabel}>Duration</Text>
+              <Text style={[styles.statLabel, { color: isDark ? '#ccc' : '#666' }]}>Duration</Text>
             </View>
           </View>
         </View>
 
         {/* Users Management */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Users in Room ({roomUsers.length})</Text>
+        <View style={[styles.section, { backgroundColor: isDark ? '#333' : 'white' }]}>
+          <Text style={[styles.sectionTitle, { color: isDark ? 'white' : '#333' }]}>Users in Room ({roomUsers.length})</Text>
           {roomUsers.map(renderUser)}
         </View>
 
         {/* Quick Actions */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Quick Actions</Text>
+        <View style={[styles.section, { backgroundColor: isDark ? '#333' : 'white' }]}>
+          <Text style={[styles.sectionTitle, { color: isDark ? 'white' : '#333' }]}>Quick Actions</Text>
           
           <TouchableOpacity style={styles.actionButton}>
             <Ionicons name="people" size={20} color="white" />
@@ -199,7 +201,6 @@ export default function RoomAdminScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
   },
   header: {
     flexDirection: 'row',
@@ -208,14 +209,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 50,
     paddingBottom: 20,
-    backgroundColor: 'white',
     borderBottomWidth: 2,
-    borderBottomColor: '#127d96',
   },
   headerTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
   },
   placeholder: {
     width: 24,
@@ -224,7 +222,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   section: {
-    backgroundColor: 'white',
     marginTop: 10,
     paddingHorizontal: 20,
     paddingVertical: 15,
@@ -232,7 +229,6 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#333',
     marginBottom: 15,
   },
   controlItem: {
@@ -241,7 +237,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
   },
   controlLeft: {
     flexDirection: 'row',
@@ -249,7 +244,6 @@ const styles = StyleSheet.create({
   },
   controlText: {
     fontSize: 16,
-    color: '#333',
     marginLeft: 12,
   },
   statsContainer: {
@@ -267,7 +261,6 @@ const styles = StyleSheet.create({
   },
   statLabel: {
     fontSize: 12,
-    color: '#666',
   },
   userItem: {
     flexDirection: 'row',
@@ -275,7 +268,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
   },
   userLeft: {
     flexDirection: 'row',
@@ -294,7 +286,6 @@ const styles = StyleSheet.create({
   userName: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#333',
     marginBottom: 2,
   },
   userRole: {

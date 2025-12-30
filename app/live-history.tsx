@@ -4,16 +4,18 @@ import { ThemedView } from '@/components/themed-view';
 import { Colors } from '@/constants/theme';
 import { router } from 'expo-router';
 import Svg, { Path } from 'react-native-svg';
+import { useTheme } from '../contexts/ThemeContext';
 
 const { width } = Dimensions.get('window');
 
-const BackIcon = () => (
+const BackIcon = ({ color = 'black' }) => (
   <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <Path d="M15 18L9 12L15 6" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <Path d="M15 18L9 12L15 6" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
   </Svg>
 );
 
 export default function LiveHistoryScreen() {
+  const { isDark } = useTheme();
   const historyItems = [
     {
       id: 1,
@@ -30,25 +32,28 @@ export default function LiveHistoryScreen() {
   ];
 
   return (
-    <ThemedView style={styles.container}>
-      <View style={styles.header}>
+    <ThemedView style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}>
+      <View style={[styles.header, { backgroundColor: isDark ? '#333' : 'white', borderBottomColor: isDark ? '#555' : '#127d96' }]}>
         <TouchableOpacity 
           style={styles.backButton}
           onPress={() => router.push('/(tabs)/profile')}
         >
-          <BackIcon />
+          <BackIcon color={isDark ? 'white' : 'black'} />
         </TouchableOpacity>
-        <ThemedText style={styles.title}>Live Data & History</ThemedText>
+        <ThemedText style={[styles.title, { color: isDark ? 'white' : '#333' }]}>Live Data & History</ThemedText>
         <View style={styles.placeholder} />
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {historyItems.map((item) => (
-          <TouchableOpacity key={item.id} style={styles.historyItem}>
+          <TouchableOpacity key={item.id} style={[styles.historyItem, { 
+            backgroundColor: isDark ? '#333' : '#F5F5F5',
+            borderColor: isDark ? '#555' : '#126996'
+          }]}>
             <Image source={item.image} style={styles.profileImage} />
             <View style={styles.textContainer}>
-              <ThemedText style={styles.historyTitle}>{item.title}</ThemedText>
-              <ThemedText style={styles.historyDate}>{item.date}</ThemedText>
+              <ThemedText style={[styles.historyTitle, { color: isDark ? 'white' : 'black' }]}>{item.title}</ThemedText>
+              <ThemedText style={[styles.historyDate, { color: isDark ? '#ccc' : '#666' }]}>{item.date}</ThemedText>
             </View>
           </TouchableOpacity>
         ))}
@@ -60,7 +65,6 @@ export default function LiveHistoryScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
   },
   header: {
     flexDirection: 'row',
@@ -69,9 +73,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 50,
     paddingBottom: 20,
-    backgroundColor: 'white',
     borderBottomWidth: 2,
-    borderBottomColor: '#127d96',
   },
   backButton: {
     padding: 5,
@@ -82,7 +84,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
   },
   content: {
     flex: 1,
@@ -92,13 +93,11 @@ const styles = StyleSheet.create({
   historyItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F5F5F5',
     paddingVertical: 16,
     paddingHorizontal: 20,
     borderRadius: 25,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: '#126996',
   },
   profileImage: {
     width: 50,
@@ -112,11 +111,9 @@ const styles = StyleSheet.create({
   historyTitle: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: 'black',
     marginBottom: 4,
   },
   historyDate: {
     fontSize: 14,
-    color: '#666',
   },
 });

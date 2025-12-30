@@ -39,6 +39,8 @@ export const Fonts = {
   inter: 'Inter_400Regular',
   interBold: 'Inter_700Bold',
   interSemiBold: 'Inter_600SemiBold',
+  rounded: 'Inter_600SemiBold',
+  mono: 'Inter_400Regular',
 };
 
 export const FontSizes = {

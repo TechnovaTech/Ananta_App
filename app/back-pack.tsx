@@ -10,8 +10,10 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
+import { useTheme } from '../contexts/ThemeContext';
 
 export default function BackPackScreen() {
+  const { isDark } = useTheme();
   const [selectedTab, setSelectedTab] = useState('inventory');
   const [isVideoCallActive, setIsVideoCallActive] = useState(false);
   const [isAudioCallActive, setIsAudioCallActive] = useState(false);
@@ -131,10 +133,10 @@ export default function BackPackScreen() {
   ];
 
   const renderGift = (gift) => (
-    <View key={gift.id} style={styles.itemCard}>
+    <View key={gift.id} style={[styles.itemCard, { borderBottomColor: isDark ? '#555' : '#f0f0f0' }]}>
       <Image source={{ uri: gift.image }} style={styles.itemImage} />
       <View style={styles.itemInfo}>
-        <Text style={styles.itemName}>{gift.name}</Text>
+        <Text style={[styles.itemName, { color: isDark ? 'white' : '#333' }]}>{gift.name}</Text>
         <Text style={styles.itemValue}>{gift.value}</Text>
       </View>
       <View style={styles.quantityBadge}>
@@ -147,8 +149,8 @@ export default function BackPackScreen() {
     <View key={item.id} style={styles.itemCard}>
       <Image source={{ uri: item.image }} style={styles.itemImage} />
       <View style={styles.itemInfo}>
-        <Text style={styles.itemName}>{item.name}</Text>
-        <Text style={styles.itemDescription}>{item.description}</Text>
+        <Text style={[styles.itemName, { color: isDark ? 'white' : '#333' }]}>{item.name}</Text>
+        <Text style={[styles.itemDescription, { color: isDark ? '#ccc' : '#666' }]}>{item.description}</Text>
       </View>
       <View style={styles.quantityBadge}>
         <Text style={styles.quantityText}>{item.quantity}</Text>
@@ -157,25 +159,25 @@ export default function BackPackScreen() {
   );
 
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle="dark-content" />
+    <View style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f8f9fa' }]}>
+      <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
       
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { backgroundColor: isDark ? '#333' : 'white', borderBottomColor: isDark ? '#555' : '#127d96' }]}>
         <TouchableOpacity onPress={() => router.back()}>
-          <Ionicons name="chevron-back" size={24} color="#333" />
+          <Ionicons name="chevron-back" size={24} color={isDark ? 'white' : '#333'} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Inventory & Back-Pack</Text>
+        <Text style={[styles.headerTitle, { color: isDark ? 'white' : '#333' }]}>Inventory & Back-Pack</Text>
         <View style={styles.placeholder} />
       </View>
       
       {/* Tabs */}
-      <View style={styles.tabContainer}>
+      <View style={[styles.tabContainer, { backgroundColor: isDark ? '#333' : 'white' }]}>
         <TouchableOpacity 
           style={[styles.tab, selectedTab === 'inventory' && styles.activeTab]}
           onPress={() => setSelectedTab('inventory')}
         >
-          <Text style={[styles.tabText, selectedTab === 'inventory' && styles.activeTabText]}>
+          <Text style={[styles.tabText, selectedTab === 'inventory' && styles.activeTabText, { color: selectedTab === 'inventory' ? '#127d96' : (isDark ? '#ccc' : '#666') }]}>
             Inventory
           </Text>
         </TouchableOpacity>
@@ -183,7 +185,7 @@ export default function BackPackScreen() {
           style={[styles.tab, selectedTab === 'backpack' && styles.activeTab]}
           onPress={() => setSelectedTab('backpack')}
         >
-          <Text style={[styles.tabText, selectedTab === 'backpack' && styles.activeTabText]}>
+          <Text style={[styles.tabText, selectedTab === 'backpack' && styles.activeTabText, { color: selectedTab === 'backpack' ? '#127d96' : (isDark ? '#ccc' : '#666') }]}>
             Back Pack
           </Text>
         </TouchableOpacity>
@@ -191,7 +193,7 @@ export default function BackPackScreen() {
       
       {/* Content */}
       <ScrollView style={styles.content}>
-        <View style={styles.itemsList}>
+        <View style={[styles.itemsList, { backgroundColor: isDark ? '#333' : 'white' }]}>
           {selectedTab === 'inventory' 
             ? gifts.map(renderGift)
             : items.map(renderItem)
@@ -205,7 +207,6 @@ export default function BackPackScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
   },
   header: {
     flexDirection: 'row',
@@ -214,21 +215,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 50,
     paddingVertical: 15,
-    backgroundColor: 'white',
     borderBottomWidth: 2,
-    borderBottomColor: '#127d96',
   },
   headerTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
   },
   placeholder: {
     width: 24,
   },
   tabContainer: {
     flexDirection: 'row',
-    backgroundColor: 'white',
     paddingHorizontal: 20,
     paddingBottom: 10,
   },
@@ -244,7 +241,6 @@ const styles = StyleSheet.create({
   },
   tabText: {
     fontSize: 16,
-    color: '#666',
     fontWeight: '500',
   },
   activeTabText: {
@@ -255,7 +251,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   itemsList: {
-    backgroundColor: 'white',
     paddingTop: 10,
   },
   itemCard: {
@@ -264,7 +259,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
   },
   itemImage: {
     width: 50,
@@ -279,7 +273,6 @@ const styles = StyleSheet.create({
   itemName: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#333',
     marginBottom: 4,
   },
   itemValue: {
@@ -289,7 +282,6 @@ const styles = StyleSheet.create({
   },
   itemDescription: {
     fontSize: 14,
-    color: '#666',
   },
   quantityBadge: {
     backgroundColor: '#127d96',

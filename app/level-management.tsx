@@ -4,12 +4,13 @@ import { ThemedView } from '@/components/themed-view';
 import { Colors } from '@/constants/theme';
 import { router } from 'expo-router';
 import Svg, { Path } from 'react-native-svg';
+import { useTheme } from '../contexts/ThemeContext';
 
 const { width } = Dimensions.get('window');
 
-const BackIcon = () => (
+const BackIcon = ({ color = 'black' }) => (
   <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <Path d="M15 18L9 12L15 6" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <Path d="M15 18L9 12L15 6" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
   </Svg>
 );
 
@@ -40,17 +41,19 @@ const FrameIcon = () => (
 );
 
 export default function LevelManagementScreen() {
+  const { isDark } = useTheme();
+  
   return (
-    <ThemedView style={styles.container}>
-      <View style={styles.header}>
+    <ThemedView style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}>
+      <View style={[styles.header, { backgroundColor: isDark ? '#333' : 'white' }]}>
         <TouchableOpacity 
           style={styles.backButton}
           onPress={() => router.push('/settings')}
         >
-          <BackIcon />
+          <BackIcon color={isDark ? 'white' : 'black'} />
         </TouchableOpacity>
         <View style={styles.titleContainer}>
-          <ThemedText style={styles.title}>Level Management</ThemedText>
+          <ThemedText style={[styles.title, { color: isDark ? 'white' : 'black' }]}>Level Management</ThemedText>
           <View style={styles.titleUnderline} />
         </View>
       </View>
@@ -83,12 +86,12 @@ export default function LevelManagementScreen() {
         </View>
 
         {/* Level Management Section */}
-        <ThemedText style={styles.sectionTitle}>Level Management</ThemedText>
+        <ThemedText style={[styles.sectionTitle, { color: isDark ? 'white' : 'black' }]}>Level Management</ThemedText>
         
         <View style={styles.rewardsGrid}>
           <View style={styles.rewardItem}>
             <HeartIcon />
-            <ThemedText style={styles.rewardTitle}>Newbie gift</ThemedText>
+            <ThemedText style={[styles.rewardTitle, { color: isDark ? 'white' : 'black' }]}>Newbie gift</ThemedText>
             <View style={[styles.rewardLevel, styles.unlockedLevel]}>
               <ThemedText style={styles.unlockedLevelText}>Lv.1</ThemedText>
             </View>
@@ -96,7 +99,7 @@ export default function LevelManagementScreen() {
           
           <View style={styles.rewardItem}>
             <GiftIcon />
-            <ThemedText style={styles.rewardTitle}>Level gift</ThemedText>
+            <ThemedText style={[styles.rewardTitle, { color: isDark ? 'white' : 'black' }]}>Level gift</ThemedText>
             <View style={[styles.rewardLevel, styles.lockedLevel]}>
               <ThemedText style={styles.lockedLevelText}>Lv.3</ThemedText>
             </View>
@@ -104,7 +107,7 @@ export default function LevelManagementScreen() {
           
           <View style={styles.rewardItem}>
             <FrameIcon />
-            <ThemedText style={styles.rewardTitle}>Card frame</ThemedText>
+            <ThemedText style={[styles.rewardTitle, { color: isDark ? 'white' : 'black' }]}>Card frame</ThemedText>
             <View style={[styles.rewardLevel, styles.lockedLevel]}>
               <ThemedText style={styles.lockedLevelText}>Lv.5</ThemedText>
             </View>
@@ -118,7 +121,6 @@ export default function LevelManagementScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
   },
   header: {
     flexDirection: 'row',
@@ -126,7 +128,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 50,
     paddingBottom: 20,
-    backgroundColor: 'white',
   },
   backButton: {
     marginRight: 20,
@@ -138,7 +139,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: 'black',
   },
   titleUnderline: {
     width: 140,
@@ -230,7 +230,6 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: 'black',
     marginBottom: 20,
   },
   rewardsGrid: {
@@ -245,7 +244,6 @@ const styles = StyleSheet.create({
   },
   rewardTitle: {
     fontSize: 12,
-    color: 'black',
     textAlign: 'center',
     marginVertical: 8,
     fontWeight: 'bold',

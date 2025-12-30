@@ -4,12 +4,13 @@ import { ThemedView } from '@/components/themed-view';
 import { Colors } from '@/constants/theme';
 import { router } from 'expo-router';
 import Svg, { Path } from 'react-native-svg';
+import { useTheme } from '../contexts/ThemeContext';
 
 const { width } = Dimensions.get('window');
 
-const BackIcon = () => (
+const BackIcon = ({ color = 'black' }) => (
   <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <Path d="M15 18L9 12L15 6" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <Path d="M15 18L9 12L15 6" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
   </Svg>
 );
 
@@ -26,6 +27,7 @@ const CoinIcon = () => (
 );
 
 export default function DailyTasksScreen() {
+  const { isDark } = useTheme();
   const dailyTasks = [
     {
       id: 1,
@@ -89,43 +91,49 @@ export default function DailyTasksScreen() {
   const totalRewards = dailyTasks.filter(task => task.completed).reduce((sum, task) => sum + task.reward, 0);
 
   return (
-    <ThemedView style={styles.container}>
-      <View style={styles.header}>
+    <ThemedView style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}>
+      <View style={[styles.header, { backgroundColor: isDark ? '#333' : 'white' }]}>
         <TouchableOpacity 
           style={styles.backButton}
           onPress={() => router.push('/settings')}
         >
-          <BackIcon />
+          <BackIcon color={isDark ? 'white' : 'black'} />
         </TouchableOpacity>
         <View style={styles.titleContainer}>
-          <ThemedText style={styles.title}>Daily Tasks</ThemedText>
+          <ThemedText style={[styles.title, { color: isDark ? 'white' : 'black' }]}>Daily Tasks</ThemedText>
           <View style={styles.titleUnderline} />
         </View>
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Progress Summary */}
-        <View style={styles.summaryCard}>
+        <View style={[styles.summaryCard, { 
+          backgroundColor: isDark ? '#333' : '#F5F5F5',
+          borderColor: isDark ? '#555' : '#126996'
+        }]}>
           <View style={styles.summaryItem}>
             <ThemedText style={styles.summaryNumber}>{completedTasks}/{dailyTasks.length}</ThemedText>
-            <ThemedText style={styles.summaryLabel}>Tasks Completed</ThemedText>
+            <ThemedText style={[styles.summaryLabel, { color: isDark ? '#ccc' : '#666' }]}>Tasks Completed</ThemedText>
           </View>
           <View style={styles.summaryItem}>
             <View style={styles.coinsContainer}>
               <CoinIcon />
               <ThemedText style={styles.summaryNumber}>{totalRewards}</ThemedText>
             </View>
-            <ThemedText style={styles.summaryLabel}>Coins Earned</ThemedText>
+            <ThemedText style={[styles.summaryLabel, { color: isDark ? '#ccc' : '#666' }]}>Coins Earned</ThemedText>
           </View>
         </View>
 
         {/* Task List */}
         {dailyTasks.map((task) => (
-          <View key={task.id} style={[styles.taskCard, task.completed && styles.completedTask]}>
+          <View key={task.id} style={[styles.taskCard, task.completed && styles.completedTask, {
+            backgroundColor: task.completed ? (isDark ? '#1a4a1a' : '#E8F5E8') : (isDark ? '#333' : '#F5F5F5'),
+            borderColor: task.completed ? '#00C851' : (isDark ? '#555' : '#126996')
+          }]}>
             <View style={styles.taskHeader}>
               <View style={styles.taskInfo}>
-                <ThemedText style={styles.taskTitle}>{task.title}</ThemedText>
-                <ThemedText style={styles.taskDescription}>{task.description}</ThemedText>
+                <ThemedText style={[styles.taskTitle, { color: isDark ? 'white' : 'black' }]}>{task.title}</ThemedText>
+                <ThemedText style={[styles.taskDescription, { color: isDark ? '#ccc' : '#666' }]}>{task.description}</ThemedText>
                 <ThemedText style={styles.taskProgress}>Progress: {task.progress}</ThemedText>
               </View>
               <View style={styles.taskReward}>
@@ -156,7 +164,7 @@ export default function DailyTasksScreen() {
         ))}
 
         <View style={styles.footer}>
-          <ThemedText style={styles.footerText}>Tasks reset daily at midnight</ThemedText>
+          <ThemedText style={[styles.footerText, { color: isDark ? '#aaa' : '#999' }]}>Tasks reset daily at midnight</ThemedText>
         </View>
       </ScrollView>
     </ThemedView>
@@ -166,7 +174,6 @@ export default function DailyTasksScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
   },
   header: {
     flexDirection: 'row',
@@ -174,7 +181,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 50,
     paddingBottom: 20,
-    backgroundColor: 'white',
   },
   backButton: {
     marginRight: 20,
@@ -186,7 +192,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: 'black',
   },
   titleUnderline: {
     width: 80,
@@ -201,12 +206,10 @@ const styles = StyleSheet.create({
   },
   summaryCard: {
     flexDirection: 'row',
-    backgroundColor: '#F5F5F5',
     borderRadius: 15,
     padding: 20,
     marginBottom: 20,
     borderWidth: 1,
-    borderColor: '#126996',
   },
   summaryItem: {
     flex: 1,
@@ -220,7 +223,6 @@ const styles = StyleSheet.create({
   },
   summaryLabel: {
     fontSize: 12,
-    color: '#666',
     textAlign: 'center',
   },
   coinsContainer: {
@@ -229,15 +231,12 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   taskCard: {
-    backgroundColor: '#F5F5F5',
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: '#126996',
   },
   completedTask: {
-    backgroundColor: '#E8F5E8',
     borderColor: '#00C851',
   },
   taskHeader: {
@@ -252,12 +251,10 @@ const styles = StyleSheet.create({
   taskTitle: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: 'black',
     marginBottom: 4,
   },
   taskDescription: {
     fontSize: 14,
-    color: '#666',
     marginBottom: 6,
   },
   taskProgress: {
@@ -308,7 +305,6 @@ const styles = StyleSheet.create({
   },
   footerText: {
     fontSize: 12,
-    color: '#999',
     fontStyle: 'italic',
   },
 });

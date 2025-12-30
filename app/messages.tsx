@@ -9,8 +9,10 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
+import { useTheme } from '../contexts/ThemeContext';
 
 export default function MessagesScreen() {
+  const { isDark } = useTheme();
   const conversations = [
     {
       id: 1,
@@ -60,32 +62,35 @@ export default function MessagesScreen() {
   ];
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
+    <View style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f8f9fa' }]}>
+      <View style={[styles.header, { backgroundColor: isDark ? '#333' : 'white', borderBottomColor: isDark ? '#555' : '#127d96' }]}>
         <TouchableOpacity onPress={() => router.push('/(tabs)/profile')}>
-          <Ionicons name="arrow-back" size={24} color="#333" />
+          <Ionicons name="arrow-back" size={24} color={isDark ? 'white' : '#333'} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Messages</Text>
+        <Text style={[styles.headerTitle, { color: isDark ? 'white' : '#333' }]}>Messages</Text>
         <TouchableOpacity>
-          <Ionicons name="create-outline" size={24} color="#333" />
+          <Ionicons name="create-outline" size={24} color={isDark ? 'white' : '#333'} />
         </TouchableOpacity>
       </View>
 
       <ScrollView style={styles.conversationsContainer} showsVerticalScrollIndicator={false}>
         {conversations.map((conversation) => (
-          <TouchableOpacity key={conversation.id} style={styles.conversationItem}>
+          <TouchableOpacity key={conversation.id} style={[styles.conversationItem, { 
+            backgroundColor: isDark ? '#333' : 'white',
+            borderBottomColor: isDark ? '#555' : '#f0f0f0'
+          }]}>
             <View style={styles.avatarContainer}>
               <Image source={{ uri: conversation.avatar }} style={styles.avatar} />
-              {conversation.isOnline && <View style={styles.onlineIndicator} />}
+              {conversation.isOnline && <View style={[styles.onlineIndicator, { borderColor: isDark ? '#333' : 'white' }]} />}
             </View>
             
             <View style={styles.conversationContent}>
               <View style={styles.conversationHeader}>
-                <Text style={styles.userName}>{conversation.name}</Text>
-                <Text style={styles.messageTime}>{conversation.time}</Text>
+                <Text style={[styles.userName, { color: isDark ? 'white' : '#333' }]}>{conversation.name}</Text>
+                <Text style={[styles.messageTime, { color: isDark ? '#ccc' : '#666' }]}>{conversation.time}</Text>
               </View>
               <View style={styles.messageRow}>
-                <Text style={styles.lastMessage} numberOfLines={1}>
+                <Text style={[styles.lastMessage, { color: isDark ? '#aaa' : '#666' }]} numberOfLines={1}>
                   {conversation.lastMessage}
                 </Text>
                 {conversation.unread > 0 && (
@@ -105,7 +110,6 @@ export default function MessagesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
   },
   header: {
     flexDirection: 'row',
@@ -114,14 +118,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 15,
     paddingTop: 50,
-    backgroundColor: 'white',
     borderBottomWidth: 2,
-    borderBottomColor: '#127d96',
   },
   headerTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
   },
   conversationsContainer: {
     flex: 1,
@@ -131,9 +132,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingVertical: 15,
-    backgroundColor: 'white',
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
   },
   avatarContainer: {
     position: 'relative',
@@ -153,7 +152,6 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     backgroundColor: '#28a745',
     borderWidth: 2,
-    borderColor: 'white',
   },
   conversationContent: {
     flex: 1,
@@ -167,11 +165,9 @@ const styles = StyleSheet.create({
   userName: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#333',
   },
   messageTime: {
     fontSize: 12,
-    color: '#666',
   },
   messageRow: {
     flexDirection: 'row',
@@ -180,7 +176,6 @@ const styles = StyleSheet.create({
   },
   lastMessage: {
     fontSize: 14,
-    color: '#666',
     flex: 1,
     marginRight: 10,
   },

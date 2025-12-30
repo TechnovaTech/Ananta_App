@@ -4,12 +4,13 @@ import { ThemedView } from '@/components/themed-view';
 import { Colors } from '@/constants/theme';
 import { router } from 'expo-router';
 import Svg, { Path } from 'react-native-svg';
+import { useTheme } from '../contexts/ThemeContext';
 
 const { width } = Dimensions.get('window');
 
-const BackIcon = () => (
+const BackIcon = ({ color = 'black' }) => (
   <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <Path d="M15 18L9 12L15 6" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <Path d="M15 18L9 12L15 6" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
   </Svg>
 );
 
@@ -39,6 +40,7 @@ const CoinIcon = () => (
 );
 
 export default function InvitationRewardsScreen() {
+  const { isDark } = useTheme();
   const inviteCode = "ANANTA2024";
   const totalInvites = 12;
   const totalRewards = 480;
@@ -68,16 +70,16 @@ export default function InvitationRewardsScreen() {
   };
 
   return (
-    <ThemedView style={styles.container}>
-      <View style={styles.header}>
+    <ThemedView style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}>
+      <View style={[styles.header, { backgroundColor: isDark ? '#333' : 'white' }]}>
         <TouchableOpacity 
           style={styles.backButton}
           onPress={() => router.push('/settings')}
         >
-          <BackIcon />
+          <BackIcon color={isDark ? 'white' : 'black'} />
         </TouchableOpacity>
         <View style={styles.titleContainer}>
-          <ThemedText style={styles.title}>Invitation Rewards</ThemedText>
+          <ThemedText style={[styles.title, { color: isDark ? 'white' : 'black' }]}>Invitation Rewards</ThemedText>
           <View style={styles.titleUnderline} />
         </View>
       </View>
@@ -104,9 +106,12 @@ export default function InvitationRewardsScreen() {
 
         {/* Invite Code */}
         <View style={styles.inviteSection}>
-          <ThemedText style={styles.sectionTitle}>Your Invite Code</ThemedText>
-          <View style={styles.codeContainer}>
-            <ThemedText style={styles.inviteCode}>{inviteCode}</ThemedText>
+          <ThemedText style={[styles.sectionTitle, { color: isDark ? 'white' : 'black' }]}>Your Invite Code</ThemedText>
+          <View style={[styles.codeContainer, { 
+            backgroundColor: isDark ? '#444' : '#F5F5F5',
+            borderColor: isDark ? '#555' : '#126996'
+          }]}>
+            <ThemedText style={[styles.inviteCode, { color: isDark ? 'white' : '#126996' }]}>{inviteCode}</ThemedText>
             <TouchableOpacity style={styles.copyButton}>
               <CopyIcon />
             </TouchableOpacity>
@@ -119,14 +124,17 @@ export default function InvitationRewardsScreen() {
 
         {/* Reward Tiers */}
         <View style={styles.rewardsSection}>
-          <ThemedText style={styles.sectionTitle}>Reward Milestones</ThemedText>
+          <ThemedText style={[styles.sectionTitle, { color: isDark ? 'white' : 'black' }]}>Reward Milestones</ThemedText>
           {rewardTiers.map((tier, index) => (
-            <View key={index} style={[styles.tierCard, tier.claimed && styles.claimedTier]}>
+            <View key={index} style={[styles.tierCard, tier.claimed && styles.claimedTier, {
+              backgroundColor: tier.claimed ? (isDark ? '#1a4a1a' : '#E8F5E8') : (isDark ? '#333' : '#F5F5F5'),
+              borderColor: tier.claimed ? '#00C851' : (isDark ? '#555' : '#126996')
+            }]}>
               <View style={styles.tierInfo}>
-                <ThemedText style={styles.tierTitle}>Invite {tier.invites} Friend{tier.invites > 1 ? 's' : ''}</ThemedText>
+                <ThemedText style={[styles.tierTitle, { color: isDark ? 'white' : 'black' }]}>Invite {tier.invites} Friend{tier.invites > 1 ? 's' : ''}</ThemedText>
                 <View style={styles.tierReward}>
                   <CoinIcon />
-                  <ThemedText style={styles.tierRewardText}>{tier.reward} Coins</ThemedText>
+                  <ThemedText style={[styles.tierRewardText, { color: isDark ? '#ccc' : '#666' }]}>{tier.reward} Coins</ThemedText>
                 </View>
               </View>
               <View style={styles.tierStatus}>
@@ -150,12 +158,15 @@ export default function InvitationRewardsScreen() {
 
         {/* Recent Invites */}
         <View style={styles.recentSection}>
-          <ThemedText style={styles.sectionTitle}>Recent Invites</ThemedText>
+          <ThemedText style={[styles.sectionTitle, { color: isDark ? 'white' : 'black' }]}>Recent Invites</ThemedText>
           {recentInvites.map((invite, index) => (
-            <View key={index} style={styles.inviteCard}>
+            <View key={index} style={[styles.inviteCard, { 
+              backgroundColor: isDark ? '#333' : '#F5F5F5',
+              borderColor: isDark ? '#555' : '#126996'
+            }]}>
               <View style={styles.inviteInfo}>
-                <ThemedText style={styles.inviteName}>{invite.name}</ThemedText>
-                <ThemedText style={styles.inviteDate}>{invite.date}</ThemedText>
+                <ThemedText style={[styles.inviteName, { color: isDark ? 'white' : 'black' }]}>{invite.name}</ThemedText>
+                <ThemedText style={[styles.inviteDate, { color: isDark ? '#ccc' : '#666' }]}>{invite.date}</ThemedText>
               </View>
               <View style={styles.inviteReward}>
                 <CoinIcon />
@@ -172,7 +183,6 @@ export default function InvitationRewardsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
   },
   header: {
     flexDirection: 'row',
@@ -180,7 +190,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 50,
     paddingBottom: 20,
-    backgroundColor: 'white',
   },
   backButton: {
     marginRight: 20,
@@ -192,7 +201,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: 'black',
   },
   titleUnderline: {
     width: 140,
@@ -249,24 +257,20 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: 'black',
     marginBottom: 15,
   },
   codeContainer: {
     flexDirection: 'row',
-    backgroundColor: '#F5F5F5',
     borderRadius: 12,
     padding: 15,
     alignItems: 'center',
     marginBottom: 15,
     borderWidth: 1,
-    borderColor: '#126996',
   },
   inviteCode: {
     flex: 1,
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#126996',
     textAlign: 'center',
   },
   copyButton: {
@@ -292,7 +296,6 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   tierCard: {
-    backgroundColor: '#F5F5F5',
     borderRadius: 12,
     padding: 15,
     marginBottom: 10,
@@ -300,10 +303,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#126996',
   },
   claimedTier: {
-    backgroundColor: '#E8F5E8',
     borderColor: '#00C851',
   },
   tierInfo: {
@@ -312,7 +313,6 @@ const styles = StyleSheet.create({
   tierTitle: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: 'black',
     marginBottom: 5,
   },
   tierReward: {
@@ -322,7 +322,6 @@ const styles = StyleSheet.create({
   },
   tierRewardText: {
     fontSize: 14,
-    color: '#666',
     fontWeight: '600',
   },
   tierStatus: {
@@ -365,7 +364,6 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   inviteCard: {
-    backgroundColor: '#F5F5F5',
     borderRadius: 12,
     padding: 15,
     marginBottom: 10,
@@ -373,7 +371,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#126996',
   },
   inviteInfo: {
     flex: 1,
@@ -381,12 +378,10 @@ const styles = StyleSheet.create({
   inviteName: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: 'black',
     marginBottom: 3,
   },
   inviteDate: {
     fontSize: 12,
-    color: '#666',
   },
   inviteReward: {
     flexDirection: 'row',
