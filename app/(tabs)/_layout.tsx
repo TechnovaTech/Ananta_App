@@ -2,6 +2,7 @@ import { Tabs } from 'expo-router';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
+import { Inter_400Regular, Inter_600SemiBold, useFonts } from '@expo-google-fonts/inter';
 
 import { HapticTab } from '@/components/haptic-tab';
 import { useColorScheme } from '@/hooks/use-color-scheme';
@@ -38,6 +39,15 @@ const ProfileIcon = ({ color }: { color: string }) => (
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const insets = useSafeAreaInsets();
+  
+  const [fontsLoaded] = useFonts({
+    Inter_400Regular,
+    Inter_600SemiBold,
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
 
   return (
     <Tabs
@@ -57,7 +67,7 @@ export default function TabLayout() {
           fontWeight: '600',
           marginTop: 4,
           marginBottom: 2,
-          fontFamily: 'Inter_400Regular',
+          fontFamily: 'Inter_600SemiBold',
         },
         tabBarIconStyle: {
           marginBottom: 0,

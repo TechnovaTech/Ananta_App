@@ -7,7 +7,7 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
 import { ProfileProvider } from '../contexts/ProfileContext';
 
 export const unstable_settings = {
-  initialRouteName: 'auth/login',
+  initialRouteName: '(tabs)',
 };
 
 export default function RootLayout() {
