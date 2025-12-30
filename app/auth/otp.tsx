@@ -87,7 +87,7 @@ export default function OTPScreen() {
               onPress={() => router.push('/auth/profile')}
             >
               <LinearGradient
-                colors={['#127d96', '#0a5d75']}
+                colors={['#127d96', '#15a3c7']}
                 style={styles.verifyButton}
               >
                 <ThemedText style={styles.buttonText}>Verify OTP</ThemedText>
@@ -171,6 +171,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: width * 0.08,
+    paddingVertical: height * 0.02,
   },
   backButton: {
     position: 'absolute',
@@ -180,7 +181,7 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     alignItems: 'center',
-    marginBottom: height * 0.05,
+    marginBottom: height * 0.03,
   },
   logoCircle: {
     width: width * 0.2,
@@ -243,11 +244,6 @@ const styles = StyleSheet.create({
   verifyButtonContainer: {
     width: '100%',
     marginBottom: height * 0.02,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
   },
   verifyButton: {
     height: height * 0.065,

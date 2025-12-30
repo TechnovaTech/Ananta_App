@@ -12,7 +12,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 
 export default function BackPackScreen() {
-  const [selectedTab, setSelectedTab] = useState('calls');
+  const [selectedTab, setSelectedTab] = useState('inventory');
   const [isVideoCallActive, setIsVideoCallActive] = useState(false);
   const [isAudioCallActive, setIsAudioCallActive] = useState(false);
 
@@ -165,34 +165,26 @@ export default function BackPackScreen() {
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="chevron-back" size={24} color="#333" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Back Pack</Text>
+        <Text style={styles.headerTitle}>Inventory & Back-Pack</Text>
         <View style={styles.placeholder} />
       </View>
       
       {/* Tabs */}
       <View style={styles.tabContainer}>
         <TouchableOpacity 
-          style={[styles.tab, selectedTab === 'calls' && styles.activeTab]}
-          onPress={() => setSelectedTab('calls')}
+          style={[styles.tab, selectedTab === 'inventory' && styles.activeTab]}
+          onPress={() => setSelectedTab('inventory')}
         >
-          <Text style={[styles.tabText, selectedTab === 'calls' && styles.activeTabText]}>
-            Calls
+          <Text style={[styles.tabText, selectedTab === 'inventory' && styles.activeTabText]}>
+            Inventory
           </Text>
         </TouchableOpacity>
         <TouchableOpacity 
-          style={[styles.tab, selectedTab === 'gifts' && styles.activeTab]}
-          onPress={() => setSelectedTab('gifts')}
+          style={[styles.tab, selectedTab === 'backpack' && styles.activeTab]}
+          onPress={() => setSelectedTab('backpack')}
         >
-          <Text style={[styles.tabText, selectedTab === 'gifts' && styles.activeTabText]}>
-            Gifts
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity 
-          style={[styles.tab, selectedTab === 'items' && styles.activeTab]}
-          onPress={() => setSelectedTab('items')}
-        >
-          <Text style={[styles.tabText, selectedTab === 'items' && styles.activeTabText]}>
-            Items
+          <Text style={[styles.tabText, selectedTab === 'backpack' && styles.activeTabText]}>
+            Back Pack
           </Text>
         </TouchableOpacity>
       </View>
@@ -200,9 +192,7 @@ export default function BackPackScreen() {
       {/* Content */}
       <ScrollView style={styles.content}>
         <View style={styles.itemsList}>
-          {selectedTab === 'calls' 
-            ? callFeatures.map(renderCallFeature)
-            : selectedTab === 'gifts' 
+          {selectedTab === 'inventory' 
             ? gifts.map(renderGift)
             : items.map(renderItem)
           }

@@ -78,7 +78,7 @@ export default function SettingsScreen() {
     { id: 3, title: 'Level', icon: <LevelIcon /> },
     { id: 4, title: 'Daily tasks', icon: <TaskIcon /> },
     { id: 5, title: 'Room admin', icon: <AdminIcon /> },
-    { id: 6, title: 'Inventory', icon: <FrameIcon /> },
+    { id: 6, title: 'Inventory & Back Pack', icon: <BackpackIcon /> },
     { id: 7, title: 'Invitation Rewards', icon: <GiftIcon /> },
     { id: 8, title: 'Logout', icon: <LogoutIcon /> },
   ];
@@ -110,9 +110,7 @@ export default function SettingsScreen() {
                 router.push('/daily-tasks');
               } else if (item.title === 'Room admin') {
                 router.push('/room-admin');
-              } else if (item.title === 'Entries & Fremes') {
-                router.push('/entries-frames');
-              } else if (item.title === 'Back Pack') {
+              } else if (item.title === 'Inventory & Back Pack') {
                 router.push('/back-pack');
               } else if (item.title === 'Logout') {
                 router.replace('/auth/login');

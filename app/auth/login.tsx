@@ -83,11 +83,10 @@ export default function LoginScreen() {
                 onPress={() => router.push('/auth/otp')}
               >
                 <LinearGradient
-                  colors={['#127d96', '#0a5d75']}
+                  colors={['#127d96', '#15a3c7']}
                   style={styles.otpButton}
                 >
                   <ThemedText style={styles.buttonText}>Get OTP</ThemedText>
-                  <Ionicons name="arrow-forward" size={20} color="white" style={styles.buttonIcon} />
                 </LinearGradient>
               </TouchableOpacity>
               
@@ -180,10 +179,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: width * 0.08,
+    paddingVertical: height * 0.02,
   },
   logoContainer: {
     alignItems: 'center',
-    marginBottom: 50,
+    marginBottom: 30,
   },
   logoCircle: {
     width: 80,
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     width: '100%',
-    marginBottom: 30,
+    marginBottom: 20,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -243,11 +243,6 @@ const styles = StyleSheet.create({
   otpButtonContainer: {
     width: '100%',
     marginBottom: 30,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
   },
   otpButton: {
     height: height * 0.065,
