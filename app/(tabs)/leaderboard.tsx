@@ -278,6 +278,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     overflow: 'visible',
     minHeight: 100,
+    marginTop: 15,
   },
   gradientCard: {
     flexDirection: 'row',

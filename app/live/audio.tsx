@@ -1,8 +1,8 @@
 import { ThemedText } from '@/components/themed-text';
 import { Colors } from '@/constants/theme';
 import { router, useLocalSearchParams } from 'expo-router';
-import { useEffect, useState } from 'react';
-import { Image, Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useEffect, useState, useRef } from 'react';
+import { Image, Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View, ScrollView } from 'react-native';
 import { useTheme } from '../../contexts/ThemeContext';
 
 export default function AudioLiveScreen() {
@@ -16,20 +16,33 @@ export default function AudioLiveScreen() {
   const [isFollowing, setIsFollowing] = useState(false);
   
   const [liveComments, setLiveComments] = useState<any[]>([
-    { id: 1, user: 'Johnson joy', message: 'Great stream!', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50' },
-    { id: 2, user: 'Henny', message: 'Love this song', avatar: 'https://images.unsplash.com/photo-1494790108755-2616c9c0e0e0?w=50' },
-    { id: 3, user: 'Mike', message: 'Amazing performance!', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50' }
+    { id: 1, user: 'Micale clarke', message: 'Hey! Welcome to my audio session', avatar: 'https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500', isHost: true },
+    { id: 2, user: 'You', message: 'Hi! Thanks for having me', avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=50', isHost: false },
+    { id: 3, user: 'Micale clarke', message: 'How are you doing today?', avatar: 'https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500', isHost: true }
   ]);
   const [messageText, setMessageText] = useState('');
   const [floatingHearts, setFloatingHearts] = useState<any[]>([]);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+  const scrollViewRef = useRef<ScrollView>(null);
   
-  const comments = [
-    { id: 1, user: 'Johnson joy', message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50' },
-    { id: 2, user: 'Johnson joy', message: 'Hi micale john', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50' },
-    { id: 3, user: 'Henny', message: 'Hi', avatar: 'https://images.unsplash.com/photo-1494790108755-2616c9c0e0e0?w=50' },
-    { id: 4, user: 'Johnson joy', message: 'How are you?', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50' },
-    { id: 5, user: 'Henny', message: 'Im good, How are you?', avatar: 'https://images.unsplash.com/photo-1494790108755-2616c9c0e0e0?w=50' },
+  const hostMessages = [
+    'Great to have you here!',
+    'What do you think of this song?',
+    'Any requests?',
+    'Thanks for listening!',
+    'How\'s your day going?',
+    'Love this vibe!',
+    'You have great taste in music!'
+  ];
+
+  const userMessages = [
+    'This is amazing!',
+    'Love this track',
+    'Can you play something upbeat?',
+    'You have a great voice!',
+    'This is so relaxing',
+    'Perfect for today\'s mood',
+    'Thanks for this session!'
   ];
 
   const handleFollow = () => {
@@ -55,21 +68,62 @@ export default function AudioLiveScreen() {
         id: Date.now(),
         user: 'You',
         message: messageText.trim(),
-        avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=50'
+        avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=50',
+        isHost: false
       };
-      setLiveComments(prev => [...prev, newComment].slice(-5));
+      setLiveComments(prev => {
+        const updated = [...prev, newComment];
+        // Auto scroll after message is added
+        setTimeout(() => {
+          scrollViewRef.current?.scrollToEnd({ animated: true });
+        }, 100);
+        return updated;
+      });
       setMessageText('');
-      // Dismiss keyboard after sending message
       Keyboard.dismiss();
+      
+      // Host responds after 2-3 seconds
+      setTimeout(() => {
+        const randomHostMessage = hostMessages[Math.floor(Math.random() * hostMessages.length)];
+        const hostResponse = {
+          id: Date.now() + 1,
+          user: user,
+          message: randomHostMessage,
+          avatar: 'https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+          isHost: true
+        };
+        setLiveComments(prev => {
+          const updated = [...prev, hostResponse];
+          // Auto scroll after host response
+          setTimeout(() => {
+            scrollViewRef.current?.scrollToEnd({ animated: true });
+          }, 100);
+          return updated;
+        });
+      }, Math.random() * 2000 + 2000);
     }
   };
 
   useEffect(() => {
+    // Occasional host messages
     const interval = setInterval(() => {
-      const randomComment = comments[Math.floor(Math.random() * comments.length)];
-      const newComment = { ...randomComment, id: Date.now() };
-      setLiveComments(prev => [...prev, newComment].slice(-5));
-    }, 3000);
+      const randomHostMessage = hostMessages[Math.floor(Math.random() * hostMessages.length)];
+      const newComment = {
+        id: Date.now(),
+        user: user,
+        message: randomHostMessage,
+        avatar: 'https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+        isHost: true
+      };
+      setLiveComments(prev => {
+        const updated = [...prev, newComment];
+        // Auto scroll after host message
+        setTimeout(() => {
+          scrollViewRef.current?.scrollToEnd({ animated: true });
+        }, 100);
+        return updated;
+      });
+    }, Math.random() * 10000 + 8000); // Random interval between 8-18 seconds
 
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
       setKeyboardVisible(true);
@@ -152,17 +206,34 @@ export default function AudioLiveScreen() {
         </View>
       </View>
 
-      <View style={styles.commentsSection}>
+      <ScrollView 
+        ref={scrollViewRef}
+        style={styles.commentsSection}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.commentsContent}
+      >
         {liveComments.map((comment) => (
-          <View key={comment.id} style={styles.liveCommentItem}>
+          <View key={comment.id} style={[
+            styles.liveCommentItem,
+            comment.isHost ? styles.hostMessage : styles.userMessage
+          ]}>
             <Image source={{ uri: comment.avatar }} style={styles.liveCommentAvatar} />
-            <View style={styles.liveCommentContent}>
-              <Text style={styles.liveCommentUser}>@{comment.user}</Text>
-              <Text style={styles.liveCommentText}>{comment.message}</Text>
+            <View style={[
+              styles.liveCommentContent,
+              comment.isHost ? styles.hostMessageBubble : styles.userMessageBubble
+            ]}>
+              <Text style={[
+                styles.liveCommentUser,
+                comment.isHost ? styles.hostUserText : styles.userUserText
+              ]}>@{comment.user}</Text>
+              <Text style={[
+                styles.liveCommentText,
+                comment.isHost ? styles.hostMessageText : styles.userMessageText
+              ]}>{comment.message}</Text>
             </View>
           </View>
         ))}
-      </View>
+      </ScrollView>
 
       <View style={styles.floatingHeartsContainer}>
         {floatingHearts.map((heart) => (
@@ -179,17 +250,17 @@ export default function AudioLiveScreen() {
       </View>
 
       <View style={styles.bottomSection}>
-        <View style={styles.inputContainer}>
+        <View style={[styles.inputContainer, { backgroundColor: isDark ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.9)' }]}>
           <TextInput
-            style={styles.messageInput}
+            style={[styles.messageInput, { color: isDark ? 'white' : 'black' }]}
             placeholder="Say Something..."
-            placeholderTextColor="rgba(255,255,255,0.7)"
+            placeholderTextColor={isDark ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.7)"}
             value={messageText}
             onChangeText={setMessageText}
             onSubmitEditing={sendMessage}
           />
           <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
-            <ThemedText style={styles.sendIcon}>▶</ThemedText>
+            <ThemedText style={[styles.sendIcon, { color: isDark ? 'white' : 'black' }]}>▶</ThemedText>
           </TouchableOpacity>
         </View>
         
@@ -352,13 +423,25 @@ const styles = StyleSheet.create({
     bottom: 80,
     left: 5,
     right: 5,
-    height: 180,
+    height: 200,
+  },
+  commentsContent: {
+    flexGrow: 1,
     justifyContent: 'flex-end',
+    paddingBottom: 10,
   },
   liveCommentItem: {
     flexDirection: 'row',
     marginBottom: 8,
     alignItems: 'flex-start',
+    paddingHorizontal: 10,
+  },
+  hostMessage: {
+    justifyContent: 'flex-start',
+  },
+  userMessage: {
+    justifyContent: 'flex-end',
+    flexDirection: 'row-reverse',
   },
   liveCommentAvatar: {
     width: 24,
@@ -368,17 +451,39 @@ const styles = StyleSheet.create({
   },
   liveCommentContent: {
     flex: 1,
+    maxWidth: '75%',
+    padding: 8,
+    borderRadius: 12,
+  },
+  hostMessageBubble: {
+    backgroundColor: 'rgba(18, 125, 150, 0.8)',
+    borderTopLeftRadius: 4,
+  },
+  userMessageBubble: {
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderTopRightRadius: 4,
+    marginLeft: 8,
   },
   liveCommentUser: {
-    color: 'white',
-    fontSize: 13,
+    fontSize: 11,
     fontWeight: 'bold',
     marginBottom: 2,
   },
+  hostUserText: {
+    color: 'rgba(255, 255, 255, 0.9)',
+  },
+  userUserText: {
+    color: 'rgba(18, 125, 150, 0.8)',
+  },
   liveCommentText: {
-    color: 'rgba(255,255,255,0.8)',
-    fontSize: 13,
+    fontSize: 12,
     lineHeight: 16,
+  },
+  hostMessageText: {
+    color: 'rgba(255, 255, 255, 0.9)',
+  },
+  userMessageText: {
+    color: 'rgba(0, 0, 0, 0.8)',
   },
   floatingHeartsContainer: {
     position: 'absolute',
@@ -413,13 +518,12 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.1)',
+    backgroundColor: 'rgba(255,255,255,0.9)',
     borderRadius: 25,
     paddingHorizontal: 15,
   },
   messageInput: {
     flex: 1,
-    color: 'white',
     fontSize: 14,
     paddingVertical: 10,
   },
