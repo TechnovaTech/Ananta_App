@@ -79,6 +79,18 @@ const LogoutIcon = () => (
   </Svg>
 );
 
+const BlockIcon = () => (
+  <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <Path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM4 12C4 7.59 7.59 4 12 4C13.85 4 15.55 4.63 16.9 5.69L5.69 16.9C4.63 15.55 4 13.85 4 12ZM12 20C10.15 20 8.45 19.37 7.1 18.31L18.31 7.1C19.37 8.45 20 10.15 20 12C20 16.41 16.41 20 12 20Z" fill="#127D96"/>
+  </Svg>
+);
+
+const BandIcon = () => (
+  <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <Path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM15.5 8L12 11.5L8.5 8L10 6.5L12 8.5L14 6.5L15.5 8ZM8.5 16L12 12.5L15.5 16L14 17.5L12 15.5L10 17.5L8.5 16Z" fill="#127D96"/>
+  </Svg>
+);
+
 export default function SettingsScreen() {
   const { theme, toggleTheme, isDark } = useTheme();
   
@@ -90,7 +102,9 @@ export default function SettingsScreen() {
     { id: 5, title: 'Room admin', icon: <AdminIcon /> },
     { id: 6, title: 'Inventory & Back Pack', icon: <BackpackIcon /> },
     { id: 7, title: 'Invitation Rewards', icon: <GiftIcon /> },
-    { id: 8, title: 'Logout', icon: <LogoutIcon /> },
+    { id: 8, title: 'Block', icon: <BlockIcon /> },
+    { id: 9, title: 'Band', icon: <BandIcon /> },
+    { id: 10, title: 'Logout', icon: <LogoutIcon /> },
   ];
 
   return (
@@ -128,6 +142,10 @@ export default function SettingsScreen() {
                 router.replace('/auth/login');
               } else if (item.title === 'Invitation Rewards') {
                 router.push('/invitation-rewards');
+              } else if (item.title === 'Block') {
+                router.push('/block');
+              } else if (item.title === 'Band') {
+                router.push('/band');
               }
             }}
           >
