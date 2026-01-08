@@ -6,10 +6,16 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  Dimensions,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useTheme } from '../contexts/ThemeContext';
+import { ThemedText } from '@/components/themed-text';
+import { ThemedView } from '@/components/themed-view';
+
+const { width } = Dimensions.get('window');
 
 export default function MessagesScreen() {
   const { isDark } = useTheme();
@@ -20,7 +26,7 @@ export default function MessagesScreen() {
       lastMessage: 'Hey! How are you doing?',
       time: '2:30 PM',
       unread: 2,
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop&crop=face',
+      avatar: require('@/assets/images/h1.png.png'),
       isOnline: true
     },
     {
@@ -29,7 +35,7 @@ export default function MessagesScreen() {
       lastMessage: 'Thanks for the help yesterday!',
       time: '1:45 PM',
       unread: 0,
-      avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=50&h=50&fit=crop&crop=face',
+      avatar: require('@/assets/images/h2.png.png'),
       isOnline: true
     },
     {
@@ -38,7 +44,7 @@ export default function MessagesScreen() {
       lastMessage: 'See you tomorrow at the meeting',
       time: '12:20 PM',
       unread: 1,
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50&h=50&fit=crop&crop=face',
+      avatar: require('@/assets/images/h3.png.png'),
       isOnline: false
     },
     {
@@ -47,7 +53,7 @@ export default function MessagesScreen() {
       lastMessage: 'Can you send me the documents?',
       time: '11:30 AM',
       unread: 0,
-      avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=50&h=50&fit=crop&crop=face',
+      avatar: require('@/assets/images/h4.png.png'),
       isOnline: true
     },
     {
@@ -56,54 +62,60 @@ export default function MessagesScreen() {
       lastMessage: 'Great job on the presentation!',
       time: 'Yesterday',
       unread: 0,
-      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=50&h=50&fit=crop&crop=face',
+      avatar: require('@/assets/images/h1.png.png'),
       isOnline: false
     },
   ];
 
   return (
-    <View style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f8f9fa' }]}>
-      <View style={[styles.header, { backgroundColor: isDark ? '#333' : 'white', borderBottomColor: isDark ? '#555' : '#127d96' }]}>
-        <TouchableOpacity onPress={() => router.push('/(tabs)/profile')}>
-          <Ionicons name="arrow-back" size={24} color={isDark ? 'white' : '#333'} />
+    <ThemedView style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f8f9fa' }]}>
+      <LinearGradient
+        colors={['#127d96', '#15a3c7']}
+        style={styles.header}
+      >
+        <TouchableOpacity 
+          style={styles.backButton}
+          onPress={() => router.push('/(tabs)/profile')}
+        >
+          <Ionicons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
-        <Text style={[styles.headerTitle, { color: isDark ? 'white' : '#333' }]}>Messages</Text>
-        <TouchableOpacity>
-          <Ionicons name="create-outline" size={24} color={isDark ? 'white' : '#333'} />
-        </TouchableOpacity>
-      </View>
+        <ThemedText style={styles.headerTitle}>Messages</ThemedText>
+        <View style={styles.placeholder} />
+      </LinearGradient>
 
       <ScrollView style={styles.conversationsContainer} showsVerticalScrollIndicator={false}>
         {conversations.map((conversation) => (
           <TouchableOpacity key={conversation.id} style={[styles.conversationItem, { 
-            backgroundColor: isDark ? '#333' : 'white',
-            borderBottomColor: isDark ? '#555' : '#f0f0f0'
+            backgroundColor: isDark ? '#2a2a2a' : 'white'
           }]}>
             <View style={styles.avatarContainer}>
-              <Image source={{ uri: conversation.avatar }} style={styles.avatar} />
-              {conversation.isOnline && <View style={[styles.onlineIndicator, { borderColor: isDark ? '#333' : 'white' }]} />}
+              <Image source={conversation.avatar} style={styles.avatar} />
+              {conversation.isOnline && <View style={styles.onlineIndicator} />}
             </View>
             
             <View style={styles.conversationContent}>
               <View style={styles.conversationHeader}>
-                <Text style={[styles.userName, { color: isDark ? 'white' : '#333' }]}>{conversation.name}</Text>
-                <Text style={[styles.messageTime, { color: isDark ? '#ccc' : '#666' }]}>{conversation.time}</Text>
+                <ThemedText style={[styles.userName, { color: isDark ? 'white' : '#333' }]}>{conversation.name}</ThemedText>
+                <ThemedText style={[styles.messageTime, { color: isDark ? '#ccc' : '#666' }]}>{conversation.time}</ThemedText>
               </View>
               <View style={styles.messageRow}>
-                <Text style={[styles.lastMessage, { color: isDark ? '#aaa' : '#666' }]} numberOfLines={1}>
+                <ThemedText style={[styles.lastMessage, { color: isDark ? '#aaa' : '#666' }]} numberOfLines={1}>
                   {conversation.lastMessage}
-                </Text>
+                </ThemedText>
                 {conversation.unread > 0 && (
-                  <View style={styles.unreadBadge}>
-                    <Text style={styles.unreadCount}>{conversation.unread}</Text>
-                  </View>
+                  <LinearGradient
+                    colors={['#127d96', '#15a3c7']}
+                    style={styles.unreadBadge}
+                  >
+                    <ThemedText style={styles.unreadCount}>{conversation.unread}</ThemedText>
+                  </LinearGradient>
                 )}
               </View>
             </View>
           </TouchableOpacity>
         ))}
       </ScrollView>
-    </View>
+    </ThemedView>
   );
 }
 
@@ -116,13 +128,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
-    paddingVertical: 15,
-    paddingTop: 50,
-    borderBottomWidth: 2,
+    paddingTop: 60,
+    paddingBottom: 25,
+    height: 120,
+  },
+  backButton: {
+    padding: 5,
   },
   headerTitle: {
-    fontSize: 18,
+    fontSize: 24,
     fontWeight: 'bold',
+    color: 'white',
+    letterSpacing: 1,
+  },
+  placeholder: {
+    width: 24,
   },
   conversationsContainer: {
     flex: 1,
@@ -131,27 +151,37 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 20,
-    paddingVertical: 15,
-    borderBottomWidth: 1,
+    paddingVertical: 18,
+    marginHorizontal: 15,
+    marginVertical: 6,
+    borderRadius: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   avatarContainer: {
     position: 'relative',
     marginRight: 15,
   },
   avatar: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: 55,
+    height: 55,
+    borderRadius: 27.5,
+    borderWidth: 2,
+    borderColor: '#127d96',
   },
   onlineIndicator: {
     position: 'absolute',
     bottom: 2,
     right: 2,
-    width: 12,
-    height: 12,
-    borderRadius: 6,
+    width: 14,
+    height: 14,
+    borderRadius: 7,
     backgroundColor: '#28a745',
     borderWidth: 2,
+    borderColor: 'white',
   },
   conversationContent: {
     flex: 1,
@@ -163,11 +193,12 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   userName: {
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: 17,
+    fontWeight: '700',
   },
   messageTime: {
-    fontSize: 12,
+    fontSize: 13,
+    fontWeight: '500',
   },
   messageRow: {
     flexDirection: 'row',
@@ -175,22 +206,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   lastMessage: {
-    fontSize: 14,
+    fontSize: 15,
     flex: 1,
     marginRight: 10,
+    lineHeight: 20,
   },
   unreadBadge: {
-    backgroundColor: '#127d96',
-    borderRadius: 10,
-    minWidth: 20,
-    height: 20,
+    borderRadius: 12,
+    minWidth: 24,
+    height: 24,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 6,
+    paddingHorizontal: 8,
   },
   unreadCount: {
     color: 'white',
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: 'bold',
   },
 });

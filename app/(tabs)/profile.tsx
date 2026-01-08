@@ -44,52 +44,74 @@ export default function ProfileScreen() {
           source={{ uri: profileData.headerBackground }}
           style={styles.headerBackgroundImage}
         />
-        <View style={styles.headerOverlay}>
+        <LinearGradient
+          colors={['rgba(0,0,0,0.3)', 'rgba(0,0,0,0.1)', 'rgba(0,0,0,0.4)']}
+          style={styles.headerOverlay}
+        >
           {/* Top navigation */}
           <View style={styles.topNav}>
-            <TouchableOpacity onPress={pickImage}>
-              <Ionicons name="camera-outline" size={24} color="white" />
+            <TouchableOpacity onPress={pickImage} style={styles.cameraButton}>
+              <Ionicons name="camera" size={20} color="white" />
             </TouchableOpacity>
-            <View style={styles.topRightIcons}>
-            </View>
+            <View style={styles.placeholder} />
           </View>
-        </View>
+        </LinearGradient>
       </View>
       
       {/* Profile info card */}
-      <View style={[styles.profileCard, { backgroundColor: isDark ? '#333' : 'white' }]}>
+      <View style={[styles.profileCard, { backgroundColor: isDark ? '#2a2a2a' : 'white' }]}>
         <View style={styles.profileInfo}>
-          <Image
-            source={{ uri: profileData.profileImage }}
-            style={styles.profileAvatar}
-          />
+          <View style={styles.avatarContainer}>
+            <Image
+              source={{ uri: profileData.profileImage }}
+              style={styles.profileAvatar}
+            />
+            <View style={styles.onlineIndicator} />
+          </View>
           <View style={styles.userInfo}>
-            <Text style={[styles.username, { color: isDark ? 'white' : '#333' }]}>{profileData.name}</Text>
+            <View style={styles.nameContainer}>
+              <Text style={[styles.username, { color: isDark ? 'white' : '#333' }]}>{profileData.name}</Text>
+              <Ionicons name="checkmark-circle" size={16} color="#127d96" />
+            </View>
             <Text style={[styles.userTitle, { color: isDark ? '#ccc' : '#666' }]}>{profileData.title}</Text>
             <Text style={[styles.userBio, { color: isDark ? '#aaa' : '#888' }]}>{profileData.bio}</Text>
           </View>
         </View>
         
-        <TouchableOpacity style={[styles.editButton, { backgroundColor: isDark ? '#444' : '#e9ecef' }]} onPress={() => router.push('/edit-profile')}>
-          <Text style={[styles.editButtonText, { color: isDark ? 'white' : '#333' }]}>Edit Profile</Text>
+        <TouchableOpacity style={styles.editButton} onPress={() => router.push('/edit-profile')}>
+          <LinearGradient
+            colors={['#127d96', '#15a3c7']}
+            style={styles.editButtonGradient}
+          >
+            <Ionicons name="create" size={16} color="white" />
+            <Text style={styles.editButtonText}>Edit Profile</Text>
+          </LinearGradient>
         </TouchableOpacity>
       </View>
       
       {/* Stats section */}
-      <View style={styles.statsContainer}>
+      <LinearGradient
+        colors={['#127d96', '#0a5d75']}
+        style={styles.statsContainer}
+      >
         <TouchableOpacity style={styles.statItem} onPress={() => router.push('/followers')}>
-          <Text style={[styles.statNumber, { color: isDark ? 'white' : '#333' }]}>10K</Text>
-          <Text style={[styles.statLabel, { color: isDark ? '#ccc' : '#666' }]}>Followers</Text>
+          <Ionicons name="people" size={20} color="white" />
+          <Text style={styles.statNumber}>10K</Text>
+          <Text style={styles.statLabel}>Followers</Text>
         </TouchableOpacity>
+        <View style={styles.statDivider} />
         <TouchableOpacity style={styles.statItem} onPress={() => router.push('/following')}>
-          <Text style={[styles.statNumber, { color: isDark ? 'white' : '#333' }]}>20k</Text>
-          <Text style={[styles.statLabel, { color: isDark ? '#ccc' : '#666' }]}>Following</Text>
+          <Ionicons name="person-add" size={20} color="white" />
+          <Text style={styles.statNumber}>20k</Text>
+          <Text style={styles.statLabel}>Following</Text>
         </TouchableOpacity>
+        <View style={styles.statDivider} />
         <View style={styles.statItem}>
-          <Text style={[styles.statNumber, { color: isDark ? 'white' : '#333' }]}>200</Text>
-          <Text style={[styles.statLabel, { color: isDark ? '#ccc' : '#666' }]}>Coins</Text>
+          <Ionicons name="diamond" size={20} color="white" />
+          <Text style={styles.statNumber}>200</Text>
+          <Text style={styles.statLabel}>Coins</Text>
         </View>
-      </View>
+      </LinearGradient>
       
       {/* Action buttons */}
       <View style={styles.actionGrid}>
@@ -97,21 +119,21 @@ export default function ProfileScreen() {
         <View style={styles.actionRow}>
           <TouchableOpacity style={styles.actionButton} onPress={() => router.push('/verification')}>
             <View style={[styles.actionIcon, { backgroundColor: '#127d96' }]}>
-              <Ionicons name="checkmark-circle-outline" size={24} color="white" />
+              <Ionicons name="checkmark-circle" size={24} color="white" />
             </View>
             <Text style={[styles.actionText, { color: isDark ? 'white' : '#333' }]}>Verify</Text>
           </TouchableOpacity>
           
           <TouchableOpacity style={styles.actionButton} onPress={() => router.push('/live-history')}>
-            <View style={[styles.actionIcon, { backgroundColor: '#127d96' }]}>
-              <Ionicons name="bar-chart-outline" size={24} color="white" />
+            <View style={[styles.actionIcon, { backgroundColor: '#FF6B35' }]}>
+              <Ionicons name="bar-chart" size={24} color="white" />
             </View>
             <Text style={[styles.actionText, { color: isDark ? 'white' : '#333' }]}>Live Data</Text>
           </TouchableOpacity>
           
           <TouchableOpacity style={styles.actionButton} onPress={() => router.push('/messages')}>
-            <View style={[styles.actionIcon, { backgroundColor: '#127d96' }]}>
-              <Ionicons name="chatbubbles-outline" size={24} color="white" />
+            <View style={[styles.actionIcon, { backgroundColor: '#28A745' }]}>
+              <Ionicons name="chatbubbles" size={24} color="white" />
             </View>
             <Text style={[styles.actionText, { color: isDark ? 'white' : '#333' }]}>Messages</Text>
           </TouchableOpacity>
@@ -120,22 +142,22 @@ export default function ProfileScreen() {
         {/* Second row - 3 icons */}
         <View style={styles.actionRow}>
           <TouchableOpacity style={styles.actionButton} onPress={() => router.push('/post')}>
-            <View style={[styles.actionIcon, { backgroundColor: '#127d96' }]}>
-              <Ionicons name="person-outline" size={24} color="white" />
+            <View style={[styles.actionIcon, { backgroundColor: '#9C27B0' }]}>
+              <Ionicons name="add-circle" size={24} color="white" />
             </View>
             <Text style={[styles.actionText, { color: isDark ? 'white' : '#333' }]}>Post</Text>
           </TouchableOpacity>
           
           <TouchableOpacity style={styles.actionButton} onPress={() => router.push('/earnings')}>
-            <View style={[styles.actionIcon, { backgroundColor: '#127d96' }]}>
-              <Ionicons name="cash-outline" size={24} color="white" />
+            <View style={[styles.actionIcon, { backgroundColor: '#B8860B' }]}>
+              <Ionicons name="cash" size={24} color="white" />
             </View>
             <Text style={[styles.actionText, { color: isDark ? 'white' : '#333' }]}>Earnings</Text>
           </TouchableOpacity>
           
           <TouchableOpacity style={styles.actionButton} onPress={() => router.push('/recharge')}>
-            <View style={[styles.actionIcon, { backgroundColor: '#127d96' }]}>
-              <Ionicons name="card-outline" size={24} color="white" />
+            <View style={[styles.actionIcon, { backgroundColor: '#DC3545' }]}>
+              <Ionicons name="card" size={24} color="white" />
             </View>
             <Text style={[styles.actionText, { color: isDark ? 'white' : '#333' }]}>Recharge</Text>
           </TouchableOpacity>
@@ -169,105 +191,142 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: 20,
-    paddingTop: 40,
+    paddingTop: 50,
   },
-  topRightIcons: {
-    flexDirection: 'row',
-    gap: 15,
+  cameraButton: {
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    padding: 10,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.3)',
   },
-  iconButton: {
-    padding: 5,
-  },
-  profileImageContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  backgroundProfileImage: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    borderWidth: 3,
-    borderColor: 'white',
+  placeholder: {
+    width: 40,
   },
   profileCard: {
     backgroundColor: 'white',
     marginHorizontal: 20,
     marginTop: -60,
     borderRadius: 20,
-    padding: 20,
+    padding: 25,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 4,
     },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 5,
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 8,
   },
   profileInfo: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 25,
+  },
+  avatarContainer: {
+    position: 'relative',
+    marginRight: 20,
   },
   profileAvatar: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    marginRight: 15,
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    borderWidth: 3,
+    borderColor: '#127d96',
+  },
+  onlineIndicator: {
+    position: 'absolute',
+    bottom: 2,
+    right: 2,
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    backgroundColor: '#28A745',
+    borderWidth: 3,
+    borderColor: 'white',
   },
   userInfo: {
     flex: 1,
   },
+  nameContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 4,
+    gap: 6,
+  },
   username: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#333',
-    marginBottom: 2,
   },
   userTitle: {
     fontSize: 14,
     color: '#666',
-    marginBottom: 4,
+    marginBottom: 6,
   },
   userBio: {
-    fontSize: 12,
+    fontSize: 13,
     color: '#888',
-    lineHeight: 16,
+    lineHeight: 18,
   },
   editButton: {
-    backgroundColor: '#e9ecef',
+    borderRadius: 25,
+    overflow: 'hidden',
+  },
+  editButtonGradient: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingVertical: 12,
     paddingHorizontal: 30,
-    borderRadius: 25,
-    alignItems: 'center',
+    gap: 8,
   },
   editButtonText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#333',
+    color: 'white',
   },
   statsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    paddingVertical: 25,
-    paddingHorizontal: 20,
+    alignItems: 'center',
+    marginHorizontal: 20,
+    marginVertical: 25,
+    borderRadius: 20,
+    padding: 25,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
   },
   statItem: {
     alignItems: 'center',
+    flex: 1,
+  },
+  statDivider: {
+    width: 1,
+    height: 40,
+    backgroundColor: 'rgba(255,255,255,0.3)',
   },
   statNumber: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
-    color: '#333',
+    color: 'white',
+    marginTop: 8,
     marginBottom: 4,
   },
   statLabel: {
     fontSize: 12,
-    color: '#666',
+    color: 'rgba(255,255,255,0.9)',
+    fontWeight: '500',
   },
   actionGrid: {
     paddingHorizontal: 20,
+    paddingBottom: 30,
   },
   actionRow: {
     flexDirection: 'row',
@@ -279,19 +338,24 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   actionIcon: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#f8f9fa',
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 8,
-    borderWidth: 1,
-    borderColor: '#e9ecef',
+    marginBottom: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 4,
   },
   actionText: {
-    fontSize: 12,
+    fontSize: 13,
     color: '#333',
-    fontWeight: '500',
+    fontWeight: '600',
   },
 });

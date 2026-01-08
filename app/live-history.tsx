@@ -3,23 +3,14 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Colors } from '@/constants/theme';
 import { router } from 'expo-router';
-import Svg, { Path } from 'react-native-svg';
+import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from '../contexts/ThemeContext';
 import { useState, useMemo } from 'react';
 
 const { width } = Dimensions.get('window');
 
-const BackIcon = ({ color = 'black' }) => (
-  <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <Path d="M15 18L9 12L15 6" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-  </Svg>
-);
 
-const DropdownIcon = ({ color = 'black' }) => (
-  <Svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-    <Path d="M6 9L12 15L18 9" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-  </Svg>
-);
 
 export default function LiveHistoryScreen() {
   const { isDark } = useTheme();
@@ -93,17 +84,20 @@ export default function LiveHistoryScreen() {
   };
 
   return (
-    <ThemedView style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}>
-      <View style={[styles.header, { backgroundColor: isDark ? '#333' : 'white', borderBottomColor: isDark ? '#555' : '#127d96' }]}>
+    <ThemedView style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f8f9fa' }]}>
+      <LinearGradient
+        colors={['#127d96', '#15a3c7']}
+        style={styles.header}
+      >
         <TouchableOpacity 
           style={styles.backButton}
           onPress={() => router.push('/(tabs)/profile')}
         >
-          <BackIcon color={isDark ? 'white' : 'black'} />
+          <Ionicons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
-        <ThemedText style={[styles.title, { color: isDark ? 'white' : '#333' }]}>Live Data & History</ThemedText>
+        <ThemedText style={styles.headerTitle}>Live Data & History</ThemedText>
         <View style={styles.placeholder} />
-      </View>
+      </LinearGradient>
 
       <View style={[styles.filterContainer, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}>
         <TouchableOpacity 
@@ -116,7 +110,7 @@ export default function LiveHistoryScreen() {
           <ThemedText style={[styles.monthPickerText, { color: isDark ? 'white' : '#333' }]}>
             {selectedMonth}
           </ThemedText>
-          <DropdownIcon color={isDark ? 'white' : '#333'} />
+          <Ionicons name="chevron-down" size={16} color={isDark ? 'white' : '#333'} />
         </TouchableOpacity>
       </View>
 
@@ -193,9 +187,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
-    paddingTop: 50,
-    paddingBottom: 20,
-    borderBottomWidth: 2,
+    paddingTop: 60,
+    paddingBottom: 25,
+    height: 120,
   },
   backButton: {
     padding: 5,
@@ -203,9 +197,11 @@ const styles = StyleSheet.create({
   placeholder: {
     width: 24,
   },
-  title: {
-    fontSize: 18,
+  headerTitle: {
+    fontSize: 24,
     fontWeight: 'bold',
+    color: 'white',
+    letterSpacing: 1,
   },
   filterContainer: {
     paddingHorizontal: 20,
@@ -237,7 +233,7 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingTop: 10,
+    paddingTop: 20,
   },
   overlay: {
     position: 'absolute',

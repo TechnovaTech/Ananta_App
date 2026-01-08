@@ -13,9 +13,13 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Dimensions,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useProfile } from '../contexts/ProfileContext';
 import { useTheme } from '../contexts/ThemeContext';
+
+const { width, height } = Dimensions.get('window');
 
 export default function EditProfileScreen() {
   const { profileData, updateProfile } = useProfile();
@@ -70,212 +74,262 @@ export default function EditProfileScreen() {
       style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f8f9fa' }]}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
+      <StatusBar barStyle="light-content" />
       
       {/* Header */}
-      <View style={[styles.header, { backgroundColor: isDark ? '#1a1a1a' : 'white', borderBottomColor: isDark ? '#333' : '#127d96' }]}>
-        <TouchableOpacity onPress={() => router.back()}>
-          <Ionicons name="chevron-back" size={24} color={isDark ? 'white' : '#333'} />
+      <LinearGradient
+        colors={['#127d96', '#15a3c7']}
+        style={styles.header}
+      >
+        <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
-        <Text style={[styles.headerTitle, { color: isDark ? 'white' : '#333' }]}>Edit Profile</Text>
+        <Text style={styles.headerTitle}>Edit Profile</Text>
         <View style={styles.placeholder} />
-      </View>
+      </LinearGradient>
       
       <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
         {/* Profile Image */}
-        <View style={[styles.profileImageSection, { backgroundColor: isDark ? '#333' : 'white' }]}>
+        <View style={[styles.profileImageSection, { backgroundColor: isDark ? '#2a2a2a' : 'white' }]}>
           <View style={styles.profileImageContainer}>
             <Image source={{ uri: profileImage }} style={styles.profileImage} />
             <TouchableOpacity style={styles.editImageButton} onPress={pickImage}>
-              <Ionicons name="add" size={20} color="white" />
+              <Ionicons name="camera" size={16} color="white" />
             </TouchableOpacity>
           </View>
+          <Text style={[styles.changePhotoText, { color: isDark ? '#ccc' : '#666' }]}>Tap to change photo</Text>
         </View>
         
         {/* Form Fields */}
         <View style={styles.formContainer}>
           {/* Personal Information */}
-          <Text style={[styles.sectionTitle, { color: isDark ? 'white' : '#333' }]}>Personal Information</Text>
-          
-          <View style={styles.fieldContainer}>
-            <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Username :</Text>
-            <TextInput
-              style={[styles.textInput, { 
-                backgroundColor: isDark ? '#444' : '#e9ecef',
-                color: isDark ? 'white' : '#333',
-                borderColor: isDark ? '#555' : '#127d96'
-              }]}
-              value={userName}
-              onChangeText={setUserName}
-              placeholder="Enter your username"
-              placeholderTextColor={isDark ? '#888' : '#666'}
-            />
-          </View>
-          
-          <View style={styles.fieldContainer}>
-            <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Name :</Text>
-            <TextInput
-              style={[styles.textInput, { 
-                backgroundColor: isDark ? '#444' : '#e9ecef',
-                color: isDark ? 'white' : '#333',
-                borderColor: isDark ? '#555' : '#127d96'
-              }]}
-              value={name}
-              onChangeText={setName}
-              placeholder="Enter your name"
-              placeholderTextColor={isDark ? '#888' : '#666'}
-            />
-          </View>
-          
-          <View style={styles.fieldContainer}>
-            <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Gender :</Text>
-            <TextInput
-              style={[styles.textInput, { 
-                backgroundColor: isDark ? '#444' : '#e9ecef',
-                color: isDark ? 'white' : '#333',
-                borderColor: isDark ? '#555' : '#127d96'
-              }]}
-              value={gender}
-              onChangeText={setGender}
-              placeholder="Enter your gender"
-              placeholderTextColor={isDark ? '#888' : '#666'}
-            />
-          </View>
-          
-          <View style={styles.fieldContainer}>
-            <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Birthday :</Text>
-            <TextInput
-              style={[styles.textInput, { 
-                backgroundColor: isDark ? '#444' : '#e9ecef',
-                color: isDark ? 'white' : '#333',
-                borderColor: isDark ? '#555' : '#127d96'
-              }]}
-              value={birthday}
-              onChangeText={setBirthday}
-              placeholder="Enter your birthday (DD/MM/YYYY)"
-              placeholderTextColor={isDark ? '#888' : '#666'}
-            />
-          </View>
-          
-          <View style={styles.fieldContainer}>
-            <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Bio :</Text>
-            <TextInput
-              style={[styles.textInput, { 
-                backgroundColor: isDark ? '#444' : '#e9ecef',
-                color: isDark ? 'white' : '#333',
-                borderColor: isDark ? '#555' : '#127d96'
-              }]}
-              value={bio}
-              onChangeText={setBio}
-              placeholder="Enter your bio"
-              placeholderTextColor={isDark ? '#888' : '#666'}
-              multiline
-            />
+          <View style={[styles.sectionCard, { backgroundColor: isDark ? '#2a2a2a' : 'white' }]}>
+            <Text style={[styles.sectionTitle, { color: isDark ? 'white' : '#333' }]}>Personal Information</Text>
+            
+            <View style={styles.fieldContainer}>
+              <View style={styles.fieldHeader}>
+                <Ionicons name="person" size={16} color="#127d96" />
+                <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Username</Text>
+              </View>
+              <TextInput
+                style={[styles.textInput, { 
+                  backgroundColor: isDark ? '#333' : '#f8f9fa',
+                  color: isDark ? 'white' : '#333',
+                  borderColor: '#127d96'
+                }]}
+                value={userName}
+                onChangeText={setUserName}
+                placeholder="Enter your username"
+                placeholderTextColor={isDark ? '#888' : '#666'}
+              />
+            </View>
+            
+            <View style={styles.fieldContainer}>
+              <View style={styles.fieldHeader}>
+                <Ionicons name="person-circle" size={16} color="#127d96" />
+                <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Name</Text>
+              </View>
+              <TextInput
+                style={[styles.textInput, { 
+                  backgroundColor: isDark ? '#333' : '#f8f9fa',
+                  color: isDark ? 'white' : '#333',
+                  borderColor: '#127d96'
+                }]}
+                value={name}
+                onChangeText={setName}
+                placeholder="Enter your name"
+                placeholderTextColor={isDark ? '#888' : '#666'}
+              />
+            </View>
+            
+            <View style={styles.fieldContainer}>
+              <View style={styles.fieldHeader}>
+                <Ionicons name="male-female" size={16} color="#127d96" />
+                <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Gender</Text>
+              </View>
+              <TextInput
+                style={[styles.textInput, { 
+                  backgroundColor: isDark ? '#333' : '#f8f9fa',
+                  color: isDark ? 'white' : '#333',
+                  borderColor: '#127d96'
+                }]}
+                value={gender}
+                onChangeText={setGender}
+                placeholder="Enter your gender"
+                placeholderTextColor={isDark ? '#888' : '#666'}
+              />
+            </View>
+            
+            <View style={styles.fieldContainer}>
+              <View style={styles.fieldHeader}>
+                <Ionicons name="calendar" size={16} color="#127d96" />
+                <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Birthday</Text>
+              </View>
+              <TextInput
+                style={[styles.textInput, { 
+                  backgroundColor: isDark ? '#333' : '#f8f9fa',
+                  color: isDark ? 'white' : '#333',
+                  borderColor: '#127d96'
+                }]}
+                value={birthday}
+                onChangeText={setBirthday}
+                placeholder="Enter your birthday (DD/MM/YYYY)"
+                placeholderTextColor={isDark ? '#888' : '#666'}
+              />
+            </View>
+            
+            <View style={styles.fieldContainer}>
+              <View style={styles.fieldHeader}>
+                <Ionicons name="document-text" size={16} color="#127d96" />
+                <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Bio</Text>
+              </View>
+              <TextInput
+                style={[styles.textInput, styles.bioInput, { 
+                  backgroundColor: isDark ? '#333' : '#f8f9fa',
+                  color: isDark ? 'white' : '#333',
+                  borderColor: '#127d96'
+                }]}
+                value={bio}
+                onChangeText={setBio}
+                placeholder="Enter your bio"
+                placeholderTextColor={isDark ? '#888' : '#666'}
+                multiline
+                numberOfLines={3}
+              />
+            </View>
           </View>
           
           {/* Address Information */}
-          <Text style={[styles.sectionTitle, { color: isDark ? 'white' : '#333' }]}>Address Information</Text>
-          
-          <View style={styles.fieldContainer}>
-            <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Address Line 1 :</Text>
-            <TextInput
-              style={[styles.textInput, { 
-                backgroundColor: isDark ? '#444' : '#e9ecef',
-                color: isDark ? 'white' : '#333',
-                borderColor: isDark ? '#555' : '#127d96'
-              }]}
-              value={addressLine1}
-              onChangeText={setAddressLine1}
-              placeholder="Enter your address"
-              placeholderTextColor={isDark ? '#888' : '#666'}
-            />
-          </View>
-          
-          <View style={styles.fieldContainer}>
-            <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>City :</Text>
-            <TextInput
-              style={[styles.textInput, { 
-                backgroundColor: isDark ? '#444' : '#e9ecef',
-                color: isDark ? 'white' : '#333',
-                borderColor: isDark ? '#555' : '#127d96'
-              }]}
-              value={city}
-              onChangeText={setCity}
-              placeholder="Enter your city"
-              placeholderTextColor={isDark ? '#888' : '#666'}
-            />
-          </View>
-          
-          <View style={styles.fieldContainer}>
-            <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>State :</Text>
-            <TextInput
-              style={[styles.textInput, { 
-                backgroundColor: isDark ? '#444' : '#e9ecef',
-                color: isDark ? 'white' : '#333',
-                borderColor: isDark ? '#555' : '#127d96'
-              }]}
-              value={state}
-              onChangeText={setState}
-              placeholder="Enter your state"
-              placeholderTextColor={isDark ? '#888' : '#666'}
-            />
-          </View>
-          
-          <View style={styles.fieldContainer}>
-            <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Country :</Text>
-            <TextInput
-              style={[styles.textInput, { 
-                backgroundColor: isDark ? '#444' : '#e9ecef',
-                color: isDark ? 'white' : '#333',
-                borderColor: isDark ? '#555' : '#127d96'
-              }]}
-              value={country}
-              onChangeText={setCountry}
-              placeholder="Enter your country"
-              placeholderTextColor={isDark ? '#888' : '#666'}
-            />
-          </View>
-          
-          <View style={styles.fieldContainer}>
-            <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Pin Code :</Text>
-            <TextInput
-              style={[styles.textInput, { 
-                backgroundColor: isDark ? '#444' : '#e9ecef',
-                color: isDark ? 'white' : '#333',
-                borderColor: isDark ? '#555' : '#127d96'
-              }]}
-              value={pinCode}
-              onChangeText={setPinCode}
-              placeholder="Enter your pin code"
-              placeholderTextColor={isDark ? '#888' : '#666'}
-              keyboardType="numeric"
-            />
+          <View style={[styles.sectionCard, { backgroundColor: isDark ? '#2a2a2a' : 'white' }]}>
+            <Text style={[styles.sectionTitle, { color: isDark ? 'white' : '#333' }]}>Address Information</Text>
+            
+            <View style={styles.fieldContainer}>
+              <View style={styles.fieldHeader}>
+                <Ionicons name="home" size={16} color="#127d96" />
+                <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Address Line 1</Text>
+              </View>
+              <TextInput
+                style={[styles.textInput, { 
+                  backgroundColor: isDark ? '#333' : '#f8f9fa',
+                  color: isDark ? 'white' : '#333',
+                  borderColor: '#127d96'
+                }]}
+                value={addressLine1}
+                onChangeText={setAddressLine1}
+                placeholder="Enter your address"
+                placeholderTextColor={isDark ? '#888' : '#666'}
+              />
+            </View>
+            
+            <View style={styles.fieldContainer}>
+              <View style={styles.fieldHeader}>
+                <Ionicons name="business" size={16} color="#127d96" />
+                <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>City</Text>
+              </View>
+              <TextInput
+                style={[styles.textInput, { 
+                  backgroundColor: isDark ? '#333' : '#f8f9fa',
+                  color: isDark ? 'white' : '#333',
+                  borderColor: '#127d96'
+                }]}
+                value={city}
+                onChangeText={setCity}
+                placeholder="Enter your city"
+                placeholderTextColor={isDark ? '#888' : '#666'}
+              />
+            </View>
+            
+            <View style={styles.fieldContainer}>
+              <View style={styles.fieldHeader}>
+                <Ionicons name="map" size={16} color="#127d96" />
+                <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>State</Text>
+              </View>
+              <TextInput
+                style={[styles.textInput, { 
+                  backgroundColor: isDark ? '#333' : '#f8f9fa',
+                  color: isDark ? 'white' : '#333',
+                  borderColor: '#127d96'
+                }]}
+                value={state}
+                onChangeText={setState}
+                placeholder="Enter your state"
+                placeholderTextColor={isDark ? '#888' : '#666'}
+              />
+            </View>
+            
+            <View style={styles.fieldContainer}>
+              <View style={styles.fieldHeader}>
+                <Ionicons name="globe" size={16} color="#127d96" />
+                <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Country</Text>
+              </View>
+              <TextInput
+                style={[styles.textInput, { 
+                  backgroundColor: isDark ? '#333' : '#f8f9fa',
+                  color: isDark ? 'white' : '#333',
+                  borderColor: '#127d96'
+                }]}
+                value={country}
+                onChangeText={setCountry}
+                placeholder="Enter your country"
+                placeholderTextColor={isDark ? '#888' : '#666'}
+              />
+            </View>
+            
+            <View style={styles.fieldContainer}>
+              <View style={styles.fieldHeader}>
+                <Ionicons name="mail" size={16} color="#127d96" />
+                <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Pin Code</Text>
+              </View>
+              <TextInput
+                style={[styles.textInput, { 
+                  backgroundColor: isDark ? '#333' : '#f8f9fa',
+                  color: isDark ? 'white' : '#333',
+                  borderColor: '#127d96'
+                }]}
+                value={pinCode}
+                onChangeText={setPinCode}
+                placeholder="Enter your pin code"
+                placeholderTextColor={isDark ? '#888' : '#666'}
+                keyboardType="numeric"
+              />
+            </View>
           </View>
           
           {/* Other Information */}
-          <Text style={[styles.sectionTitle, { color: isDark ? 'white' : '#333' }]}>Other Information</Text>
-          
-          <View style={styles.fieldContainer}>
-            <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Location :</Text>
-            <TextInput
-              style={[styles.textInput, { 
-                backgroundColor: isDark ? '#444' : '#e9ecef',
-                color: isDark ? 'white' : '#333',
-                borderColor: isDark ? '#555' : '#127d96'
-              }]}
-              value={location}
-              onChangeText={setLocation}
-              placeholder="Enter your location"
-              placeholderTextColor={isDark ? '#888' : '#666'}
-            />
+          <View style={[styles.sectionCard, { backgroundColor: isDark ? '#2a2a2a' : 'white' }]}>
+            <Text style={[styles.sectionTitle, { color: isDark ? 'white' : '#333' }]}>Other Information</Text>
+            
+            <View style={styles.fieldContainer}>
+              <View style={styles.fieldHeader}>
+                <Ionicons name="location" size={16} color="#127d96" />
+                <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Location</Text>
+              </View>
+              <TextInput
+                style={[styles.textInput, { 
+                  backgroundColor: isDark ? '#333' : '#f8f9fa',
+                  color: isDark ? 'white' : '#333',
+                  borderColor: '#127d96'
+                }]}
+                value={location}
+                onChangeText={setLocation}
+                placeholder="Enter your location"
+                placeholderTextColor={isDark ? '#888' : '#666'}
+              />
+            </View>
           </View>
         </View>
       </ScrollView>
       
       {/* Save Button */}
-      <View style={[styles.buttonContainer, { backgroundColor: isDark ? '#333' : 'white' }]}>
+      <View style={[styles.buttonContainer, { backgroundColor: isDark ? '#2a2a2a' : 'white' }]}>
         <TouchableOpacity style={styles.saveButton} onPress={saveProfile}>
-          <Text style={styles.saveButtonText}>Save Profile</Text>
+          <LinearGradient
+            colors={['#127d96', '#15a3c7']}
+            style={styles.saveButtonGradient}
+          >
+            <Ionicons name="checkmark-circle" size={20} color="white" />
+            <Text style={styles.saveButtonText}>Save Profile</Text>
+          </LinearGradient>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
@@ -292,25 +346,18 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
-    paddingTop: 50,
-    paddingBottom: 20,
-    backgroundColor: 'white',
-    borderBottomWidth: 2,
-    borderBottomColor: '#127d96',
+    paddingTop: 60,
+    paddingBottom: 25,
+    height: 120,
+  },
+  backButton: {
+    padding: 5,
   },
   headerTitle: {
-    fontSize: 18,
+    fontSize: 24,
     fontWeight: 'bold',
-    color: '#333',
-  },
-  titleContainer: {
-    alignItems: 'flex-start',
-  },
-  titleUnderline: {
-    width: 60,
-    height: 2,
-    backgroundColor: '#127d96',
-    marginTop: 4,
+    color: 'white',
+    letterSpacing: 1,
   },
   placeholder: {
     width: 24,
@@ -318,28 +365,54 @@ const styles = StyleSheet.create({
   profileImageSection: {
     alignItems: 'center',
     paddingVertical: 30,
+    marginHorizontal: 20,
+    marginTop: 20,
+    borderRadius: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   profileImageContainer: {
     position: 'relative',
+    marginBottom: 10,
   },
   profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 120,
+    height: 120,
+    borderRadius: 60,
     backgroundColor: '#127d96',
+    borderWidth: 4,
+    borderColor: '#127d96',
   },
   editImageButton: {
     position: 'absolute',
-    bottom: 0,
-    right: 0,
-    width: 30,
-    height: 30,
-    borderRadius: 15,
+    bottom: 5,
+    right: 5,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     backgroundColor: '#127d96',
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 3,
     borderColor: 'white',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 4,
+  },
+  changePhotoText: {
+    fontSize: 14,
+    fontWeight: '500',
   },
   scrollContainer: {
     flex: 1,
@@ -349,38 +422,72 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 20,
   },
+  sectionCard: {
+    borderRadius: 20,
+    padding: 25,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 15,
-    marginTop: 20,
+    marginBottom: 20,
   },
   fieldContainer: {
     marginBottom: 20,
   },
+  fieldHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+    gap: 8,
+  },
   fieldLabel: {
     fontSize: 16,
-    fontWeight: '500',
-    marginBottom: 8,
+    fontWeight: '600',
   },
   textInput: {
-    borderRadius: 25,
+    borderRadius: 15,
     paddingHorizontal: 20,
     paddingVertical: 15,
     fontSize: 16,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: '#127d96',
+  },
+  bioInput: {
+    minHeight: 80,
+    textAlignVertical: 'top',
   },
   buttonContainer: {
     paddingHorizontal: 20,
     paddingTop: 15,
     paddingBottom: 30,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: -2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 5,
   },
   saveButton: {
-    backgroundColor: '#127d96',
     borderRadius: 25,
-    paddingVertical: 15,
+    overflow: 'hidden',
+  },
+  saveButtonGradient: {
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 15,
+    gap: 10,
   },
   saveButtonText: {
     color: 'white',
