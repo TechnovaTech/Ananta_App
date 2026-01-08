@@ -2,48 +2,71 @@ import { ThemedText } from '@/components/themed-text';
 import { Colors } from '@/constants/theme';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState, useRef } from 'react';
-import { Image, Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View, ScrollView } from 'react-native';
+import { Image, Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View, ScrollView, StatusBar, Dimensions, Animated } from 'react-native';
 import { useTheme } from '../../contexts/ThemeContext';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Ionicons } from '@expo/vector-icons';
+
+const { width, height } = Dimensions.get('window');
 
 export default function AudioLiveScreen() {
   const { isDark } = useTheme();
   const params = useLocalSearchParams();
-  const title = params.title as string || '#Love me like you do';
-  const user = params.user as string || 'Micale clarke';
-  const location = params.location as string || 'Location';
+  const title = params.title as string || 'Morning Meditation';
+  const user = params.user as string || 'Sarah Wilson';
+  const location = params.location as string || 'India';
   const listeners = params.listeners as string || '1.2K';
   
   const [isFollowing, setIsFollowing] = useState(false);
-  
+  const [isMuted, setIsMuted] = useState(false);
   const [liveComments, setLiveComments] = useState<any[]>([
-    { id: 1, user: 'Micale clarke', message: 'Hey! Welcome to my audio session', avatar: 'https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500', isHost: true },
-    { id: 2, user: 'You', message: 'Hi! Thanks for having me', avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=50', isHost: false },
-    { id: 3, user: 'Micale clarke', message: 'How are you doing today?', avatar: 'https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500', isHost: true }
+    { id: 1, user: user, message: 'Welcome to my audio session! 🎵', avatar: 'https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500', isHost: true },
+    { id: 2, user: 'Alex', message: 'This is so relaxing!', avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=50', isHost: false },
+    { id: 3, user: user, message: 'Thanks for joining! How are you feeling today?', avatar: 'https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500', isHost: true }
   ]);
   const [messageText, setMessageText] = useState('');
   const [floatingHearts, setFloatingHearts] = useState<any[]>([]);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
   
+  // Animation values
+  const pulseAnim = useRef(new Animated.Value(1)).current;
+  const waveAnim1 = useRef(new Animated.Value(0)).current;
+  const waveAnim2 = useRef(new Animated.Value(0)).current;
+  const waveAnim3 = useRef(new Animated.Value(0)).current;
+
   const hostMessages = [
-    'Great to have you here!',
-    'What do you think of this song?',
-    'Any requests?',
-    'Thanks for listening!',
+    'Great to have you here! 🎶',
+    'What do you think of this vibe?',
+    'Any song requests?',
+    'Thanks for listening! ❤️',
     'How\'s your day going?',
-    'Love this vibe!',
+    'Love this energy!',
     'You have great taste in music!'
   ];
 
-  const userMessages = [
-    'This is amazing!',
-    'Love this track',
-    'Can you play something upbeat?',
-    'You have a great voice!',
-    'This is so relaxing',
-    'Perfect for today\'s mood',
-    'Thanks for this session!'
-  ];
+  useEffect(() => {
+    // Pulse animation for profile image
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulseAnim, { toValue: 1.05, duration: 2000, useNativeDriver: true }),
+        Animated.timing(pulseAnim, { toValue: 1, duration: 2000, useNativeDriver: true })
+      ])
+    ).start();
+
+    // Wave animations
+    Animated.loop(
+      Animated.timing(waveAnim1, { toValue: 1, duration: 3000, useNativeDriver: true })
+    ).start();
+    
+    Animated.loop(
+      Animated.timing(waveAnim2, { toValue: 1, duration: 4000, useNativeDriver: true })
+    ).start();
+    
+    Animated.loop(
+      Animated.timing(waveAnim3, { toValue: 1, duration: 5000, useNativeDriver: true })
+    ).start();
+  }, []);
 
   const handleFollow = () => {
     setIsFollowing(!isFollowing);
@@ -73,7 +96,6 @@ export default function AudioLiveScreen() {
       };
       setLiveComments(prev => {
         const updated = [...prev, newComment];
-        // Auto scroll after message is added
         setTimeout(() => {
           scrollViewRef.current?.scrollToEnd({ animated: true });
         }, 100);
@@ -94,7 +116,6 @@ export default function AudioLiveScreen() {
         };
         setLiveComments(prev => {
           const updated = [...prev, hostResponse];
-          // Auto scroll after host response
           setTimeout(() => {
             scrollViewRef.current?.scrollToEnd({ animated: true });
           }, 100);
@@ -105,26 +126,6 @@ export default function AudioLiveScreen() {
   };
 
   useEffect(() => {
-    // Occasional host messages
-    const interval = setInterval(() => {
-      const randomHostMessage = hostMessages[Math.floor(Math.random() * hostMessages.length)];
-      const newComment = {
-        id: Date.now(),
-        user: user,
-        message: randomHostMessage,
-        avatar: 'https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-        isHost: true
-      };
-      setLiveComments(prev => {
-        const updated = [...prev, newComment];
-        // Auto scroll after host message
-        setTimeout(() => {
-          scrollViewRef.current?.scrollToEnd({ animated: true });
-        }, 100);
-        return updated;
-      });
-    }, Math.random() * 10000 + 8000); // Random interval between 8-18 seconds
-
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
       setKeyboardVisible(true);
     });
@@ -133,79 +134,93 @@ export default function AudioLiveScreen() {
     });
 
     return () => {
-      clearInterval(interval);
       keyboardDidShowListener.remove();
       keyboardDidHideListener.remove();
     };
   }, []);
 
+  const wave1Scale = waveAnim1.interpolate({
+    inputRange: [0, 1],
+    outputRange: [1, 1.3]
+  });
+
+  const wave2Scale = waveAnim2.interpolate({
+    inputRange: [0, 1],
+    outputRange: [1, 1.5]
+  });
+
+  const wave3Scale = waveAnim3.interpolate({
+    inputRange: [0, 1],
+    outputRange: [1, 1.7]
+  });
+
   return (
-    <KeyboardAvoidingView 
-      style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={0}
-    >
-      <Image 
-        source={{ uri: 'https://images.unsplash.com/photo-1494790108755-2616c9c0e0e0?w=400' }}
-        style={styles.backgroundImage}
-        resizeMode="cover"
+    <View style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
+      
+      {/* Background Gradient */}
+      <LinearGradient
+        colors={['#127d96', '#0a5d75', '#083d4f']}
+        style={styles.backgroundGradient}
       />
       
-      <View style={[styles.overlay, { backgroundColor: isDark ? 'rgba(0,0,0,0.9)' : 'rgba(255,255,255,0.9)' }]}>
+      {/* Header */}
       <View style={styles.header}>
-        <View style={styles.userInfo}>
-          <Image 
-            source={{ uri: 'https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500' }}
-            style={styles.userAvatar}
-          />
-          <View>
-            <ThemedText style={styles.username}>@{user}</ThemedText>
-            <ThemedText style={styles.liveText}>{title}</ThemedText>
-          </View>
+        <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+          <Ionicons name="arrow-back" size={24} color="white" />
+        </TouchableOpacity>
+        
+        <View style={styles.headerInfo}>
+          <Text style={styles.headerTitle}>{title}</Text>
+          <Text style={styles.headerSubtitle}>@{user} • {location}</Text>
         </View>
         
-        <View style={styles.headerRight}>
-          <TouchableOpacity style={[styles.followButton, isFollowing && styles.followingButton]} onPress={handleFollow}>
-            <ThemedText style={[styles.followText, isFollowing && styles.followingText]}>
-              {isFollowing ? 'Following' : 'Follow'}
-            </ThemedText>
-          </TouchableOpacity>
-          
-          <TouchableOpacity 
-            style={styles.closeButton}
-            onPress={() => router.back()}
-          >
-            <ThemedText style={styles.closeText}>×</ThemedText>
-          </TouchableOpacity>
+        <TouchableOpacity 
+          style={[styles.followButton, isFollowing && styles.followingButton]} 
+          onPress={handleFollow}
+        >
+          <Text style={styles.followText}>
+            {isFollowing ? 'Following' : 'Follow'}
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Stats Bar */}
+      <View style={styles.statsContainer}>
+        <View style={styles.statItem}>
+          <Ionicons name="headset" size={16} color="white" />
+          <Text style={styles.statText}>{listeners} listening</Text>
+        </View>
+        <View style={styles.statItem}>
+          <Ionicons name="heart" size={16} color="#ff4444" />
+          <Text style={styles.statText}>2.5K</Text>
+        </View>
+        <View style={styles.statItem}>
+          <Ionicons name="time" size={16} color="white" />
+          <Text style={styles.statText}>12:34</Text>
         </View>
       </View>
 
-      <View style={styles.stats}>
-        <View style={styles.statItem}>
-          <ThemedText style={styles.statIcon}>👁</ThemedText>
-          <ThemedText style={styles.statText}>20 Viewers</ThemedText>
-        </View>
-        <View style={styles.statItem}>
-          <ThemedText style={styles.statIcon}>💛</ThemedText>
-          <ThemedText style={styles.statText}>15k</ThemedText>
-        </View>
-        <View style={styles.statItem}>
-          <ThemedText style={styles.statIcon}>🎯</ThemedText>
-          <ThemedText style={styles.statText}>55</ThemedText>
-        </View>
-      </View>
-
-      <View style={[styles.audioVisualization, { opacity: isKeyboardVisible ? 0.3 : 1 }]}>
-        <View style={styles.profileContainer}>
+      {/* Audio Visualization */}
+      <View style={styles.audioVisualization}>
+        {/* Animated waves */}
+        <Animated.View style={[styles.wave, styles.wave1, { transform: [{ scale: wave1Scale }] }]} />
+        <Animated.View style={[styles.wave, styles.wave2, { transform: [{ scale: wave2Scale }] }]} />
+        <Animated.View style={[styles.wave, styles.wave3, { transform: [{ scale: wave3Scale }] }]} />
+        
+        {/* Profile Image */}
+        <Animated.View style={[styles.profileContainer, { transform: [{ scale: pulseAnim }] }]}>
           <Image 
             source={require('../../assets/images/audio image.webp')}
-            style={styles.hostImage}
+            style={styles.profileImage}
           />
-          <View style={styles.profileBorder}></View>
-          <View style={styles.audioRing}></View>
-        </View>
+          <View style={styles.liveIndicator}>
+            <Text style={styles.liveText}>LIVE</Text>
+          </View>
+        </Animated.View>
       </View>
 
+      {/* Comments Section */}
       <ScrollView 
         ref={scrollViewRef}
         style={styles.commentsSection}
@@ -214,339 +229,334 @@ export default function AudioLiveScreen() {
       >
         {liveComments.map((comment) => (
           <View key={comment.id} style={[
-            styles.liveCommentItem,
-            comment.isHost ? styles.hostMessage : styles.userMessage
+            styles.commentItem,
+            comment.isHost ? styles.hostComment : styles.userComment
           ]}>
-            <Image source={{ uri: comment.avatar }} style={styles.liveCommentAvatar} />
+            <Image source={{ uri: comment.avatar }} style={styles.commentAvatar} />
             <View style={[
-              styles.liveCommentContent,
-              comment.isHost ? styles.hostMessageBubble : styles.userMessageBubble
+              styles.commentBubble,
+              comment.isHost ? styles.hostBubble : styles.userBubble
             ]}>
               <Text style={[
-                styles.liveCommentUser,
+                styles.commentUser,
                 comment.isHost ? styles.hostUserText : styles.userUserText
               ]}>@{comment.user}</Text>
               <Text style={[
-                styles.liveCommentText,
-                comment.isHost ? styles.hostMessageText : styles.userMessageText
+                styles.commentText,
+                comment.isHost ? styles.hostCommentText : styles.userCommentText
               ]}>{comment.message}</Text>
             </View>
           </View>
         ))}
       </ScrollView>
 
+      {/* Floating Hearts */}
       <View style={styles.floatingHeartsContainer}>
         {floatingHearts.map((heart) => (
-          <View 
+          <Animated.View 
             key={heart.id} 
             style={[
               styles.floatingHeart,
               { bottom: heart.bottom, right: heart.right }
             ]}
           >
-            <Text style={styles.heartEmoji}>❤️</Text>
-          </View>
+            <Ionicons name="heart" size={24} color="#ff4444" />
+          </Animated.View>
         ))}
       </View>
 
-      <View style={styles.bottomSection}>
-        <View style={[styles.inputContainer, { backgroundColor: isDark ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.9)' }]}>
+      {/* Bottom Controls */}
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.bottomContainer}
+      >
+        <View style={styles.inputContainer}>
           <TextInput
-            style={[styles.messageInput, { color: isDark ? 'white' : 'black' }]}
-            placeholder="Say Something..."
-            placeholderTextColor={isDark ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.7)"}
+            style={styles.messageInput}
+            placeholder="Say something..."
+            placeholderTextColor="rgba(255,255,255,0.6)"
             value={messageText}
             onChangeText={setMessageText}
             onSubmitEditing={sendMessage}
           />
           <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
-            <ThemedText style={[styles.sendIcon, { color: isDark ? 'white' : 'black' }]}>▶</ThemedText>
+            <Ionicons name="send" size={20} color="white" />
           </TouchableOpacity>
         </View>
         
         <View style={styles.actionButtons}>
-          <TouchableOpacity style={styles.actionButton}>
-            <ThemedText style={styles.actionIcon}>🎤</ThemedText>
+          <TouchableOpacity 
+            style={[styles.actionButton, isMuted && styles.mutedButton]}
+            onPress={() => setIsMuted(!isMuted)}
+          >
+            <Ionicons 
+              name={isMuted ? "volume-mute" : "volume-high"} 
+              size={20} 
+              color="white" 
+            />
           </TouchableOpacity>
+          
           <TouchableOpacity style={styles.actionButton}>
-            <ThemedText style={styles.actionIcon}>🎁</ThemedText>
+            <Ionicons name="gift" size={20} color="white" />
           </TouchableOpacity>
+          
           <TouchableOpacity style={styles.actionButton} onPress={addFloatingHeart}>
-            <ThemedText style={styles.actionIcon}>❤️</ThemedText>
+            <Ionicons name="heart" size={20} color="#ff4444" />
           </TouchableOpacity>
         </View>
-      </View>
-      </View>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#000',
   },
-  backgroundImage: {
+  backgroundGradient: {
     position: 'absolute',
     width: '100%',
     height: '100%',
   },
-  overlay: {
-    flex: 1,
-    padding: 20,
-  },
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 40,
-    marginBottom: 20,
+    paddingTop: height * 0.06,
+    paddingHorizontal: 20,
+    paddingBottom: 15,
   },
-  userInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  userAvatar: {
+  backButton: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    marginRight: 10,
-  },
-  username: {
-    color: 'white',
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-  liveText: {
-    color: 'white',
-    fontSize: 12,
-    opacity: 0.8,
-  },
-  followButton: {
-    backgroundColor: Colors.light.primary,
-    paddingHorizontal: 15,
-    paddingVertical: 5,
-    borderRadius: 15,
-    marginLeft: 10,
-  },
-  followText: {
-    color: 'white',
-    fontSize: 12,
-    fontWeight: '600',
-  },
-  followingButton: {
-    backgroundColor: '#4CAF50',
-  },
-  followingText: {
-    color: 'white',
-  },
-  headerRight: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-  },
-  closeButton: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    backgroundColor: 'rgba(0,0,0,0.1)',
+    backgroundColor: 'rgba(255,255,255,0.2)',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  closeText: {
-    color: 'white',
-    fontSize: 20,
-    fontWeight: 'bold',
+  headerInfo: {
+    flex: 1,
+    marginLeft: 15,
   },
-  stats: {
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'white',
+    marginBottom: 2,
+  },
+  headerSubtitle: {
+    fontSize: 14,
+    color: 'rgba(255,255,255,0.8)',
+  },
+  followButton: {
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.3)',
+  },
+  followingButton: {
+    backgroundColor: '#4CAF50',
+    borderColor: '#4CAF50',
+  },
+  followText: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  statsContainer: {
     flexDirection: 'row',
-    gap: 10,
+    justifyContent: 'center',
+    gap: 20,
+    paddingHorizontal: 20,
     marginBottom: 30,
   },
   statItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.1)',
-    paddingHorizontal: 15,
-    paddingVertical: 8,
-    borderRadius: 20,
-  },
-  statIcon: {
-    fontSize: 16,
-    marginRight: 5,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 15,
+    gap: 6,
   },
   statText: {
     color: 'white',
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '600',
   },
   audioVisualization: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: [{ translateX: -85 }, { translateY: -130 }],
     alignItems: 'center',
     justifyContent: 'center',
+    height: 280,
+    position: 'relative',
+  },
+  wave: {
+    position: 'absolute',
+    borderRadius: 100,
+    borderWidth: 2,
+    borderColor: 'rgba(255,255,255,0.3)',
+  },
+  wave1: {
+    width: 180,
+    height: 180,
+  },
+  wave2: {
+    width: 220,
+    height: 220,
+  },
+  wave3: {
+    width: 260,
+    height: 260,
   },
   profileContainer: {
     position: 'relative',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  hostImage: {
-    width: 200,
-    height: 200,
-    borderRadius: 100,
-    borderWidth: 6,
+  profileImage: {
+    width: 140,
+    height: 140,
+    borderRadius: 70,
+    borderWidth: 4,
     borderColor: 'white',
   },
-  profileBorder: {
+  liveIndicator: {
     position: 'absolute',
-    width: 240,
-    height: 240,
-    borderRadius: 120,
-    borderWidth: 4,
-    borderColor: '#127d96',
-    opacity: 0.8,
-  },
-  audioRing: {
-    position: 'absolute',
-    width: 260,
-    height: 260,
-    borderRadius: 130,
+    bottom: 10,
+    backgroundColor: '#ff4444',
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+    borderRadius: 12,
     borderWidth: 2,
-    borderColor: '#127d96',
-    opacity: 0.5,
+    borderColor: 'white',
+  },
+  liveText: {
+    color: 'white',
+    fontSize: 10,
+    fontWeight: 'bold',
   },
   commentsSection: {
-    position: 'absolute',
-    bottom: 80,
-    left: 5,
-    right: 5,
-    height: 200,
+    flex: 1,
+    paddingHorizontal: 20,
+    marginBottom: 100,
   },
   commentsContent: {
-    flexGrow: 1,
-    justifyContent: 'flex-end',
-    paddingBottom: 10,
+    paddingBottom: 20,
   },
-  liveCommentItem: {
+  commentItem: {
     flexDirection: 'row',
-    marginBottom: 8,
+    marginBottom: 12,
     alignItems: 'flex-start',
-    paddingHorizontal: 10,
   },
-  hostMessage: {
+  hostComment: {
     justifyContent: 'flex-start',
   },
-  userMessage: {
+  userComment: {
     justifyContent: 'flex-end',
     flexDirection: 'row-reverse',
   },
-  liveCommentAvatar: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    marginRight: 8,
+  commentAvatar: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    marginHorizontal: 8,
   },
-  liveCommentContent: {
-    flex: 1,
-    maxWidth: '75%',
-    padding: 8,
-    borderRadius: 12,
+  commentBubble: {
+    maxWidth: '70%',
+    padding: 12,
+    borderRadius: 16,
   },
-  hostMessageBubble: {
-    backgroundColor: 'rgba(18, 125, 150, 0.8)',
-    borderTopLeftRadius: 4,
+  hostBubble: {
+    backgroundColor: 'rgba(255,255,255,0.9)',
+    borderBottomLeftRadius: 4,
   },
-  userMessageBubble: {
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    borderTopRightRadius: 4,
-    marginLeft: 8,
+  userBubble: {
+    backgroundColor: 'rgba(18,125,150,0.9)',
+    borderBottomRightRadius: 4,
   },
-  liveCommentUser: {
-    fontSize: 11,
+  commentUser: {
+    fontSize: 12,
     fontWeight: 'bold',
-    marginBottom: 2,
+    marginBottom: 4,
   },
   hostUserText: {
-    color: 'rgba(255, 255, 255, 0.9)',
+    color: '#127d96',
   },
   userUserText: {
-    color: 'rgba(18, 125, 150, 0.8)',
+    color: 'rgba(255,255,255,0.9)',
   },
-  liveCommentText: {
-    fontSize: 12,
-    lineHeight: 16,
+  commentText: {
+    fontSize: 14,
+    lineHeight: 18,
   },
-  hostMessageText: {
-    color: 'rgba(255, 255, 255, 0.9)',
+  hostCommentText: {
+    color: '#333',
   },
-  userMessageText: {
-    color: 'rgba(0, 0, 0, 0.8)',
+  userCommentText: {
+    color: 'white',
   },
   floatingHeartsContainer: {
     position: 'absolute',
-    right: 0,
-    top: 0,
-    bottom: 0,
-    width: 100,
+    right: 20,
+    top: height * 0.3,
+    bottom: 120,
+    width: 50,
     pointerEvents: 'none',
   },
   floatingHeart: {
     position: 'absolute',
-    opacity: 0.8,
   },
-  heartEmoji: {
-    fontSize: 24,
-    color: '#FF6B6B',
-  },
-  bottomSection: {
+  bottomContainer: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
+    backgroundColor: 'rgba(0,0,0,0.8)',
     paddingHorizontal: 20,
-    paddingVertical: 10,
-    paddingBottom: 25,
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    paddingVertical: 15,
+    paddingBottom: 30,
   },
   inputContainer: {
-    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.9)',
+    backgroundColor: 'rgba(255,255,255,0.1)',
     borderRadius: 25,
     paddingHorizontal: 15,
+    marginBottom: 15,
   },
   messageInput: {
     flex: 1,
+    color: 'white',
     fontSize: 14,
-    paddingVertical: 10,
+    paddingVertical: 12,
   },
   sendButton: {
-    padding: 5,
-  },
-  sendIcon: {
-    color: 'white',
-    fontSize: 16,
-  },
-  actionButtons: {
-    flexDirection: 'row',
-    gap: 10,
-  },
-  actionButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'rgba(0,0,0,0.1)',
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: '#127d96',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  actionIcon: {
-    fontSize: 18,
+  actionButtons: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 20,
+  },
+  actionButton: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.2)',
+  },
+  mutedButton: {
+    backgroundColor: 'rgba(255,68,68,0.2)',
+    borderColor: '#ff4444',
   },
 });

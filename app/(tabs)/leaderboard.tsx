@@ -2,19 +2,14 @@ import { useState } from 'react';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Colors } from '@/constants/theme';
-import { Dimensions, Image, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Image, ScrollView, StyleSheet, TouchableOpacity, View, StatusBar, Text } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from '@/contexts/ThemeContext';
+import { Ionicons } from '@expo/vector-icons';
 
-const { width } = Dimensions.get('window');
-
-const BackIcon = ({ isDark }: { isDark: boolean }) => (
-  <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <Path d="M15 18L9 12L15 6" stroke={isDark ? "white" : "black"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-  </Svg>
-);
+const { width, height } = Dimensions.get('window');
 
 export default function LeaderboardScreen() {
   const router = useRouter();
@@ -50,53 +45,64 @@ export default function LeaderboardScreen() {
   ];
 
   return (
-    <ThemedView style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}>
-      <View style={[styles.header, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}>
-        <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-          <BackIcon isDark={isDark} />
-        </TouchableOpacity>
-        <View style={styles.titleContainer}>
-          <ThemedText style={[styles.title, { color: isDark ? 'white' : 'black' }]}>Leaderboard</ThemedText>
-          <View style={styles.titleUnderline} />
+    <View style={[styles.container, { backgroundColor: isDark ? '#000' : '#f8f9fa' }]}>
+      <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} backgroundColor="transparent" translucent />
+      
+      {/* Modern Header */}
+      <LinearGradient
+        colors={['#127d96', '#15a3c7']}
+        style={styles.header}
+      >
+        <View style={styles.headerContent}>
+          <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+            <Ionicons name="arrow-back" size={24} color="white" />
+          </TouchableOpacity>
+          
+          <View style={styles.logoSection}>
+            <View style={styles.logoContainer}>
+              <Ionicons name="diamond" size={28} color="white" />
+            </View>
+            <Text style={styles.appTitle}>ANANTA</Text>
+          </View>
+          
+          <View style={styles.headerActions}>
+            <TouchableOpacity style={styles.iconButton}>
+              <Ionicons name="search" size={22} color="white" />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.iconButton}>
+              <Ionicons name="notifications-outline" size={22} color="white" />
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-
-      {/* Main Navigation - Earning/Live */}
-      <View style={[styles.mainNavContainer, { backgroundColor: isDark ? '#1a1a1a' : 'white', borderBottomColor: isDark ? '#333' : '#f0f0f0' }]}>
-        <TouchableOpacity 
-          style={[styles.mainNavTab, activeTab === 'earning' && styles.activeMainNav]}
-          onPress={() => setActiveTab('earning')}
-        >
-          <ThemedText style={[styles.mainNavText, { color: isDark ? '#ccc' : '#666' }, activeTab === 'earning' && styles.activeMainNavText]}>Earning</ThemedText>
-        </TouchableOpacity>
-        <TouchableOpacity 
-          style={[styles.mainNavTab, activeTab === 'live' && styles.activeMainNav]}
-          onPress={() => setActiveTab('live')}
-        >
-          <ThemedText style={[styles.mainNavText, { color: isDark ? '#ccc' : '#666' }, activeTab === 'live' && styles.activeMainNavText]}>Live</ThemedText>
-        </TouchableOpacity>
-      </View>
-
-      {/* Time Filter */}
-      <View style={[styles.filterContainer, { backgroundColor: isDark ? '#333' : '#f8f9fa' }]}>
-        <TouchableOpacity 
-          style={[styles.filterButton, timeFilter === 'today' && styles.activeFilter]}
-          onPress={() => setTimeFilter('today')}
-        >
-          <ThemedText style={[styles.filterText, { color: isDark ? '#ccc' : '#666' }, timeFilter === 'today' && styles.activeFilterText]}>Today</ThemedText>
-        </TouchableOpacity>
-        <TouchableOpacity 
-          style={[styles.filterButton, timeFilter === 'weekly' && styles.activeFilter]}
-          onPress={() => setTimeFilter('weekly')}
-        >
-          <ThemedText style={[styles.filterText, { color: isDark ? '#ccc' : '#666' }, timeFilter === 'weekly' && styles.activeFilterText]}>Weekly</ThemedText>
-        </TouchableOpacity>
-        <TouchableOpacity 
-          style={[styles.filterButton, timeFilter === 'monthly' && styles.activeFilter]}
-          onPress={() => setTimeFilter('monthly')}
-        >
-          <ThemedText style={[styles.filterText, { color: isDark ? '#ccc' : '#666' }, timeFilter === 'monthly' && styles.activeFilterText]}>Monthly</ThemedText>
-        </TouchableOpacity>
+      </LinearGradient>
+      
+      {/* Modern Tab Navigation */}
+      <View style={[styles.tabContainer, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}>
+        <View style={styles.tabScrollContent}>
+          <TouchableOpacity 
+            style={[styles.tab, activeTab === 'earning' && styles.activeTab]}
+            onPress={() => setActiveTab('earning')}
+          >
+            <Ionicons 
+              name="trophy" 
+              size={18} 
+              color={activeTab === 'earning' ? 'white' : '#127d96'} 
+            />
+            <Text style={[styles.tabText, activeTab === 'earning' && styles.activeTabText]}>Earning</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity 
+            style={[styles.tab, activeTab === 'live' && styles.activeTab]}
+            onPress={() => setActiveTab('live')}
+          >
+            <Ionicons 
+              name="videocam" 
+              size={18} 
+              color={activeTab === 'live' ? 'white' : '#127d96'} 
+            />
+            <Text style={[styles.tabText, activeTab === 'live' && styles.activeTabText]}>Live</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
@@ -156,114 +162,91 @@ export default function LeaderboardScreen() {
           </View>
         ))}
       </ScrollView>
-    </ThemedView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingTop: 50,
+    paddingTop: height * 0.06,
     paddingBottom: 20,
-    backgroundColor: 'white',
+    paddingHorizontal: 20,
+  },
+  headerContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   backButton: {
-    marginRight: 20,
-    padding: 5,
-  },
-  titleContainer: {
-    alignItems: 'flex-start',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'black',
-  },
-  filterContainer: {
-    flexDirection: 'row',
-    backgroundColor: '#f8f9fa',
-    marginHorizontal: 20,
+    width: 40,
+    height: 40,
     borderRadius: 20,
-    padding: 3,
-    marginTop: 15,
-    marginBottom: 20,
-  },
-  filterButton: {
-    flex: 1,
-    paddingVertical: 8,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 17,
   },
-  activeFilter: {
-    backgroundColor: Colors.light.primary,
-  },
-  filterText: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#666',
-  },
-  activeFilterText: {
-    color: 'white',
-  },
-  mainNavContainer: {
+  logoSection: {
     flexDirection: 'row',
-    backgroundColor: 'white',
-    paddingHorizontal: 20,
-    paddingBottom: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
-  },
-  mainNavTab: {
-    flex: 1,
-    paddingVertical: 15,
     alignItems: 'center',
-    borderBottomWidth: 3,
-    borderBottomColor: 'transparent',
   },
-  activeMainNav: {
-    borderBottomColor: Colors.light.primary,
+  logoContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 12,
   },
-  mainNavText: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#666',
+  appTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'white',
+    letterSpacing: 1,
   },
-  activeMainNavText: {
-    color: Colors.light.primary,
+  headerActions: {
+    flexDirection: 'row',
+    gap: 15,
   },
-  titleUnderline: {
-    width: 80,
-    height: 2,
-    backgroundColor: Colors.light.primary,
-    marginTop: 4,
+  iconButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   tabContainer: {
+    paddingVertical: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(0,0,0,0.1)',
+  },
+  tabScrollContent: {
     flexDirection: 'row',
-    backgroundColor: '#f0f0f0',
-    marginHorizontal: 20,
-    borderRadius: 25,
-    padding: 4,
-    marginBottom: 20,
+    paddingHorizontal: 20,
   },
   tab: {
     flex: 1,
-    paddingVertical: 12,
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
     borderRadius: 20,
+    backgroundColor: 'rgba(18,125,150,0.1)',
+    gap: 6,
+    marginHorizontal: 5,
   },
   activeTab: {
-    backgroundColor: Colors.light.primary,
+    backgroundColor: '#127d96',
   },
   tabText: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '600',
-    color: '#666',
+    color: '#127d96',
   },
   activeTabText: {
     color: 'white',
@@ -271,6 +254,7 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     paddingHorizontal: 20,
+    paddingTop: 20,
   },
   userCard: {
     borderRadius: 15,
