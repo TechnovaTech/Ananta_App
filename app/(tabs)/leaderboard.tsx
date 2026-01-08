@@ -59,19 +59,10 @@ export default function LeaderboardScreen() {
           </TouchableOpacity>
           
           <View style={styles.logoSection}>
-            <View style={styles.logoContainer}>
-              <Ionicons name="diamond" size={28} color="white" />
-            </View>
-            <Text style={styles.appTitle}>ANANTA</Text>
+            <Text style={styles.appTitle}>Leaderboard</Text>
           </View>
           
           <View style={styles.headerActions}>
-            <TouchableOpacity style={styles.iconButton}>
-              <Ionicons name="search" size={22} color="white" />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.iconButton}>
-              <Ionicons name="notifications-outline" size={22} color="white" />
-            </TouchableOpacity>
           </View>
         </View>
       </LinearGradient>

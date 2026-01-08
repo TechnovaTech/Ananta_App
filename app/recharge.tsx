@@ -7,11 +7,15 @@ import {
   ScrollView,
   ActivityIndicator,
   Alert,
+  StatusBar,
+  Dimensions,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import { Colors } from '@/constants/theme';
 import { useTheme } from '../contexts/ThemeContext';
+import { LinearGradient } from 'expo-linear-gradient';
+
+const { width, height } = Dimensions.get('window');
 
 interface RechargePlan {
   id: string;
@@ -58,8 +62,6 @@ export default function RechargeScreen() {
     { id: '3', date: '2025-11-27', planName: 'Basic', amount: 50, status: 'Success', coinsAdded: 100 },
     { id: '4', date: '2025-11-26', planName: 'Platinum', amount: 500, status: 'Success', coinsAdded: 1500 },
     { id: '5', date: '2025-11-25', planName: 'Silver', amount: 100, status: 'Success', coinsAdded: 250 },
-    { id: '6', date: '2025-11-24', planName: 'Gold', amount: 200, status: 'Failed', coinsAdded: 0 },
-    { id: '7', date: '2025-11-23', planName: 'Basic', amount: 50, status: 'Success', coinsAdded: 100 },
   ];
 
   const handlePlanSelect = (plan: RechargePlan) => {
@@ -76,7 +78,6 @@ export default function RechargeScreen() {
     
     setLoading(true);
     try {
-      // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000));
       const newOrderId = Math.floor(Math.random() * 1000) + 100;
       setOrderId(newOrderId.toString());
@@ -91,9 +92,8 @@ export default function RechargeScreen() {
   const handleCompletePayment = async () => {
     setLoading(true);
     try {
-      // Simulate payment processing
       await new Promise(resolve => setTimeout(resolve, 3000));
-      const success = Math.random() > 0.3; // 70% success rate
+      const success = Math.random() > 0.3;
       setPaymentSuccess(success);
       setCurrentStep('complete');
     } catch (error) {
@@ -106,7 +106,7 @@ export default function RechargeScreen() {
 
   const renderPlansSection = () => (
     <View style={styles.section}>
-      <Text style={[styles.sectionTitle, { color: isDark ? 'white' : '#333' }]}>Available Recharge Plans</Text>
+      <Text style={[styles.sectionTitle, { color: isDark ? 'white' : '#333' }]}>Choose Your Plan</Text>
       
       {rechargePlans.map((plan) => (
         <TouchableOpacity
@@ -114,9 +114,9 @@ export default function RechargeScreen() {
           style={[
             styles.planCard,
             {
-              backgroundColor: isDark ? '#333' : 'white',
-              borderColor: selectedPlan?.id === plan.id ? Colors.light.primary : (isDark ? '#555' : '#e0e0e0'),
-              borderWidth: selectedPlan?.id === plan.id ? 2 : 1,
+              backgroundColor: isDark ? '#1a1a1a' : 'white',
+              borderColor: selectedPlan?.id === plan.id ? '#127d96' : 'transparent',
+              borderWidth: selectedPlan?.id === plan.id ? 2 : 0,
             }
           ]}
           onPress={() => handlePlanSelect(plan)}
@@ -128,38 +128,45 @@ export default function RechargeScreen() {
           )}
           
           <View style={styles.planContent}>
-            <View style={styles.planInfo}>
-              <Text style={[styles.planName, { color: isDark ? 'white' : '#333' }]}>{plan.name}</Text>
-              <Text style={[styles.planPrice, { color: Colors.light.primary }]}>₹{plan.price}</Text>
-            </View>
-            
-            <View style={styles.planBenefits}>
-              <View style={styles.coinInfo}>
-                <Ionicons name="diamond" size={16} color="#FFD700" />
+            <View style={styles.planLeft}>
+              <View style={styles.planIconContainer}>
+                <Ionicons name="diamond" size={24} color="#B8860B" />
+              </View>
+              <View style={styles.planInfo}>
+                <Text style={[styles.planName, { color: isDark ? 'white' : '#333' }]}>{plan.name}</Text>
                 <Text style={[styles.coinText, { color: isDark ? '#ccc' : '#666' }]}>{plan.coins} coins</Text>
               </View>
             </View>
             
-            <View style={[
-              styles.selectButton,
-              {
-                backgroundColor: selectedPlan?.id === plan.id ? Colors.light.primary : (isDark ? '#555' : '#f0f0f0')
-              }
-            ]}>
-              <Text style={[
-                styles.selectButtonText,
-                { color: selectedPlan?.id === plan.id ? 'white' : (isDark ? '#ccc' : '#666') }
+            <View style={styles.planRight}>
+              <Text style={[styles.planPrice, { color: '#127d96' }]}>₹{plan.price}</Text>
+              <View style={[
+                styles.selectButton,
+                {
+                  backgroundColor: selectedPlan?.id === plan.id ? '#127d96' : 'rgba(18,125,150,0.1)'
+                }
               ]}>
-                {selectedPlan?.id === plan.id ? 'Selected' : 'Select'}
-              </Text>
+                <Text style={[
+                  styles.selectButtonText,
+                  { color: selectedPlan?.id === plan.id ? 'white' : '#127d96' }
+                ]}>
+                  {selectedPlan?.id === plan.id ? 'Selected' : 'Select'}
+                </Text>
+              </View>
             </View>
           </View>
         </TouchableOpacity>
       ))}
       
       {selectedPlan && (
-        <TouchableOpacity style={styles.proceedButton} onPress={handleProceedToPayment}>
-          <Text style={styles.proceedButtonText}>Proceed to Payment</Text>
+        <TouchableOpacity style={styles.proceedButtonContainer} onPress={handleProceedToPayment}>
+          <LinearGradient
+            colors={['#127d96', '#15a3c7']}
+            style={styles.proceedButton}
+          >
+            <Text style={styles.proceedButtonText}>Proceed to Payment</Text>
+            <Ionicons name="arrow-forward" size={20} color="white" />
+          </LinearGradient>
         </TouchableOpacity>
       )}
     </View>
@@ -167,62 +174,89 @@ export default function RechargeScreen() {
 
   const renderPaymentSection = () => (
     <View style={styles.section}>
-      <Text style={[styles.sectionTitle, { color: isDark ? 'white' : '#333' }]}>Choose Payment Method</Text>
+      <Text style={[styles.sectionTitle, { color: isDark ? 'white' : '#333' }]}>Payment Method</Text>
       
       {(['UPI', 'Card', 'Wallet'] as PaymentMethod[]).map((method) => (
         <TouchableOpacity
           key={method}
           style={[
             styles.paymentOption,
-            { backgroundColor: isDark ? '#333' : 'white' }
+            { backgroundColor: isDark ? '#1a1a1a' : 'white' }
           ]}
           onPress={() => setPaymentMethod(method)}
         >
-          <View style={styles.radioButton}>
-            <View style={[
-              styles.radioInner,
-              { backgroundColor: paymentMethod === method ? Colors.light.primary : 'transparent' }
-            ]} />
+          <View style={styles.paymentLeft}>
+            <View style={styles.radioButton}>
+              <View style={[
+                styles.radioInner,
+                { backgroundColor: paymentMethod === method ? '#127d96' : 'transparent' }
+              ]} />
+            </View>
+            <Ionicons 
+              name={method === 'UPI' ? 'phone-portrait' : method === 'Card' ? 'card' : 'wallet'} 
+              size={24} 
+              color="#127d96" 
+            />
+            <Text style={[styles.paymentText, { color: isDark ? 'white' : '#333' }]}>{method}</Text>
           </View>
-          <Text style={[styles.paymentText, { color: isDark ? 'white' : '#333' }]}>{method}</Text>
         </TouchableOpacity>
       ))}
       
       <TouchableOpacity 
-        style={[styles.proceedButton, { opacity: loading ? 0.7 : 1 }]} 
+        style={styles.proceedButtonContainer}
         onPress={handleCreateOrder}
         disabled={loading}
       >
-        {loading ? (
-          <ActivityIndicator color="white" />
-        ) : (
-          <Text style={styles.proceedButtonText}>Create Order</Text>
-        )}
+        <LinearGradient
+          colors={loading ? ['#ccc', '#999'] : ['#127d96', '#15a3c7']}
+          style={styles.proceedButton}
+        >
+          {loading ? (
+            <ActivityIndicator color="white" />
+          ) : (
+            <>
+              <Text style={styles.proceedButtonText}>Create Order</Text>
+              <Ionicons name="checkmark" size={20} color="white" />
+            </>
+          )}
+        </LinearGradient>
       </TouchableOpacity>
     </View>
   );
 
   const renderOrderSection = () => (
     <View style={styles.section}>
-      <View style={styles.orderSuccess}>
-        <Ionicons name="checkmark-circle" size={64} color="#4CAF50" />
-        <Text style={[styles.orderTitle, { color: isDark ? 'white' : '#333' }]}>Order Created!</Text>
+      <View style={styles.successContainer}>
+        <View style={styles.successIcon}>
+          <Ionicons name="checkmark-circle" size={64} color="#4CAF50" />
+        </View>
+        <Text style={[styles.successTitle, { color: isDark ? 'white' : '#333' }]}>Order Created!</Text>
         
-        <View style={styles.orderDetails}>
-          <Text style={[styles.orderText, { color: isDark ? '#ccc' : '#666' }]}>Amount: ₹{selectedPlan?.price}</Text>
-          <Text style={[styles.orderText, { color: isDark ? '#ccc' : '#666' }]}>Order ID: {orderId}</Text>
+        <View style={[styles.orderCard, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}>
+          <Text style={[styles.orderLabel, { color: isDark ? '#ccc' : '#666' }]}>Order Details</Text>
+          <Text style={[styles.orderText, { color: isDark ? 'white' : '#333' }]}>Amount: ₹{selectedPlan?.price}</Text>
+          <Text style={[styles.orderText, { color: isDark ? 'white' : '#333' }]}>Order ID: {orderId}</Text>
+          <Text style={[styles.orderText, { color: isDark ? 'white' : '#333' }]}>Coins: {selectedPlan?.coins}</Text>
         </View>
         
         <TouchableOpacity 
-          style={[styles.proceedButton, { opacity: loading ? 0.7 : 1 }]} 
+          style={styles.proceedButtonContainer}
           onPress={handleCompletePayment}
           disabled={loading}
         >
-          {loading ? (
-            <ActivityIndicator color="white" />
-          ) : (
-            <Text style={styles.proceedButtonText}>Complete Payment</Text>
-          )}
+          <LinearGradient
+            colors={loading ? ['#ccc', '#999'] : ['#127d96', '#15a3c7']}
+            style={styles.proceedButton}
+          >
+            {loading ? (
+              <ActivityIndicator color="white" />
+            ) : (
+              <>
+                <Text style={styles.proceedButtonText}>Complete Payment</Text>
+                <Ionicons name="card" size={20} color="white" />
+              </>
+            )}
+          </LinearGradient>
         </TouchableOpacity>
       </View>
     </View>
@@ -230,89 +264,39 @@ export default function RechargeScreen() {
 
   const renderCompleteSection = () => (
     <View style={styles.section}>
-      <View style={styles.paymentResult}>
-        <Ionicons 
-          name={paymentSuccess ? "checkmark-circle" : "close-circle"} 
-          size={64} 
-          color={paymentSuccess ? "#4CAF50" : "#f44336"} 
-        />
-        <Text style={[styles.resultTitle, { color: isDark ? 'white' : '#333' }]}>
+      <View style={styles.successContainer}>
+        <View style={styles.successIcon}>
+          <Ionicons 
+            name={paymentSuccess ? "checkmark-circle" : "close-circle"} 
+            size={64} 
+            color={paymentSuccess ? "#4CAF50" : "#f44336"} 
+          />
+        </View>
+        <Text style={[styles.successTitle, { color: isDark ? 'white' : '#333' }]}>
           {paymentSuccess ? 'Payment Successful!' : 'Payment Failed'}
         </Text>
         
         {paymentSuccess && (
-          <Text style={[styles.coinsAdded, { color: '#4CAF50' }]}>Coins Added: {selectedPlan?.coins}</Text>
+          <Text style={[styles.coinsAdded, { color: '#4CAF50' }]}>+{selectedPlan?.coins} Coins Added!</Text>
         )}
         
         <TouchableOpacity 
-          style={styles.proceedButton} 
-          onPress={() => paymentSuccess ? setCurrentStep('history') : setCurrentStep('order')}
+          style={styles.proceedButtonContainer}
+          onPress={() => paymentSuccess ? router.back() : setCurrentStep('order')}
         >
-          <Text style={styles.proceedButtonText}>
-            {paymentSuccess ? 'Go to My Wallet' : 'Retry Payment'}
-          </Text>
+          <LinearGradient
+            colors={['#127d96', '#15a3c7']}
+            style={styles.proceedButton}
+          >
+            <Text style={styles.proceedButtonText}>
+              {paymentSuccess ? 'Back to Wallet' : 'Retry Payment'}
+            </Text>
+            <Ionicons name={paymentSuccess ? "wallet" : "refresh"} size={20} color="white" />
+          </LinearGradient>
         </TouchableOpacity>
       </View>
     </View>
   );
-
-  const renderHistorySection = () => {
-    const startIndex = (currentPage - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
-    const paginatedHistory = rechargeHistory.slice(startIndex, endIndex);
-    const totalPages = Math.ceil(rechargeHistory.length / pageSize);
-
-    return (
-      <View style={styles.section}>
-        <Text style={[styles.sectionTitle, { color: isDark ? 'white' : '#333' }]}>Recharge History</Text>
-        
-        <View style={[styles.historyHeader, { backgroundColor: isDark ? '#444' : '#f0f0f0' }]}>
-          <Text style={[styles.historyHeaderText, { color: isDark ? 'white' : '#333' }]}>Date</Text>
-          <Text style={[styles.historyHeaderText, { color: isDark ? 'white' : '#333' }]}>Plan</Text>
-          <Text style={[styles.historyHeaderText, { color: isDark ? 'white' : '#333' }]}>Amount</Text>
-          <Text style={[styles.historyHeaderText, { color: isDark ? 'white' : '#333' }]}>Status</Text>
-          <Text style={[styles.historyHeaderText, { color: isDark ? 'white' : '#333' }]}>Coins</Text>
-        </View>
-        
-        {paginatedHistory.map((item) => (
-          <View key={item.id} style={[styles.historyRow, { backgroundColor: isDark ? '#333' : 'white' }]}>
-            <Text style={[styles.historyText, { color: isDark ? '#ccc' : '#666' }]}>{item.date}</Text>
-            <Text style={[styles.historyText, { color: isDark ? '#ccc' : '#666' }]}>{item.planName}</Text>
-            <Text style={[styles.historyText, { color: isDark ? '#ccc' : '#666' }]}>₹{item.amount}</Text>
-            <Text style={[
-              styles.historyText,
-              { color: item.status === 'Success' ? '#4CAF50' : '#f44336' }
-            ]}>
-              {item.status}
-            </Text>
-            <Text style={[styles.historyText, { color: isDark ? '#ccc' : '#666' }]}>{item.coinsAdded}</Text>
-          </View>
-        ))}
-        
-        <View style={styles.pagination}>
-          <TouchableOpacity 
-            style={[styles.pageButton, { opacity: currentPage === 1 ? 0.5 : 1 }]}
-            onPress={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-            disabled={currentPage === 1}
-          >
-            <Text style={styles.pageButtonText}>Previous</Text>
-          </TouchableOpacity>
-          
-          <Text style={[styles.pageInfo, { color: isDark ? 'white' : '#333' }]}>
-            Page {currentPage} of {totalPages}
-          </Text>
-          
-          <TouchableOpacity 
-            style={[styles.pageButton, { opacity: currentPage === totalPages ? 0.5 : 1 }]}
-            onPress={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-            disabled={currentPage === totalPages}
-          >
-            <Text style={styles.pageButtonText}>Next</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  };
 
   const renderContent = () => {
     switch (currentStep) {
@@ -320,30 +304,40 @@ export default function RechargeScreen() {
       case 'payment': return renderPaymentSection();
       case 'order': return renderOrderSection();
       case 'complete': return renderCompleteSection();
-      case 'history': return renderHistorySection();
       default: return renderPlansSection();
     }
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f8f9fa' }]}>
-      <View style={[styles.header, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}>
-        <TouchableOpacity onPress={() => {
-          if (currentStep === 'plans') {
-            router.back();
-          } else {
-            setCurrentStep('plans');
-            setSelectedPlan(null);
-            setOrderId(null);
-          }
-        }}>
-          <Ionicons name="chevron-back" size={24} color={isDark ? 'white' : '#333'} />
-        </TouchableOpacity>
-        <Text style={[styles.headerTitle, { color: isDark ? 'white' : '#333' }]}>Recharge</Text>
-        <TouchableOpacity onPress={() => setCurrentStep('history')}>
-          <Ionicons name="time" size={24} color={isDark ? 'white' : '#333'} />
-        </TouchableOpacity>
-      </View>
+    <View style={[styles.container, { backgroundColor: isDark ? '#000' : '#f8f9fa' }]}>
+      <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} backgroundColor="transparent" translucent />
+      
+      {/* Modern Header */}
+      <LinearGradient
+        colors={['#127d96', '#15a3c7']}
+        style={styles.header}
+      >
+        <View style={styles.headerContent}>
+          <TouchableOpacity style={styles.backButton} onPress={() => {
+            if (currentStep === 'plans') {
+              router.back();
+            } else {
+              setCurrentStep('plans');
+              setSelectedPlan(null);
+              setOrderId(null);
+            }
+          }}>
+            <Ionicons name="arrow-back" size={24} color="white" />
+          </TouchableOpacity>
+          
+          <View style={styles.logoSection}>
+            <Text style={styles.appTitle}>Recharge</Text>
+          </View>
+          
+          <View style={styles.headerActions}>
+          </View>
+        </View>
+      </LinearGradient>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {renderContent()}
@@ -357,49 +351,64 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
+    paddingTop: height * 0.06,
+    paddingBottom: height * 0.025,
+    paddingHorizontal: width * 0.05,
+  },
+  headerContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  backButton: {
+    padding: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  logoSection: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingTop: 50,
-    paddingBottom: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
   },
-  headerTitle: {
-    fontSize: 18,
+  appTitle: {
+    fontSize: 24,
     fontWeight: 'bold',
+    color: 'white',
+    letterSpacing: 1,
+  },
+  headerActions: {
+    width: 40,
   },
   content: {
     flex: 1,
-    paddingHorizontal: 16,
+    paddingHorizontal: 20,
+    paddingBottom: height * 0.1,
   },
   section: {
-    paddingVertical: 16,
+    paddingVertical: 20,
   },
   sectionTitle: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 16,
+    marginBottom: 20,
   },
   planCard: {
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 12,
-    elevation: 2,
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 15,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
-    shadowRadius: 4,
+    shadowRadius: 8,
+    elevation: 4,
     position: 'relative',
   },
   popularBadge: {
     position: 'absolute',
     top: -8,
-    right: 16,
-    backgroundColor: Colors.light.primary,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+    right: 20,
+    backgroundColor: '#127d96',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
     borderRadius: 12,
     zIndex: 1,
   },
@@ -413,6 +422,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  planLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  planIconContainer: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: 'rgba(184,134,11,0.1)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 15,
+  },
   planInfo: {
     flex: 1,
   },
@@ -421,21 +444,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 4,
   },
-  planPrice: {
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  planBenefits: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  coinInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   coinText: {
-    marginLeft: 6,
     fontSize: 14,
+  },
+  planRight: {
+    alignItems: 'flex-end',
+  },
+  planPrice: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 8,
   },
   selectButton: {
     paddingHorizontal: 16,
@@ -446,12 +464,16 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '600',
   },
+  proceedButtonContainer: {
+    marginTop: 20,
+  },
   proceedButton: {
-    backgroundColor: Colors.light.primary,
-    paddingVertical: 16,
-    borderRadius: 12,
+    flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 16,
+    paddingVertical: 16,
+    borderRadius: 25,
+    gap: 10,
   },
   proceedButtonText: {
     color: 'white',
@@ -459,26 +481,28 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   paymentOption: {
+    padding: 20,
+    borderRadius: 12,
+    marginBottom: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  paymentLeft: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 16,
-    borderRadius: 8,
-    marginBottom: 8,
-    elevation: 1,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
   },
   radioButton: {
     width: 20,
     height: 20,
     borderRadius: 10,
     borderWidth: 2,
-    borderColor: Colors.light.primary,
+    borderColor: '#127d96',
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 12,
+    marginRight: 15,
   },
   radioInner: {
     width: 10,
@@ -487,89 +511,44 @@ const styles = StyleSheet.create({
   },
   paymentText: {
     fontSize: 16,
+    fontWeight: '500',
+    marginLeft: 15,
   },
-  orderSuccess: {
+  successContainer: {
     alignItems: 'center',
-    paddingVertical: 32,
+    paddingVertical: 40,
   },
-  orderTitle: {
-    fontSize: 24,
+  successIcon: {
+    marginBottom: 20,
+  },
+  successTitle: {
+    fontSize: 28,
     fontWeight: 'bold',
-    marginTop: 16,
-    marginBottom: 16,
+    marginBottom: 20,
   },
-  orderDetails: {
-    alignItems: 'center',
-    marginBottom: 24,
+  orderCard: {
+    width: '100%',
+    padding: 20,
+    borderRadius: 16,
+    marginBottom: 30,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  orderLabel: {
+    fontSize: 14,
+    marginBottom: 10,
   },
   orderText: {
     fontSize: 16,
+    fontWeight: '500',
     marginBottom: 8,
-  },
-  paymentResult: {
-    alignItems: 'center',
-    paddingVertical: 32,
-  },
-  resultTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginTop: 16,
-    marginBottom: 16,
   },
   coinsAdded: {
-    fontSize: 18,
-    fontWeight: '600',
-    marginBottom: 24,
-  },
-  historyHeader: {
-    flexDirection: 'row',
-    paddingVertical: 12,
-    paddingHorizontal: 8,
-    borderRadius: 8,
-    marginBottom: 8,
-  },
-  historyHeaderText: {
-    flex: 1,
-    fontSize: 12,
+    fontSize: 20,
     fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  historyRow: {
-    flexDirection: 'row',
-    paddingVertical: 12,
-    paddingHorizontal: 8,
-    borderRadius: 8,
-    marginBottom: 4,
-    elevation: 1,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-  },
-  historyText: {
-    flex: 1,
-    fontSize: 12,
-    textAlign: 'center',
-  },
-  pagination: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 16,
-    paddingHorizontal: 16,
-  },
-  pageButton: {
-    backgroundColor: Colors.light.primary,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-  },
-  pageButtonText: {
-    color: 'white',
-    fontSize: 12,
-    fontWeight: '600',
-  },
-  pageInfo: {
-    fontSize: 14,
+    marginBottom: 30,
   },
 });

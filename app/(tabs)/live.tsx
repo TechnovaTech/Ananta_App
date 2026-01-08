@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, StatusBar, Text, Dimensions, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -6,6 +6,9 @@ import { Colors } from '@/constants/theme';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { useTheme } from '@/contexts/ThemeContext';
+import { Ionicons } from '@expo/vector-icons';
+
+const { width, height } = Dimensions.get('window');
 
 export default function LiveScreen() {
   const { isDark } = useTheme();
@@ -20,13 +23,22 @@ export default function LiveScreen() {
   };
 
   return (
-    <ThemedView style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}>
-      <View style={[styles.header, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}>
-        <View style={styles.titleContainer}>
-          <ThemedText style={[styles.title, { color: isDark ? 'white' : 'black' }]}>Ananta</ThemedText>
-          <View style={styles.titleUnderline} />
+    <View style={[styles.container, { backgroundColor: isDark ? '#000' : '#f8f9fa' }]}>
+      <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} backgroundColor="transparent" translucent />
+      
+      {/* Modern Header */}
+      <LinearGradient
+        colors={['#127d96', '#15a3c7']}
+        style={styles.header}
+      >
+        <View style={styles.headerContent}>
+          <View style={styles.logoSection}>
+            <Text style={styles.appTitle}>ANANTA</Text>
+          </View>
         </View>
-      </View>
+      </LinearGradient>
+      
+
 
       <View style={styles.content}>
         <View style={styles.liveOptions}>
@@ -57,42 +69,77 @@ export default function LiveScreen() {
           disabled={!selectedType}
         >
           <LinearGradient
-            colors={selectedType ? [Colors.light.primary, Colors.light.primaryDark] : ['#ccc', '#999']}
+            colors={selectedType ? ['#127d96', '#15a3c7'] : ['#ccc', '#999']}
             style={styles.startLiveButton}
           >
             <ThemedText style={styles.startLiveText}>Start Live</ThemedText>
           </LinearGradient>
         </TouchableOpacity>
       </View>
-    </ThemedView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
   },
   header: {
+    paddingTop: height * 0.06,
+    paddingBottom: height * 0.025,
+    paddingHorizontal: width * 0.05,
+  },
+  headerContent: {
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingTop: 50,
-    paddingBottom: 20,
   },
-  titleContainer: {
+  logoSection: {
+    flexDirection: 'row',
     alignItems: 'center',
   },
-  title: {
+  appTitle: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: 'black',
+    color: 'white',
+    letterSpacing: 1,
   },
-  titleUnderline: {
-    width: 100,
-    height: 3,
-    backgroundColor: Colors.light.primary,
-    marginTop: 2,
+  headerActions: {
+    flexDirection: 'row',
+    gap: width * 0.04,
+  },
+  iconButton: {
+    padding: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  tabContainer: {
+    paddingVertical: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(0,0,0,0.1)',
+  },
+  tabScrollContent: {
+    paddingHorizontal: 20,
+    gap: 15,
+  },
+  tab: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    backgroundColor: 'rgba(18,125,150,0.1)',
+    gap: 6,
+  },
+  activeTab: {
+    backgroundColor: '#127d96',
+  },
+  tabText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#127d96',
+  },
+  activeTabText: {
+    color: 'white',
   },
   content: {
     flex: 1,
@@ -104,6 +151,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 40,
     marginBottom: 80,
+    justifyContent: 'center',
   },
   liveOption: {
     alignItems: 'center',
@@ -133,6 +181,7 @@ const styles = StyleSheet.create({
   },
   startLiveButtonContainer: {
     width: '100%',
+    paddingHorizontal: 40,
   },
   startLiveButton: {
     height: 50,

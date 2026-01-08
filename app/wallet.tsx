@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, StatusBar, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { useTheme } from '../contexts/ThemeContext';
-import { Colors } from '@/constants/theme';
+import { LinearGradient } from 'expo-linear-gradient';
+
+const { width, height } = Dimensions.get('window');
 
 interface Transaction {
   id: string;
@@ -39,52 +41,70 @@ export default function WalletScreen() {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f8f9fa' }]}>
-      {/* Header */}
-      <View style={[styles.header, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}>
-        <TouchableOpacity onPress={() => router.back()}>
-          <Ionicons name="chevron-back" size={24} color={isDark ? 'white' : '#333'} />
-        </TouchableOpacity>
-        <Text style={[styles.headerTitle, { color: isDark ? 'white' : '#333' }]}>My Wallet</Text>
-        <TouchableOpacity onPress={() => router.push('/recharge')}>
-          <Ionicons name="add" size={24} color={Colors.light.primary} />
-        </TouchableOpacity>
-      </View>
+    <View style={[styles.container, { backgroundColor: isDark ? '#000' : '#f8f9fa' }]}>
+      <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} backgroundColor="transparent" translucent />
+      
+      {/* Modern Header */}
+      <LinearGradient
+        colors={['#127d96', '#15a3c7']}
+        style={styles.header}
+      >
+        <View style={styles.headerContent}>
+          <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+            <Ionicons name="arrow-back" size={24} color="white" />
+          </TouchableOpacity>
+          
+          <View style={styles.logoSection}>
+            <Text style={styles.appTitle}>My Wallet</Text>
+          </View>
+          
+          <TouchableOpacity style={styles.addButton} onPress={() => router.push('/recharge')}>
+            <Ionicons name="add" size={24} color="white" />
+          </TouchableOpacity>
+        </View>
+      </LinearGradient>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Balance Card */}
-        <View style={[styles.balanceCard, { backgroundColor: Colors.light.primary }]}>
+        <LinearGradient
+          colors={['#127d96', '#0a5d75', '#083d4f']}
+          style={styles.balanceCard}
+        >
           <View style={styles.balanceHeader}>
             <Ionicons name="diamond" size={32} color="white" />
             <Text style={styles.balanceLabel}>Total Balance</Text>
           </View>
           <Text style={styles.balanceAmount}>{balance.toLocaleString()} Coins</Text>
           <Text style={styles.balanceSubtext}>≈ ₹{(balance * 0.5).toLocaleString()}</Text>
-        </View>
+        </LinearGradient>
 
         {/* Quick Actions */}
         <View style={styles.quickActions}>
           <TouchableOpacity 
-            style={[styles.actionButton, { backgroundColor: isDark ? '#333' : 'white' }]}
+            style={[styles.actionButton, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}
             onPress={() => router.push('/recharge')}
           >
-            <Ionicons name="add-circle" size={24} color="#4CAF50" />
+            <View style={styles.actionIconContainer}>
+              <Ionicons name="add-circle" size={24} color="#4CAF50" />
+            </View>
             <Text style={[styles.actionText, { color: isDark ? 'white' : '#333' }]}>Recharge</Text>
           </TouchableOpacity>
           
           <TouchableOpacity 
-            style={[styles.actionButton, { backgroundColor: isDark ? '#333' : 'white' }]}
-            onPress={() => {/* Add send coins functionality */}}
+            style={[styles.actionButton, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}
           >
-            <Ionicons name="send" size={24} color="#2196F3" />
+            <View style={styles.actionIconContainer}>
+              <Ionicons name="send" size={24} color="#2196F3" />
+            </View>
             <Text style={[styles.actionText, { color: isDark ? 'white' : '#333' }]}>Send</Text>
           </TouchableOpacity>
           
           <TouchableOpacity 
-            style={[styles.actionButton, { backgroundColor: isDark ? '#333' : 'white' }]}
-            onPress={() => {/* Add withdraw functionality */}}
+            style={[styles.actionButton, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}
           >
-            <Ionicons name="card" size={24} color="#FF9800" />
+            <View style={styles.actionIconContainer}>
+              <Ionicons name="card" size={24} color="#FF9800" />
+            </View>
             <Text style={[styles.actionText, { color: isDark ? 'white' : '#333' }]}>Withdraw</Text>
           </TouchableOpacity>
         </View>
@@ -94,12 +114,12 @@ export default function WalletScreen() {
           <View style={styles.sectionHeader}>
             <Text style={[styles.sectionTitle, { color: isDark ? 'white' : '#333' }]}>Recent Transactions</Text>
             <TouchableOpacity>
-              <Text style={[styles.viewAllText, { color: Colors.light.primary }]}>View All</Text>
+              <Text style={styles.viewAllText}>View All</Text>
             </TouchableOpacity>
           </View>
           
           {transactions.map((transaction) => (
-            <View key={transaction.id} style={[styles.transactionItem, { backgroundColor: isDark ? '#333' : 'white' }]}>
+            <TouchableOpacity key={transaction.id} style={[styles.transactionItem, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}>
               <View style={styles.transactionLeft}>
                 <View style={[styles.transactionIcon, { backgroundColor: getTransactionColor(transaction.type, transaction.status) + '20' }]}>
                   <Ionicons 
@@ -129,12 +149,12 @@ export default function WalletScreen() {
                   {transaction.status}
                 </Text>
               </View>
-            </View>
+            </TouchableOpacity>
           ))}
         </View>
 
         {/* Wallet Stats */}
-        <View style={[styles.statsCard, { backgroundColor: isDark ? '#333' : 'white' }]}>
+        <View style={[styles.statsCard, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}>
           <Text style={[styles.statsTitle, { color: isDark ? 'white' : '#333' }]}>This Month</Text>
           
           <View style={styles.statsRow}>
@@ -149,7 +169,7 @@ export default function WalletScreen() {
             </View>
             
             <View style={styles.statItem}>
-              <Text style={[styles.statValue, { color: Colors.light.primary }]}>12</Text>
+              <Text style={[styles.statValue, { color: '#127d96' }]}>12</Text>
               <Text style={[styles.statLabel, { color: isDark ? '#888' : '#666' }]}>Transactions</Text>
             </View>
           </View>
@@ -164,32 +184,49 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
+    paddingTop: height * 0.06,
+    paddingBottom: height * 0.025,
+    paddingHorizontal: width * 0.05,
+  },
+  headerContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  backButton: {
+    padding: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  logoSection: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingTop: 50,
-    paddingBottom: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
   },
-  headerTitle: {
-    fontSize: 18,
+  appTitle: {
+    fontSize: 24,
     fontWeight: 'bold',
+    color: 'white',
+    letterSpacing: 1,
+  },
+  addButton: {
+    padding: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   content: {
     flex: 1,
-    paddingHorizontal: 16,
+    paddingHorizontal: 20,
+    paddingBottom: height * 0.1,
   },
   balanceCard: {
-    borderRadius: 16,
+    borderRadius: 20,
     padding: 24,
-    marginVertical: 16,
-    elevation: 4,
+    marginVertical: 20,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
+    shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.3,
-    shadowRadius: 8,
+    shadowRadius: 12,
+    elevation: 8,
   },
   balanceHeader: {
     flexDirection: 'row',
@@ -204,39 +241,47 @@ const styles = StyleSheet.create({
   },
   balanceAmount: {
     color: 'white',
-    fontSize: 32,
+    fontSize: 36,
     fontWeight: 'bold',
     marginBottom: 4,
   },
   balanceSubtext: {
     color: 'white',
-    fontSize: 14,
+    fontSize: 16,
     opacity: 0.8,
   },
   quickActions: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 24,
+    marginBottom: 30,
+    gap: 15,
   },
   actionButton: {
     flex: 1,
     alignItems: 'center',
-    padding: 16,
-    marginHorizontal: 4,
-    borderRadius: 12,
-    elevation: 2,
+    padding: 20,
+    borderRadius: 16,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
-    shadowRadius: 4,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  actionIconContainer: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: 'rgba(18,125,150,0.1)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 8,
   },
   actionText: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '600',
-    marginTop: 8,
   },
   section: {
-    marginBottom: 24,
+    marginBottom: 30,
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -245,12 +290,13 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   sectionTitle: {
-    fontSize: 18,
-    fontWeight: '600',
+    fontSize: 20,
+    fontWeight: '700',
   },
   viewAllText: {
     fontSize: 14,
     fontWeight: '600',
+    color: '#127d96',
   },
   transactionItem: {
     flexDirection: 'row',
@@ -258,12 +304,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 16,
     borderRadius: 12,
-    marginBottom: 8,
-    elevation: 1,
+    marginBottom: 10,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 2,
+    shadowRadius: 8,
+    elevation: 3,
   },
   transactionLeft: {
     flexDirection: 'row',
@@ -282,9 +328,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   transactionDescription: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '600',
-    marginBottom: 2,
+    marginBottom: 4,
   },
   transactionDate: {
     fontSize: 12,
@@ -302,19 +348,19 @@ const styles = StyleSheet.create({
     textTransform: 'capitalize',
   },
   statsCard: {
-    borderRadius: 12,
-    padding: 20,
-    marginBottom: 24,
-    elevation: 2,
+    borderRadius: 16,
+    padding: 24,
+    marginBottom: 30,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
-    shadowRadius: 4,
+    shadowRadius: 8,
+    elevation: 4,
   },
   statsTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 16,
+    fontSize: 18,
+    fontWeight: '700',
+    marginBottom: 20,
   },
   statsRow: {
     flexDirection: 'row',
@@ -324,7 +370,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   statValue: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 4,
   },

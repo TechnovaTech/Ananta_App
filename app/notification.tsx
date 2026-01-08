@@ -7,10 +7,14 @@ import {
   StatusBar,
   ScrollView,
   Image,
+  Dimensions,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { useTheme } from '../contexts/ThemeContext';
+import { LinearGradient } from 'expo-linear-gradient';
+
+const { width, height } = Dimensions.get('window');
 
 export default function NotificationScreen() {
   const { isDark } = useTheme();
@@ -20,7 +24,7 @@ export default function NotificationScreen() {
       user: 'Mr.Jimmy',
       message: 'Started following you.',
       time: '5 hour ago',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop&crop=face',
+      avatar: require('@/assets/images/h1.png.png'),
       type: 'follow',
       hasAction: false
     },
@@ -29,7 +33,7 @@ export default function NotificationScreen() {
       user: 'Roy niger',
       message: 'stared live video',
       time: '30 min ago',
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50&h=50&fit=crop&crop=face',
+      avatar: require('@/assets/images/h2.png.png'),
       type: 'live',
       hasAction: false
     },
@@ -38,16 +42,34 @@ export default function NotificationScreen() {
       user: 'James anderson',
       message: 'want to join your live stream.',
       time: '30 min ago',
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50&h=50&fit=crop&crop=face',
+      avatar: require('@/assets/images/h3.png.png'),
       type: 'request',
       hasAction: true
+    },
+    {
+      id: 4,
+      user: 'Sarah Wilson',
+      message: 'liked your live stream.',
+      time: '1 hour ago',
+      avatar: require('@/assets/images/h4.png.png'),
+      type: 'like',
+      hasAction: false
+    },
+    {
+      id: 5,
+      user: 'Mike Johnson',
+      message: 'sent you a gift.',
+      time: '2 hours ago',
+      avatar: require('@/assets/images/h1.png.png'),
+      type: 'gift',
+      hasAction: false
     }
   ];
 
   const renderNotification = (notification) => (
-    <View key={notification.id} style={[styles.notificationItem, { borderBottomColor: isDark ? '#555' : '#f0f0f0' }]}>
+    <TouchableOpacity key={notification.id} style={[styles.notificationItem, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}>
       <View style={styles.avatarContainer}>
-        <Image source={{ uri: notification.avatar }} style={styles.avatar} />
+        <Image source={notification.avatar} style={styles.avatar} />
         {notification.type === 'follow' && (
           <View style={styles.followBadge}>
             <Ionicons name="person-add" size={12} color="white" />
@@ -58,48 +80,75 @@ export default function NotificationScreen() {
             <Ionicons name="videocam" size={12} color="white" />
           </View>
         )}
+        {notification.type === 'like' && (
+          <View style={styles.likeBadge}>
+            <Ionicons name="heart" size={12} color="white" />
+          </View>
+        )}
+        {notification.type === 'gift' && (
+          <View style={styles.giftBadge}>
+            <Ionicons name="gift" size={12} color="white" />
+          </View>
+        )}
       </View>
       
       <View style={styles.notificationContent}>
         <View style={styles.messageContainer}>
           <Text style={styles.notificationText}>
             <Text style={[styles.userName, { color: isDark ? 'white' : '#333' }]}>{notification.user} </Text>
-            <Text style={[styles.messageText, { color: isDark ? '#ccc' : '#333' }]}>{notification.message}</Text>
+            <Text style={[styles.messageText, { color: isDark ? '#ccc' : '#666' }]}>{notification.message}</Text>
           </Text>
-          <Text style={[styles.timeText, { color: isDark ? '#aaa' : '#666' }]}>{notification.time}</Text>
+          <Text style={[styles.timeText, { color: isDark ? '#888' : '#999' }]}>{notification.time}</Text>
         </View>
         
         {notification.hasAction && (
-          <TouchableOpacity style={[styles.acceptButton, { backgroundColor: isDark ? '#555' : '#333' }]}>
-            <Text style={styles.acceptButtonText}>Accept</Text>
+          <TouchableOpacity style={styles.acceptButton}>
+            <LinearGradient
+              colors={['#127d96', '#15a3c7']}
+              style={styles.acceptButtonGradient}
+            >
+              <Text style={styles.acceptButtonText}>Accept</Text>
+            </LinearGradient>
           </TouchableOpacity>
         )}
       </View>
       
       <View style={styles.rightSection}>
         <TouchableOpacity style={styles.moreButton}>
-          <Text style={[styles.moreIcon, { color: isDark ? '#ccc' : '#666' }]}>•</Text>
+          <Ionicons name="ellipsis-vertical" size={16} color={isDark ? '#ccc' : '#666'} />
         </TouchableOpacity>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 
   return (
-    <View style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f8f9fa' }]}>
-      <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
+    <View style={[styles.container, { backgroundColor: isDark ? '#000' : '#f8f9fa' }]}>
+      <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} backgroundColor="transparent" translucent />
       
-      {/* Header */}
-      <View style={[styles.header, { backgroundColor: isDark ? '#333' : 'white', borderBottomColor: isDark ? '#555' : '#127d96' }]}>
-        <TouchableOpacity onPress={() => router.back()}>
-          <Ionicons name="chevron-back" size={24} color={isDark ? 'white' : '#333'} />
-        </TouchableOpacity>
-        <Text style={[styles.headerTitle, { color: isDark ? 'white' : '#333' }]}>Notification</Text>
-        <View style={styles.placeholder} />
-      </View>
+      {/* Modern Header */}
+      <LinearGradient
+        colors={['#127d96', '#15a3c7']}
+        style={styles.header}
+      >
+        <View style={styles.headerContent}>
+          <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+            <Ionicons name="arrow-back" size={24} color="white" />
+          </TouchableOpacity>
+          
+          <View style={styles.logoSection}>
+            <Text style={styles.appTitle}>Notifications</Text>
+          </View>
+          
+          <View style={styles.headerActions}>
+          </View>
+        </View>
+      </LinearGradient>
       
       {/* Notifications List */}
-      <ScrollView style={[styles.content, { backgroundColor: isDark ? '#333' : 'white' }]}>
-        {notifications.map(renderNotification)}
+      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+        <View style={styles.notificationsList}>
+          {notifications.map(renderNotification)}
+        </View>
       </ScrollView>
     </View>
   );
@@ -110,30 +159,52 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
+    paddingTop: height * 0.06,
+    paddingBottom: height * 0.025,
+    paddingHorizontal: width * 0.05,
+  },
+  headerContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingTop: 50,
-    paddingVertical: 15,
-    borderBottomWidth: 2,
   },
-  headerTitle: {
-    fontSize: 18,
+  backButton: {
+    padding: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  logoSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  appTitle: {
+    fontSize: 24,
     fontWeight: 'bold',
+    color: 'white',
+    letterSpacing: 1,
   },
-  placeholder: {
-    width: 24,
+  headerActions: {
+    width: 40,
   },
   content: {
     flex: 1,
+    paddingBottom: height * 0.1,
+  },
+  notificationsList: {
     paddingTop: 10,
   },
   notificationItem: {
     flexDirection: 'row',
     paddingHorizontal: 20,
     paddingVertical: 15,
-    borderBottomWidth: 1,
+    marginHorizontal: 15,
+    marginVertical: 5,
+    borderRadius: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
   },
   avatarContainer: {
     position: 'relative',
@@ -170,6 +241,32 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: 'white',
   },
+  likeBadge: {
+    position: 'absolute',
+    bottom: -2,
+    right: -2,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: '#ff6b6b',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: 'white',
+  },
+  giftBadge: {
+    position: 'absolute',
+    bottom: -2,
+    right: -2,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: '#ffd93d',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: 'white',
+  },
   notificationContent: {
     flex: 1,
     justifyContent: 'center',
@@ -179,23 +276,26 @@ const styles = StyleSheet.create({
   },
   notificationText: {
     fontSize: 16,
-    lineHeight: 20,
-    marginBottom: 4,
+    lineHeight: 22,
+    marginBottom: 6,
   },
   userName: {
     fontWeight: 'bold',
   },
   messageText: {
+    fontWeight: '400',
   },
   timeText: {
     fontSize: 12,
   },
   acceptButton: {
-    paddingHorizontal: 15,
-    paddingVertical: 6,
-    borderRadius: 15,
     alignSelf: 'flex-start',
-    marginTop: 5,
+    marginTop: 8,
+  },
+  acceptButtonGradient: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
   },
   acceptButtonText: {
     color: 'white',
@@ -208,10 +308,6 @@ const styles = StyleSheet.create({
     width: 30,
   },
   moreButton: {
-    padding: 5,
-  },
-  moreIcon: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    padding: 8,
   },
 });

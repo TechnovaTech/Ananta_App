@@ -7,10 +7,14 @@ import {
   StatusBar,
   ScrollView,
   Image,
+  Dimensions,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useTheme } from '../contexts/ThemeContext';
+
+const { width, height } = Dimensions.get('window');
 
 export default function BackPackScreen() {
   const { isDark } = useTheme();
@@ -133,7 +137,7 @@ export default function BackPackScreen() {
   ];
 
   const renderGift = (gift) => (
-    <View key={gift.id} style={[styles.itemCard, { borderBottomColor: isDark ? '#555' : '#f0f0f0' }]}>
+    <View key={gift.id} style={[styles.itemCard, { backgroundColor: isDark ? '#2a2a2a' : 'white' }]}>
       <Image source={{ uri: gift.image }} style={styles.itemImage} />
       <View style={styles.itemInfo}>
         <Text style={[styles.itemName, { color: isDark ? 'white' : '#333' }]}>{gift.name}</Text>
@@ -146,7 +150,7 @@ export default function BackPackScreen() {
   );
 
   const renderItem = (item) => (
-    <View key={item.id} style={styles.itemCard}>
+    <View key={item.id} style={[styles.itemCard, { backgroundColor: isDark ? '#2a2a2a' : 'white' }]}>
       <Image source={{ uri: item.image }} style={styles.itemImage} />
       <View style={styles.itemInfo}>
         <Text style={[styles.itemName, { color: isDark ? 'white' : '#333' }]}>{item.name}</Text>
@@ -160,24 +164,27 @@ export default function BackPackScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f8f9fa' }]}>
-      <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
+      <StatusBar barStyle="light-content" />
       
       {/* Header */}
-      <View style={[styles.header, { backgroundColor: isDark ? '#333' : 'white', borderBottomColor: isDark ? '#555' : '#127d96' }]}>
-        <TouchableOpacity onPress={() => router.back()}>
-          <Ionicons name="chevron-back" size={24} color={isDark ? 'white' : '#333'} />
+      <LinearGradient
+        colors={['#127d96', '#15a3c7']}
+        style={styles.header}
+      >
+        <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
-        <Text style={[styles.headerTitle, { color: isDark ? 'white' : '#333' }]}>Inventory & Back-Pack</Text>
+        <Text style={styles.headerTitle}>Back Pack</Text>
         <View style={styles.placeholder} />
-      </View>
+      </LinearGradient>
       
       {/* Tabs */}
-      <View style={[styles.tabContainer, { backgroundColor: isDark ? '#333' : 'white' }]}>
+      <View style={[styles.tabContainer, { backgroundColor: isDark ? '#2a2a2a' : 'white' }]}>
         <TouchableOpacity 
           style={[styles.tab, selectedTab === 'inventory' && styles.activeTab]}
           onPress={() => setSelectedTab('inventory')}
         >
-          <Text style={[styles.tabText, selectedTab === 'inventory' && styles.activeTabText, { color: selectedTab === 'inventory' ? '#127d96' : (isDark ? '#ccc' : '#666') }]}>
+          <Text style={[styles.tabText, { color: selectedTab === 'inventory' ? '#127d96' : (isDark ? '#ccc' : '#666') }]}>
             Inventory
           </Text>
         </TouchableOpacity>
@@ -185,15 +192,15 @@ export default function BackPackScreen() {
           style={[styles.tab, selectedTab === 'backpack' && styles.activeTab]}
           onPress={() => setSelectedTab('backpack')}
         >
-          <Text style={[styles.tabText, selectedTab === 'backpack' && styles.activeTabText, { color: selectedTab === 'backpack' ? '#127d96' : (isDark ? '#ccc' : '#666') }]}>
+          <Text style={[styles.tabText, { color: selectedTab === 'backpack' ? '#127d96' : (isDark ? '#ccc' : '#666') }]}>
             Back Pack
           </Text>
         </TouchableOpacity>
       </View>
       
       {/* Content */}
-      <ScrollView style={styles.content}>
-        <View style={[styles.itemsList, { backgroundColor: isDark ? '#333' : 'white' }]}>
+      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+        <View style={styles.itemsList}>
           {selectedTab === 'inventory' 
             ? gifts.map(renderGift)
             : items.map(renderItem)
@@ -213,57 +220,69 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
-    paddingTop: 50,
-    paddingVertical: 15,
-    borderBottomWidth: 2,
+    paddingTop: 60,
+    paddingBottom: 25,
+    height: 120,
+  },
+  backButton: {
+    padding: 5,
   },
   headerTitle: {
-    fontSize: 18,
+    fontSize: 24,
     fontWeight: 'bold',
+    color: 'white',
+    letterSpacing: 1,
   },
   placeholder: {
     width: 24,
   },
   tabContainer: {
     flexDirection: 'row',
-    paddingHorizontal: 20,
-    paddingBottom: 10,
+    marginHorizontal: 20,
+    borderRadius: 15,
+    padding: 5,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   tab: {
     flex: 1,
     paddingVertical: 12,
     alignItems: 'center',
-    borderBottomWidth: 2,
-    borderBottomColor: 'transparent',
+    borderRadius: 10,
   },
   activeTab: {
-    borderBottomColor: '#127d96',
+    backgroundColor: 'rgba(18, 125, 150, 0.1)',
   },
   tabText: {
     fontSize: 16,
-    fontWeight: '500',
-  },
-  activeTabText: {
-    color: '#127d96',
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
   content: {
     flex: 1,
   },
   itemsList: {
-    paddingTop: 10,
+    paddingHorizontal: 20,
+    gap: 15,
   },
   itemCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 15,
-    borderBottomWidth: 1,
+    padding: 20,
+    borderRadius: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   itemImage: {
     width: 50,
     height: 50,
-    borderRadius: 8,
+    borderRadius: 25,
     marginRight: 15,
     backgroundColor: '#f0f0f0',
   },
@@ -285,61 +304,15 @@ const styles = StyleSheet.create({
   },
   quantityBadge: {
     backgroundColor: '#127d96',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
-    minWidth: 24,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 15,
+    minWidth: 30,
     alignItems: 'center',
   },
   quantityText: {
     color: 'white',
-    fontSize: 12,
-    fontWeight: 'bold',
-  },
-  callFeatureCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
-  },
-  featureIcon: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 15,
-  },
-  featureInfo: {
-    flex: 1,
-  },
-  featureName: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: 4,
-  },
-  featureDescription: {
     fontSize: 14,
-    color: '#666',
-  },
-  toggleButton: {
-    backgroundColor: '#e9ecef',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 15,
-  },
-  activeToggle: {
-    backgroundColor: '#127d96',
-  },
-  toggleText: {
-    fontSize: 12,
     fontWeight: 'bold',
-    color: '#666',
-  },
-  activeToggleText: {
-    color: 'white',
   },
 });

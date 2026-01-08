@@ -2,29 +2,12 @@ import { StyleSheet, ScrollView, TouchableOpacity, View, Image, Dimensions, Aler
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { router } from 'expo-router';
-import Svg, { Path } from 'react-native-svg';
+import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from '../contexts/ThemeContext';
 import { useState } from 'react';
 
-const { width } = Dimensions.get('window');
-
-const BackIcon = ({ color = 'black' }) => (
-  <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <Path d="M15 18L9 12L15 6" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-  </Svg>
-);
-
-const UnbanIcon = ({ color = '#127d96' }) => (
-  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-    <Path d="M9 16.17L4.83 12L3.41 13.41L9 19L21 7L19.59 5.59L9 16.17Z" fill={color}/>
-  </Svg>
-);
-
-const BanIcon = ({ color = '#ff4444' }) => (
-  <Svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-    <Path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM4 12C4 7.59 7.59 4 12 4C13.85 4 15.55 4.63 16.9 5.69L5.69 16.9C4.63 15.55 4 13.85 4 12ZM12 20C10.15 20 8.45 19.37 7.1 18.31L18.31 7.1C19.37 8.45 20 10.15 20 12C20 16.41 16.41 20 12 20Z" fill={color}/>
-  </Svg>
-);
+const { width, height } = Dimensions.get('window');
 
 export default function BandScreen() {
   const { isDark } = useTheme();
@@ -76,56 +59,81 @@ export default function BandScreen() {
   };
 
   return (
-    <ThemedView style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}>
-      <View style={[styles.header, { backgroundColor: isDark ? '#333' : 'white', borderBottomColor: isDark ? '#555' : '#127d96' }]}>
+    <ThemedView style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f8f9fa' }]}>
+      {/* Header */}
+      <LinearGradient
+        colors={['#127d96', '#15a3c7']}
+        style={styles.header}
+      >
         <TouchableOpacity 
           style={styles.backButton}
           onPress={() => router.back()}
         >
-          <BackIcon color={isDark ? 'white' : 'black'} />
+          <Ionicons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
-        <ThemedText style={[styles.title, { color: isDark ? 'white' : '#333' }]}>Banned Users</ThemedText>
+        <ThemedText style={styles.headerTitle}>Banned Users</ThemedText>
         <View style={styles.placeholder} />
-      </View>
+      </LinearGradient>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {bannedUsers.length > 0 ? (
-          bannedUsers.map((user) => (
-            <View key={user.id} style={[styles.userItem, { 
-              backgroundColor: isDark ? '#333' : '#F5F5F5',
-              borderColor: isDark ? '#555' : '#e0e0e0'
-            }]}>
-              <Image source={user.image} style={styles.profileImage} />
-              <View style={styles.userInfo}>
-                <View style={styles.userHeader}>
-                  <ThemedText style={[styles.userName, { color: isDark ? 'white' : 'black' }]}>{user.name}</ThemedText>
-                  <View style={styles.banBadge}>
-                    <BanIcon />
-                    <ThemedText style={styles.banText}>BANNED</ThemedText>
+          <View style={styles.usersList}>
+            {bannedUsers.map((user) => (
+              <View key={user.id} style={[styles.userItem, { backgroundColor: isDark ? '#2a2a2a' : 'white' }]}>
+                <View style={styles.userLeft}>
+                  <View style={styles.imageContainer}>
+                    <Image source={user.image} style={styles.profileImage} />
+                    <View style={styles.bannedBadge}>
+                      <Ionicons name="ban" size={12} color="white" />
+                    </View>
+                  </View>
+                  <View style={styles.userInfo}>
+                    <View style={styles.userHeader}>
+                      <ThemedText style={[styles.userName, { color: isDark ? 'white' : '#333' }]}>{user.name}</ThemedText>
+                      <View style={styles.banBadge}>
+                        <ThemedText style={styles.banText}>BANNED</ThemedText>
+                      </View>
+                    </View>
+                    <ThemedText style={[styles.userHandle, { color: isDark ? '#ccc' : '#666' }]}>{user.username}</ThemedText>
+                    <View style={styles.reasonContainer}>
+                      <Ionicons name="warning" size={12} color="#DC3545" />
+                      <ThemedText style={styles.reason}>
+                        {user.reason}
+                      </ThemedText>
+                    </View>
+                    <View style={styles.infoRow}>
+                      <View style={styles.durationInfo}>
+                        <Ionicons name="time" size={12} color={isDark ? '#999' : '#888'} />
+                        <ThemedText style={[styles.duration, { color: isDark ? '#999' : '#888' }]}>
+                          {user.duration}
+                        </ThemedText>
+                      </View>
+                      <ThemedText style={[styles.bannedDate, { color: isDark ? '#999' : '#888' }]}>
+                        {new Date(user.bannedDate).toLocaleDateString()}
+                      </ThemedText>
+                    </View>
                   </View>
                 </View>
-                <ThemedText style={[styles.userHandle, { color: isDark ? '#ccc' : '#666' }]}>{user.username}</ThemedText>
-                <ThemedText style={[styles.reason, { color: isDark ? '#ff6666' : '#ff4444' }]}>
-                  Reason: {user.reason}
-                </ThemedText>
-                <ThemedText style={[styles.duration, { color: isDark ? '#999' : '#888' }]}>
-                  Duration: {user.duration}
-                </ThemedText>
-                <ThemedText style={[styles.bannedDate, { color: isDark ? '#999' : '#888' }]}>
-                  Banned on {new Date(user.bannedDate).toLocaleDateString()}
-                </ThemedText>
+                <TouchableOpacity
+                  style={styles.unbanButton}
+                  onPress={() => handleUnban(user.id, user.name)}
+                >
+                  <LinearGradient
+                    colors={['#28A745', '#20C997']}
+                    style={styles.unbanButtonGradient}
+                  >
+                    <Ionicons name="checkmark-circle" size={16} color="white" />
+                    <ThemedText style={styles.unbanText}>Unban</ThemedText>
+                  </LinearGradient>
+                </TouchableOpacity>
               </View>
-              <TouchableOpacity
-                style={[styles.unbanButton, { backgroundColor: isDark ? '#127d96' : '#127d96' }]}
-                onPress={() => handleUnban(user.id, user.name)}
-              >
-                <UnbanIcon color="white" />
-                <ThemedText style={styles.unbanText}>Unban</ThemedText>
-              </TouchableOpacity>
-            </View>
-          ))
+            ))}
+          </View>
         ) : (
           <View style={styles.emptyContainer}>
+            <View style={styles.emptyIcon}>
+              <Ionicons name="ban" size={64} color={isDark ? '#555' : '#ccc'} />
+            </View>
             <ThemedText style={[styles.emptyText, { color: isDark ? '#ccc' : '#666' }]}>
               No banned users
             </ThemedText>
@@ -148,39 +156,68 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
-    paddingTop: 50,
-    paddingBottom: 20,
-    borderBottomWidth: 2,
+    paddingTop: 60,
+    paddingBottom: 25,
+    height: 120,
   },
   backButton: {
     padding: 5,
   },
+  headerTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'white',
+    letterSpacing: 1,
+  },
   placeholder: {
     width: 24,
   },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
   content: {
     flex: 1,
+    paddingTop: 20,
+  },
+  usersList: {
     paddingHorizontal: 20,
-    paddingTop: 15,
+    gap: 15,
   },
   userItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 15,
-    paddingHorizontal: 15,
-    borderRadius: 12,
-    marginBottom: 12,
-    borderWidth: 1,
+    justifyContent: 'space-between',
+    padding: 20,
+    borderRadius: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  userLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  imageContainer: {
+    position: 'relative',
+    marginRight: 15,
   },
   profileImage: {
     width: 50,
     height: 50,
     borderRadius: 25,
-    marginRight: 15,
+  },
+  bannedBadge: {
+    position: 'absolute',
+    bottom: -2,
+    right: -2,
+    backgroundColor: '#DC3545',
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: 'white',
   },
   userInfo: {
     flex: 1,
@@ -197,9 +234,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   banBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#ff4444',
+    backgroundColor: '#DC3545',
     paddingHorizontal: 8,
     paddingVertical: 2,
     borderRadius: 10,
@@ -208,50 +243,73 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 10,
     fontWeight: 'bold',
-    marginLeft: 4,
   },
   userHandle: {
     fontSize: 14,
+    marginBottom: 6,
+  },
+  reasonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 4,
+    gap: 4,
   },
   reason: {
     fontSize: 13,
     fontWeight: '500',
-    marginBottom: 2,
+    color: '#DC3545',
+  },
+  infoRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  durationInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
   },
   duration: {
     fontSize: 12,
-    marginBottom: 2,
   },
   bannedDate: {
     fontSize: 12,
   },
   unbanButton: {
+    borderRadius: 20,
+    overflow: 'hidden',
+  },
+  unbanButtonGradient: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 20,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    gap: 6,
   },
   unbanText: {
     color: 'white',
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '600',
-    marginLeft: 5,
   },
   emptyContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 100,
+    paddingVertical: 80,
+    paddingHorizontal: 40,
+  },
+  emptyIcon: {
+    marginBottom: 20,
   },
   emptyText: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 8,
+    textAlign: 'center',
   },
   emptySubtext: {
     fontSize: 14,
     textAlign: 'center',
+    lineHeight: 20,
   },
 });

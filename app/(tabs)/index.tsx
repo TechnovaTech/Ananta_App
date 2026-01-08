@@ -103,9 +103,6 @@ export default function HomeScreen() {
       >
         <Animated.View style={[styles.headerContent, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
           <View style={styles.logoSection}>
-            <View style={styles.logoContainer}>
-              <Ionicons name="diamond" size={28} color="white" />
-            </View>
             <Text style={styles.appTitle}>ANANTA</Text>
           </View>
           
@@ -506,8 +503,8 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingTop: height * 0.06,
-    paddingBottom: 20,
-    paddingHorizontal: 20,
+    paddingBottom: height * 0.025,
+    paddingHorizontal: width * 0.05,
   },
   headerContent: {
     flexDirection: 'row',
@@ -535,13 +532,10 @@ const styles = StyleSheet.create({
   },
   headerActions: {
     flexDirection: 'row',
-    gap: 15,
+    gap: width * 0.04,
   },
   iconButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    padding: 8,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -577,6 +571,7 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     paddingHorizontal: 20,
+    paddingBottom: height * 0.1,
   },
   bannerSection: {
     marginVertical: 20,

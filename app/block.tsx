@@ -2,23 +2,12 @@ import { StyleSheet, ScrollView, TouchableOpacity, View, Image, Dimensions, Aler
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { router } from 'expo-router';
-import Svg, { Path } from 'react-native-svg';
+import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from '../contexts/ThemeContext';
 import { useState } from 'react';
 
-const { width } = Dimensions.get('window');
-
-const BackIcon = ({ color = 'black' }) => (
-  <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <Path d="M15 18L9 12L15 6" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-  </Svg>
-);
-
-const UnblockIcon = ({ color = '#127d96' }) => (
-  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-    <Path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM16 13H8V11H16V13Z" fill={color}/>
-  </Svg>
-);
+const { width, height } = Dimensions.get('window');
 
 export default function BlockScreen() {
   const { isDark } = useTheme();
@@ -69,52 +58,77 @@ export default function BlockScreen() {
   };
 
   return (
-    <ThemedView style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}>
-      <View style={[styles.header, { backgroundColor: isDark ? '#333' : 'white', borderBottomColor: isDark ? '#555' : '#127d96' }]}>
+    <ThemedView style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f8f9fa' }]}>
+      {/* Header */}
+      <LinearGradient
+        colors={['#127d96', '#15a3c7']}
+        style={styles.header}
+      >
         <TouchableOpacity 
           style={styles.backButton}
           onPress={() => router.back()}
         >
-          <BackIcon color={isDark ? 'white' : 'black'} />
+          <Ionicons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
-        <ThemedText style={[styles.title, { color: isDark ? 'white' : '#333' }]}>Blocked Users</ThemedText>
+        <ThemedText style={styles.headerTitle}>Blocked Users</ThemedText>
         <View style={styles.placeholder} />
-      </View>
+      </LinearGradient>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        <View style={[styles.infoCard, { backgroundColor: isDark ? '#2a2a2a' : '#f0f8ff' }]}>
-          <ThemedText style={[styles.infoText, { color: isDark ? '#ccc' : '#666' }]}>
+        {/* Info Card */}
+        <LinearGradient
+          colors={['#127d96', '#0a5d75']}
+          style={styles.infoCard}
+        >
+          <View style={styles.infoIcon}>
+            <Ionicons name="information-circle" size={24} color="white" />
+          </View>
+          <ThemedText style={styles.infoText}>
             Blocked users cannot send you messages or see your profile. You can unblock them anytime.
           </ThemedText>
-        </View>
+        </LinearGradient>
         
         {blockedUsers.length > 0 ? (
-          blockedUsers.map((user) => (
-            <View key={user.id} style={[styles.userItem, { 
-              backgroundColor: isDark ? '#333' : '#F5F5F5',
-              borderColor: isDark ? '#555' : '#e0e0e0'
-            }]}>
-              <Image source={user.image} style={styles.profileImage} />
-              <View style={styles.userInfo}>
-                <ThemedText style={[styles.userName, { color: isDark ? 'white' : 'black' }]}>{user.name}</ThemedText>
-                <ThemedText style={[styles.userHandle, { color: isDark ? '#ccc' : '#666' }]}>{user.username}</ThemedText>
-                <ThemedText style={[styles.blockedDate, { color: isDark ? '#999' : '#888' }]}>
-                  Blocked on {new Date(user.blockedDate).toLocaleDateString()}
-                </ThemedText>
+          <View style={styles.usersList}>
+            {blockedUsers.map((user) => (
+              <View key={user.id} style={[styles.userItem, { backgroundColor: isDark ? '#2a2a2a' : 'white' }]}>
+                <View style={styles.userLeft}>
+                  <View style={styles.imageContainer}>
+                    <Image source={user.image} style={styles.profileImage} />
+                    <View style={styles.blockedBadge}>
+                      <Ionicons name="ban" size={12} color="white" />
+                    </View>
+                  </View>
+                  <View style={styles.userInfo}>
+                    <ThemedText style={[styles.userName, { color: isDark ? 'white' : '#333' }]}>{user.name}</ThemedText>
+                    <ThemedText style={[styles.userHandle, { color: isDark ? '#ccc' : '#666' }]}>{user.username}</ThemedText>
+                    <View style={styles.blockedInfo}>
+                      <Ionicons name="time" size={12} color={isDark ? '#999' : '#888'} />
+                      <ThemedText style={[styles.blockedDate, { color: isDark ? '#999' : '#888' }]}>
+                        Blocked on {new Date(user.blockedDate).toLocaleDateString()}
+                      </ThemedText>
+                    </View>
+                  </View>
+                </View>
+                <TouchableOpacity
+                  style={styles.unblockButton}
+                  onPress={() => handleUnblock(user.id, user.name)}
+                >
+                  <LinearGradient
+                    colors={['#DC3545', '#C82333']}
+                    style={styles.unblockButtonGradient}
+                  >
+                    <Ionicons name="checkmark-circle" size={16} color="white" />
+                    <ThemedText style={styles.unblockText}>Unblock</ThemedText>
+                  </LinearGradient>
+                </TouchableOpacity>
               </View>
-              <TouchableOpacity
-                style={[styles.unblockButton, { backgroundColor: isDark ? '#127d96' : '#127d96' }]}
-                onPress={() => handleUnblock(user.id, user.name)}
-              >
-                <UnblockIcon color="white" />
-                <ThemedText style={styles.unblockText}>Unblock</ThemedText>
-              </TouchableOpacity>
-            </View>
-          ))
+            ))}
+          </View>
         ) : (
           <View style={styles.emptyContainer}>
-            <View style={[styles.emptyIcon, { backgroundColor: isDark ? '#333' : '#f0f0f0' }]}>
-              <UnblockIcon color={isDark ? '#666' : '#999'} />
+            <View style={styles.emptyIcon}>
+              <Ionicons name="ban" size={64} color={isDark ? '#555' : '#ccc'} />
             </View>
             <ThemedText style={[styles.emptyText, { color: isDark ? '#ccc' : '#666' }]}>
               No blocked users
@@ -138,49 +152,90 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
-    paddingTop: 50,
-    paddingBottom: 20,
-    borderBottomWidth: 2,
+    paddingTop: 60,
+    paddingBottom: 25,
+    height: 120,
   },
   backButton: {
     padding: 5,
   },
+  headerTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'white',
+    letterSpacing: 1,
+  },
   placeholder: {
     width: 24,
   },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
   content: {
     flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 15,
+    paddingTop: 20,
   },
   infoCard: {
-    padding: 15,
-    borderRadius: 10,
-    marginBottom: 20,
+    marginHorizontal: 20,
+    borderRadius: 15,
+    padding: 20,
+    marginBottom: 25,
+    flexDirection: 'row',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+  infoIcon: {
+    marginRight: 15,
   },
   infoText: {
+    flex: 1,
     fontSize: 14,
-    textAlign: 'center',
+    color: 'rgba(255,255,255,0.9)',
     lineHeight: 20,
+  },
+  usersList: {
+    paddingHorizontal: 20,
+    gap: 15,
   },
   userItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 15,
-    paddingHorizontal: 15,
-    borderRadius: 12,
-    marginBottom: 12,
-    borderWidth: 1,
+    justifyContent: 'space-between',
+    padding: 20,
+    borderRadius: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  userLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  imageContainer: {
+    position: 'relative',
+    marginRight: 15,
   },
   profileImage: {
     width: 50,
     height: 50,
     borderRadius: 25,
-    marginRight: 15,
+  },
+  blockedBadge: {
+    position: 'absolute',
+    bottom: -2,
+    right: -2,
+    backgroundColor: '#DC3545',
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: 'white',
   },
   userInfo: {
     flex: 1,
@@ -188,40 +243,44 @@ const styles = StyleSheet.create({
   userName: {
     fontSize: 16,
     fontWeight: 'bold',
-    marginBottom: 2,
+    marginBottom: 4,
   },
   userHandle: {
     fontSize: 14,
-    marginBottom: 2,
+    marginBottom: 6,
+  },
+  blockedInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
   },
   blockedDate: {
     fontSize: 12,
   },
   unblockButton: {
+    borderRadius: 20,
+    overflow: 'hidden',
+  },
+  unblockButtonGradient: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 20,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    gap: 6,
   },
   unblockText: {
     color: 'white',
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '600',
-    marginLeft: 5,
   },
   emptyContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 80,
+    paddingHorizontal: 40,
   },
   emptyIcon: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
     marginBottom: 20,
   },
   emptyText: {
@@ -233,7 +292,6 @@ const styles = StyleSheet.create({
   emptySubtext: {
     fontSize: 14,
     textAlign: 'center',
-    paddingHorizontal: 40,
     lineHeight: 20,
   },
 });

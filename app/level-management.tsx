@@ -150,16 +150,19 @@ export default function LevelManagementScreen() {
   return (
     <ThemedView style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f8f9fa' }]}>
       {/* Header */}
-      <View style={[styles.header, { backgroundColor: isDark ? '#2a2a2a' : 'white' }]}>
+      <LinearGradient
+        colors={['#127d96', '#15a3c7']}
+        style={styles.header}
+      >
         <TouchableOpacity 
           style={styles.backButton}
           onPress={() => router.back()}
         >
-          <BackIcon color={isDark ? 'white' : 'black'} />
+          <BackIcon color="white" />
         </TouchableOpacity>
-        <ThemedText style={[styles.headerTitle, { color: isDark ? 'white' : '#333' }]}>Level Management</ThemedText>
+        <ThemedText style={styles.headerTitle}>Level Management</ThemedText>
         <View style={styles.placeholder} />
-      </View>
+      </LinearGradient>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Current Level Card */}
@@ -321,15 +324,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
-    paddingTop: 50,
-    paddingBottom: 20,
+    paddingTop: 60,
+    paddingBottom: 25,
+    height: 120,
   },
   backButton: {
     padding: 5,
   },
   headerTitle: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
+    color: 'white',
+    letterSpacing: 2,
   },
   placeholder: {
     width: 24,

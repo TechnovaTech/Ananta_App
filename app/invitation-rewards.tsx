@@ -3,41 +3,11 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Colors } from '@/constants/theme';
 import { router } from 'expo-router';
-import Svg, { Path } from 'react-native-svg';
+import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from '../contexts/ThemeContext';
 
-const { width } = Dimensions.get('window');
-
-const BackIcon = ({ color = 'black' }) => (
-  <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <Path d="M15 18L9 12L15 6" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-  </Svg>
-);
-
-const GiftIcon = () => (
-  <Svg width="40" height="40" viewBox="0 0 24 24" fill="none">
-    <Path d="M20 6H16.25C16.25 4.21 14.79 2.75 13 2.75C11.21 2.75 9.75 4.21 9.75 6H4C2.9 6 2 6.9 2 8V10C2 10.55 2.45 11 3 11H4V19C4 20.1 4.9 21 6 21H18C19.1 21 20 20.1 20 19V11H21C21.55 11 22 10.55 22 10V8C22 6.9 21.1 6 20 6Z" fill="#FFD700"/>
-  </Svg>
-);
-
-const ShareIcon = () => (
-  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-    <Path d="M18 16.08C17.24 16.08 16.56 16.38 16.04 16.85L8.91 12.7C8.96 12.47 9 12.24 9 12C9 11.76 8.96 11.53 8.91 11.3L15.96 7.19C16.5 7.69 17.21 8 18 8C19.66 8 21 6.66 21 5C21 3.34 19.66 2 18 2C16.34 2 15 3.34 15 5C15 5.24 15.04 5.47 15.09 5.7L8.04 9.81C7.5 9.31 6.79 9 6 9C4.34 9 3 10.34 3 12C3 13.66 4.34 15 6 15C6.79 15 7.5 14.69 8.04 14.19L15.16 18.34C15.11 18.55 15.08 18.77 15.08 19C15.08 20.61 16.39 21.92 18 21.92C19.61 21.92 20.92 20.61 20.92 19C20.92 17.39 19.61 16.08 18 16.08Z" fill="white"/>
-  </Svg>
-);
-
-const CopyIcon = () => (
-  <Svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-    <Path d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z" fill="white"/>
-  </Svg>
-);
-
-const CoinIcon = () => (
-  <Svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-    <Path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2Z" fill="#FFD700"/>
-    <Path d="M12 6V18M8 9H16M8 15H16" stroke="black" strokeWidth="1"/>
-  </Svg>
-);
+const { width, height } = Dimensions.get('window');
 
 export default function InvitationRewardsScreen() {
   const { isDark } = useTheme();
@@ -70,71 +40,90 @@ export default function InvitationRewardsScreen() {
   };
 
   return (
-    <ThemedView style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}>
-      <View style={[styles.header, { backgroundColor: isDark ? '#333' : 'white' }]}>
+    <ThemedView style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f8f9fa' }]}>
+      {/* Header */}
+      <LinearGradient
+        colors={['#127d96', '#15a3c7']}
+        style={styles.header}
+      >
         <TouchableOpacity 
           style={styles.backButton}
-          onPress={() => router.push('/settings')}
+          onPress={() => router.back()}
         >
-          <BackIcon color={isDark ? 'white' : 'black'} />
+          <Ionicons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
-        <View style={styles.titleContainer}>
-          <ThemedText style={[styles.title, { color: isDark ? 'white' : 'black' }]}>Invitation Rewards</ThemedText>
-          <View style={styles.titleUnderline} />
-        </View>
-      </View>
+        <ThemedText style={styles.headerTitle}>Invitation Rewards</ThemedText>
+        <View style={styles.placeholder} />
+      </LinearGradient>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Stats Card */}
-        <View style={styles.statsCard}>
-          <GiftIcon />
+        <LinearGradient
+          colors={['#127d96', '#0a5d75']}
+          style={styles.statsCard}
+        >
+          <View style={styles.statsIcon}>
+            <Ionicons name="gift" size={40} color="white" />
+          </View>
           <ThemedText style={styles.statsTitle}>Invite Friends & Earn Rewards!</ThemedText>
           <View style={styles.statsRow}>
             <View style={styles.statItem}>
+              <Ionicons name="people" size={20} color="white" />
               <ThemedText style={styles.statNumber}>{totalInvites}</ThemedText>
               <ThemedText style={styles.statLabel}>Friends Invited</ThemedText>
             </View>
+            <View style={styles.statDivider} />
             <View style={styles.statItem}>
-              <View style={styles.coinsContainer}>
-                <CoinIcon />
-                <ThemedText style={styles.statNumber}>{totalRewards}</ThemedText>
-              </View>
+              <Ionicons name="diamond" size={20} color="white" />
+              <ThemedText style={styles.statNumber}>{totalRewards}</ThemedText>
               <ThemedText style={styles.statLabel}>Coins Earned</ThemedText>
             </View>
           </View>
-        </View>
+        </LinearGradient>
 
         {/* Invite Code */}
-        <View style={styles.inviteSection}>
-          <ThemedText style={[styles.sectionTitle, { color: isDark ? 'white' : 'black' }]}>Your Invite Code</ThemedText>
-          <View style={[styles.codeContainer, { 
-            backgroundColor: isDark ? '#444' : '#F5F5F5',
-            borderColor: isDark ? '#555' : '#126996'
-          }]}>
-            <ThemedText style={[styles.inviteCode, { color: isDark ? 'white' : '#126996' }]}>{inviteCode}</ThemedText>
+        <View style={[styles.inviteSection, { backgroundColor: isDark ? '#2a2a2a' : 'white' }]}>
+          <ThemedText style={[styles.sectionTitle, { color: isDark ? 'white' : '#333' }]}>Your Invite Code</ThemedText>
+          <View style={styles.codeContainer}>
+            <ThemedText style={styles.inviteCode}>{inviteCode}</ThemedText>
             <TouchableOpacity style={styles.copyButton}>
-              <CopyIcon />
+              <Ionicons name="copy" size={20} color="white" />
             </TouchableOpacity>
           </View>
           <TouchableOpacity style={styles.shareButton} onPress={handleShare}>
-            <ShareIcon />
-            <ThemedText style={styles.shareText}>Share Invite Link</ThemedText>
+            <LinearGradient
+              colors={['#127d96', '#15a3c7']}
+              style={styles.shareButtonGradient}
+            >
+              <Ionicons name="share-social" size={20} color="white" />
+              <ThemedText style={styles.shareText}>Share Invite Link</ThemedText>
+            </LinearGradient>
           </TouchableOpacity>
         </View>
 
         {/* Reward Tiers */}
-        <View style={styles.rewardsSection}>
-          <ThemedText style={[styles.sectionTitle, { color: isDark ? 'white' : 'black' }]}>Reward Milestones</ThemedText>
+        <View style={[styles.rewardsSection, { backgroundColor: isDark ? '#2a2a2a' : 'white' }]}>
+          <ThemedText style={[styles.sectionTitle, { color: isDark ? 'white' : '#333' }]}>Reward Milestones</ThemedText>
           {rewardTiers.map((tier, index) => (
-            <View key={index} style={[styles.tierCard, tier.claimed && styles.claimedTier, {
-              backgroundColor: tier.claimed ? (isDark ? '#1a4a1a' : '#E8F5E8') : (isDark ? '#333' : '#F5F5F5'),
-              borderColor: tier.claimed ? '#00C851' : (isDark ? '#555' : '#126996')
-            }]}>
-              <View style={styles.tierInfo}>
-                <ThemedText style={[styles.tierTitle, { color: isDark ? 'white' : 'black' }]}>Invite {tier.invites} Friend{tier.invites > 1 ? 's' : ''}</ThemedText>
-                <View style={styles.tierReward}>
-                  <CoinIcon />
-                  <ThemedText style={[styles.tierRewardText, { color: isDark ? '#ccc' : '#666' }]}>{tier.reward} Coins</ThemedText>
+            <View key={index} style={[
+              styles.tierCard, 
+              { backgroundColor: isDark ? '#333' : '#f8f9fa' },
+              tier.claimed && styles.claimedTier
+            ]}>
+              <View style={styles.tierLeft}>
+                <View style={[styles.tierIcon, { backgroundColor: tier.claimed ? '#00C851' : '#127d96' }]}>
+                  <Ionicons 
+                    name={tier.claimed ? "checkmark" : "people"} 
+                    size={20} 
+                    color="white" 
+                  />
+                </View>
+                <View style={styles.tierInfo}>
+                  <ThemedText style={[styles.tierTitle, { color: isDark ? 'white' : '#333' }]}>Invite {tier.invites} Friend{tier.invites > 1 ? 's' : ''}</ThemedText>
+                  <View style={styles.tierReward}>
+                    <Ionicons name="diamond" size={14} color="#B8860B" />
+                    <ThemedText style={[styles.tierRewardText, { color: isDark ? '#ccc' : '#666' }]}>{tier.reward} Coins</ThemedText>
+                  </View>
                 </View>
               </View>
               <View style={styles.tierStatus}>
@@ -157,19 +146,21 @@ export default function InvitationRewardsScreen() {
         </View>
 
         {/* Recent Invites */}
-        <View style={styles.recentSection}>
-          <ThemedText style={[styles.sectionTitle, { color: isDark ? 'white' : 'black' }]}>Recent Invites</ThemedText>
+        <View style={[styles.recentSection, { backgroundColor: isDark ? '#2a2a2a' : 'white' }]}>
+          <ThemedText style={[styles.sectionTitle, { color: isDark ? 'white' : '#333' }]}>Recent Invites</ThemedText>
           {recentInvites.map((invite, index) => (
-            <View key={index} style={[styles.inviteCard, { 
-              backgroundColor: isDark ? '#333' : '#F5F5F5',
-              borderColor: isDark ? '#555' : '#126996'
-            }]}>
-              <View style={styles.inviteInfo}>
-                <ThemedText style={[styles.inviteName, { color: isDark ? 'white' : 'black' }]}>{invite.name}</ThemedText>
-                <ThemedText style={[styles.inviteDate, { color: isDark ? '#ccc' : '#666' }]}>{invite.date}</ThemedText>
+            <View key={index} style={[styles.inviteCard, { backgroundColor: isDark ? '#333' : '#f8f9fa' }]}>
+              <View style={styles.inviteLeft}>
+                <View style={styles.avatarContainer}>
+                  <Ionicons name="person" size={20} color="#127d96" />
+                </View>
+                <View style={styles.inviteInfo}>
+                  <ThemedText style={[styles.inviteName, { color: isDark ? 'white' : '#333' }]}>{invite.name}</ThemedText>
+                  <ThemedText style={[styles.inviteDate, { color: isDark ? '#ccc' : '#666' }]}>{invite.date}</ThemedText>
+                </View>
               </View>
               <View style={styles.inviteReward}>
-                <CoinIcon />
+                <Ionicons name="diamond" size={16} color="#B8860B" />
                 <ThemedText style={styles.inviteRewardText}>+{invite.reward}</ThemedText>
               </View>
             </View>
@@ -186,73 +177,88 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
-    paddingTop: 50,
-    paddingBottom: 20,
+    paddingTop: 60,
+    paddingBottom: 25,
+    height: 120,
   },
   backButton: {
-    marginRight: 20,
     padding: 5,
   },
-  titleContainer: {
-    alignItems: 'flex-start',
-  },
-  title: {
-    fontSize: 20,
+  headerTitle: {
+    fontSize: 24,
     fontWeight: 'bold',
+    color: 'white',
+    letterSpacing: 1,
   },
-  titleUnderline: {
-    width: 140,
-    height: 2,
-    backgroundColor: Colors.light.primary,
-    marginTop: 4,
+  placeholder: {
+    width: 24,
   },
   content: {
     flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 10,
+    paddingTop: 20,
   },
   statsCard: {
-    backgroundColor: '#126996',
+    marginHorizontal: 20,
     borderRadius: 20,
-    padding: 20,
+    padding: 25,
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 25,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+  statsIcon: {
+    marginBottom: 15,
   },
   statsTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     color: 'white',
     textAlign: 'center',
-    marginVertical: 15,
+    marginBottom: 20,
   },
   statsRow: {
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-around',
+    alignItems: 'center',
   },
   statItem: {
     alignItems: 'center',
+    flex: 1,
+  },
+  statDivider: {
+    width: 1,
+    height: 40,
+    backgroundColor: 'rgba(255,255,255,0.3)',
   },
   statNumber: {
     fontSize: 24,
     fontWeight: 'bold',
     color: 'white',
+    marginTop: 8,
     marginBottom: 5,
   },
   statLabel: {
     fontSize: 12,
-    color: 'white',
-    opacity: 0.9,
-  },
-  coinsContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 5,
+    color: 'rgba(255,255,255,0.9)',
+    fontWeight: '500',
   },
   inviteSection: {
-    marginBottom: 25,
+    marginHorizontal: 20,
+    borderRadius: 15,
+    padding: 20,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   sectionTitle: {
     fontSize: 18,
@@ -261,30 +267,35 @@ const styles = StyleSheet.create({
   },
   codeContainer: {
     flexDirection: 'row',
+    backgroundColor: 'rgba(18, 125, 150, 0.1)',
     borderRadius: 12,
     padding: 15,
     alignItems: 'center',
     marginBottom: 15,
     borderWidth: 1,
+    borderColor: '#127d96',
   },
   inviteCode: {
     flex: 1,
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
+    color: '#127d96',
   },
   copyButton: {
-    backgroundColor: '#126996',
+    backgroundColor: '#127d96',
     padding: 8,
     borderRadius: 8,
   },
   shareButton: {
-    backgroundColor: '#126996',
+    borderRadius: 12,
+    overflow: 'hidden',
+  },
+  shareButtonGradient: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 15,
-    borderRadius: 12,
     gap: 10,
   },
   shareText: {
@@ -293,7 +304,15 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   rewardsSection: {
-    marginBottom: 25,
+    marginHorizontal: 20,
+    borderRadius: 15,
+    padding: 20,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   tierCard: {
     borderRadius: 12,
@@ -302,10 +321,28 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderWidth: 1,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
   },
   claimedTier: {
-    borderColor: '#00C851',
+    borderLeftWidth: 4,
+    borderLeftColor: '#00C851',
+  },
+  tierLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  tierIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 15,
   },
   tierInfo: {
     flex: 1,
@@ -339,13 +376,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   claimButton: {
-    backgroundColor: '#FFD700',
+    backgroundColor: '#B8860B',
     paddingHorizontal: 15,
     paddingVertical: 8,
     borderRadius: 15,
   },
   claimText: {
-    color: 'black',
+    color: 'white',
     fontSize: 12,
     fontWeight: 'bold',
   },
@@ -361,7 +398,15 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   recentSection: {
+    marginHorizontal: 20,
+    borderRadius: 15,
+    padding: 20,
     marginBottom: 30,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   inviteCard: {
     borderRadius: 12,
@@ -370,7 +415,25 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderWidth: 1,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  inviteLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  avatarContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(18, 125, 150, 0.1)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 15,
   },
   inviteInfo: {
     flex: 1,
