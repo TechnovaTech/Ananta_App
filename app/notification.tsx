@@ -132,11 +132,11 @@ export default function NotificationScreen() {
       >
         <View style={styles.headerContent}>
           <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-            <Ionicons name="arrow-back" size={24} color="white" />
+            <Ionicons name="arrow-back" size={24} color={isDark ? 'black' : 'white'} />
           </TouchableOpacity>
           
           <View style={styles.logoSection}>
-            <Text style={styles.appTitle}>Notifications</Text>
+            <Text style={[styles.appTitle, { color: isDark ? 'black' : 'white' }]}>Notifications</Text>
           </View>
           
           <View style={styles.headerActions}>

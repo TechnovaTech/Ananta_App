@@ -172,9 +172,9 @@ export default function BackPackScreen() {
         style={styles.header}
       >
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color="white" />
+          <Ionicons name="arrow-back" size={24} color={isDark ? 'black' : 'white'} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Back Pack</Text>
+        <Text style={[styles.headerTitle, { color: isDark ? 'black' : 'white' }]}>Back Pack</Text>
         <View style={styles.placeholder} />
       </LinearGradient>
       

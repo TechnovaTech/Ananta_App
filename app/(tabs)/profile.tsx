@@ -83,8 +83,8 @@ export default function ProfileScreen() {
             colors={isDark ? ['#f7c14d', '#ffb300'] : ['#127d96', '#15a3c7']}
             style={styles.editButtonGradient}
           >
-            <Ionicons name="create" size={16} color="white" />
-            <Text style={styles.editButtonText}>Edit Profile</Text>
+            <Ionicons name="create" size={16} color={isDark ? 'black' : 'white'} />
+            <Text style={[styles.editButtonText, { color: isDark ? 'black' : 'white' }]}>Edit Profile</Text>
           </LinearGradient>
         </TouchableOpacity>
       </View>
@@ -92,21 +92,21 @@ export default function ProfileScreen() {
       {/* Stats section */}
       <View style={[styles.statsContainer, { backgroundColor: isDark ? '#f7c14d' : '#127d96' }]}>
         <TouchableOpacity style={styles.statItem} onPress={() => router.push('/followers')}>
-          <Ionicons name="people" size={20} color="white" />
-          <Text style={styles.statNumber}>10K</Text>
-          <Text style={styles.statLabel}>Followers</Text>
+          <Ionicons name="people" size={20} color={isDark ? 'black' : 'white'} />
+          <Text style={[styles.statNumber, { color: isDark ? 'black' : 'white' }]}>10K</Text>
+          <Text style={[styles.statLabel, { color: isDark ? 'rgba(0,0,0,0.7)' : 'rgba(255,255,255,0.9)' }]}>Followers</Text>
         </TouchableOpacity>
         <View style={styles.statDivider} />
         <TouchableOpacity style={styles.statItem} onPress={() => router.push('/following')}>
-          <Ionicons name="person-add" size={20} color="white" />
-          <Text style={styles.statNumber}>20k</Text>
-          <Text style={styles.statLabel}>Following</Text>
+          <Ionicons name="person-add" size={20} color={isDark ? 'black' : 'white'} />
+          <Text style={[styles.statNumber, { color: isDark ? 'black' : 'white' }]}>20k</Text>
+          <Text style={[styles.statLabel, { color: isDark ? 'rgba(0,0,0,0.7)' : 'rgba(255,255,255,0.9)' }]}>Following</Text>
         </TouchableOpacity>
         <View style={styles.statDivider} />
         <View style={styles.statItem}>
-          <Ionicons name="diamond" size={20} color="white" />
-          <Text style={styles.statNumber}>200</Text>
-          <Text style={styles.statLabel}>Coins</Text>
+          <Ionicons name="diamond" size={20} color={isDark ? 'black' : 'white'} />
+          <Text style={[styles.statNumber, { color: isDark ? 'black' : 'white' }]}>200</Text>
+          <Text style={[styles.statLabel, { color: isDark ? 'rgba(0,0,0,0.7)' : 'rgba(255,255,255,0.9)' }]}>Coins</Text>
         </View>
       </View>
       

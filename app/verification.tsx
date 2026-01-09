@@ -71,9 +71,9 @@ export default function VerificationScreen() {
         style={styles.header}
       >
         <TouchableOpacity onPress={() => router.replace('/(tabs)/profile')} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color="white" />
+          <Ionicons name="arrow-back" size={24} color={isDark ? 'black' : 'white'} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>KYC Verification</Text>
+        <Text style={[styles.headerTitle, { color: isDark ? 'black' : 'white' }]}>KYC Verification</Text>
         <View style={styles.placeholder} />
       </LinearGradient>
 
@@ -221,8 +221,8 @@ export default function VerificationScreen() {
             colors={isDark ? ['#f7c14d', '#ffb300'] : ['#127d96', '#15a3c7']}
             style={styles.submitButtonGradient}
           >
-            <Ionicons name="checkmark-circle" size={20} color="white" />
-            <Text style={styles.submitButtonText}>Submit for Verification</Text>
+            <Ionicons name="checkmark-circle" size={20} color={isDark ? 'black' : 'white'} />
+            <Text style={[styles.submitButtonText, { color: isDark ? 'black' : 'white' }]}>Submit for Verification</Text>
           </LinearGradient>
         </TouchableOpacity>
       </ScrollView>

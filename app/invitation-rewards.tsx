@@ -1,4 +1,4 @@
-import { StyleSheet, ScrollView, TouchableOpacity, View, Dimensions, Share } from 'react-native';
+import { StyleSheet, ScrollView, TouchableOpacity, View, Dimensions, Share, Text } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Colors } from '@/constants/theme';
@@ -50,9 +50,9 @@ export default function InvitationRewardsScreen() {
           style={styles.backButton}
           onPress={() => router.back()}
         >
-          <Ionicons name="arrow-back" size={24} color="white" />
+          <Ionicons name="arrow-back" size={24} color={isDark ? 'black' : 'white'} />
         </TouchableOpacity>
-        <ThemedText style={styles.headerTitle}>Invitation Rewards</ThemedText>
+        <ThemedText style={[styles.headerTitle, { color: isDark ? 'black' : 'white' }]}>Invitation Rewards</ThemedText>
         <View style={styles.placeholder} />
       </LinearGradient>
 
@@ -63,20 +63,20 @@ export default function InvitationRewardsScreen() {
           style={styles.statsCard}
         >
           <View style={styles.statsIcon}>
-            <Ionicons name="gift" size={40} color="white" />
+            <Ionicons name="gift" size={40} color={isDark ? 'black' : 'white'} />
           </View>
-          <ThemedText style={styles.statsTitle}>Invite Friends & Earn Rewards!</ThemedText>
+          <Text style={[styles.statsTitle, { color: isDark ? 'black' : 'white' }]}>Invite Friends & Earn Rewards!</Text>
           <View style={styles.statsRow}>
             <View style={styles.statItem}>
-              <Ionicons name="people" size={20} color="white" />
-              <ThemedText style={styles.statNumber}>{totalInvites}</ThemedText>
-              <ThemedText style={styles.statLabel}>Friends Invited</ThemedText>
+              <Ionicons name="people" size={20} color={isDark ? 'black' : 'white'} />
+              <Text style={[styles.statNumber, { color: isDark ? 'black' : 'white' }]}>{totalInvites}</Text>
+              <Text style={[styles.statLabel, { color: isDark ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.9)' }]}>Friends Invited</Text>
             </View>
             <View style={styles.statDivider} />
             <View style={styles.statItem}>
-              <Ionicons name="diamond" size={20} color="white" />
-              <ThemedText style={styles.statNumber}>{totalRewards}</ThemedText>
-              <ThemedText style={styles.statLabel}>Coins Earned</ThemedText>
+              <Ionicons name="diamond" size={20} color={isDark ? 'black' : 'white'} />
+              <Text style={[styles.statNumber, { color: isDark ? 'black' : 'white' }]}>{totalRewards}</Text>
+              <Text style={[styles.statLabel, { color: isDark ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.9)' }]}>Coins Earned</Text>
             </View>
           </View>
         </LinearGradient>
@@ -98,8 +98,8 @@ export default function InvitationRewardsScreen() {
               colors={isDark ? ['#F7C14D', '#F7C14D'] : ['#127d96', '#15a3c7']}
               style={styles.shareButtonGradient}
             >
-              <Ionicons name="share-social" size={20} color="white" />
-              <ThemedText style={styles.shareText}>Share Invite Link</ThemedText>
+              <Ionicons name="share-social" size={20} color={isDark ? 'black' : 'white'} />
+              <Text style={[styles.shareText, { color: isDark ? 'black' : 'white' }]}>Share Invite Link</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>
@@ -132,15 +132,15 @@ export default function InvitationRewardsScreen() {
               <View style={styles.tierStatus}>
                 {tier.claimed ? (
                   <View style={styles.claimedBadge}>
-                    <ThemedText style={styles.claimedText}>Claimed</ThemedText>
+                    <ThemedText style={[styles.claimedText, { color: 'white' }]}>Claimed</ThemedText>
                   </View>
                 ) : totalInvites >= tier.invites ? (
                   <TouchableOpacity style={styles.claimButton}>
-                    <ThemedText style={styles.claimText}>Claim</ThemedText>
+                    <ThemedText style={[styles.claimText, { color: 'white' }]}>Claim</ThemedText>
                   </TouchableOpacity>
                 ) : (
                   <View style={styles.lockedBadge}>
-                    <ThemedText style={styles.lockedText}>{totalInvites}/{tier.invites}</ThemedText>
+                    <ThemedText style={[styles.lockedText, { color: '#666' }]}>{totalInvites}/{tier.invites}</ThemedText>
                   </View>
                 )}
               </View>
@@ -193,7 +193,6 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: 'white',
     letterSpacing: 1,
   },
   placeholder: {
@@ -221,7 +220,6 @@ const styles = StyleSheet.create({
   statsTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: 'white',
     textAlign: 'center',
     marginBottom: 20,
   },
@@ -243,13 +241,11 @@ const styles = StyleSheet.create({
   statNumber: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: 'white',
     marginTop: 8,
     marginBottom: 5,
   },
   statLabel: {
     fontSize: 12,
-    color: 'rgba(255,255,255,0.9)',
     fontWeight: '500',
   },
   inviteSection: {
@@ -302,7 +298,6 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   shareText: {
-    color: 'white',
     fontSize: 16,
     fontWeight: '600',
   },
@@ -374,7 +369,6 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   claimedText: {
-    color: 'white',
     fontSize: 12,
     fontWeight: 'bold',
   },
@@ -385,7 +379,6 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   claimText: {
-    color: 'white',
     fontSize: 12,
     fontWeight: 'bold',
   },
@@ -396,7 +389,6 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   lockedText: {
-    color: '#666',
     fontSize: 12,
     fontWeight: 'bold',
   },

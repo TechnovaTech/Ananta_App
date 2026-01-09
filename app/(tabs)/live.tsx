@@ -33,7 +33,7 @@ export default function LiveScreen() {
       >
         <View style={styles.headerContent}>
           <View style={styles.logoSection}>
-            <Text style={styles.appTitle}>ANANTA</Text>
+            <Text style={[styles.appTitle, { color: isDark ? 'black' : 'white' }]}>ANANTA</Text>
           </View>
         </View>
       </LinearGradient>
@@ -72,7 +72,7 @@ export default function LiveScreen() {
             colors={selectedType ? (isDark ? ['#f7c14d', '#ffb300'] : ['#127d96', '#15a3c7']) : ['#ccc', '#999']}
             style={styles.startLiveButton}
           >
-            <ThemedText style={styles.startLiveText}>Start Live</ThemedText>
+            <ThemedText style={[styles.startLiveText, { color: selectedType && isDark ? 'black' : 'white' }]}>Start Live</ThemedText>
           </LinearGradient>
         </TouchableOpacity>
       </View>

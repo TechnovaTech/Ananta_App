@@ -39,9 +39,9 @@ export default function FollowingScreen() {
         style={styles.header}
       >
         <TouchableOpacity onPress={() => router.back()}>
-          <Ionicons name="arrow-back" size={24} color="white" />
+          <Ionicons name="arrow-back" size={24} color={isDark ? 'black' : 'white'} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Following</Text>
+        <Text style={[styles.headerTitle, { color: isDark ? 'black' : 'white' }]}>Following</Text>
         <View style={styles.placeholder} />
       </LinearGradient>
 

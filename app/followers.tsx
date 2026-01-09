@@ -6,10 +6,12 @@ import { router } from 'expo-router';
 import { useTheme } from '../contexts/ThemeContext';
 
 const followersData = [
-  { id: '1', name: 'John Doe', username: '@johndoe', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face', isFollowing: true },
-  { id: '2', name: 'Jane Smith', username: '@janesmith', avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face', isFollowing: false },
-  { id: '3', name: 'Mike Johnson', username: '@mikej', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face', isFollowing: true },
-  { id: '4', name: 'Sarah Wilson', username: '@sarahw', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face', isFollowing: false },
+  { id: '1', name: 'Raj Patel', username: '@rajpatel', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face', isFollowing: true },
+  { id: '2', name: 'Priya Shah', username: '@priyashah', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=face', isFollowing: false },
+  { id: '3', name: 'Arjun Modi', username: '@arjunmodi', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face', isFollowing: true },
+  { id: '4', name: 'Kavya Joshi', username: '@kavyajoshi', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face', isFollowing: false },
+  { id: '5', name: 'Dhruv Sharma', username: '@dhruvsharma', avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face', isFollowing: true },
+  { id: '6', name: 'Riya Mehta', username: '@riyamehta', avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face', isFollowing: false },
 ];
 
 export default function FollowersScreen() {
@@ -17,7 +19,12 @@ export default function FollowersScreen() {
 
   const renderFollower = ({ item }) => (
     <View style={[styles.followerItem, { backgroundColor: isDark ? '#333' : 'white' }]}>
-      <Image source={{ uri: item.avatar }} style={styles.avatar} />
+      <Image 
+        source={{ uri: item.avatar }} 
+        style={styles.avatar}
+        defaultSource={require('../assets/images/icon.png')}
+        onError={() => console.log('Avatar failed to load for:', item.name)}
+      />
       <View style={styles.userInfo}>
         <Text style={[styles.name, { color: isDark ? 'white' : '#333' }]}>{item.name}</Text>
         <Text style={[styles.username, { color: isDark ? '#ccc' : '#666' }]}>{item.username}</Text>
@@ -46,9 +53,9 @@ export default function FollowersScreen() {
         style={styles.header}
       >
         <TouchableOpacity onPress={() => router.back()}>
-          <Ionicons name="arrow-back" size={24} color="white" />
+          <Ionicons name="arrow-back" size={24} color={isDark ? 'black' : 'white'} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Followers</Text>
+        <Text style={[styles.headerTitle, { color: isDark ? 'black' : 'white' }]}>Followers</Text>
         <View style={styles.placeholder} />
       </LinearGradient>
 
@@ -105,6 +112,8 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 25,
     marginRight: 15,
+    borderWidth: 2,
+    borderColor: '#ddd',
   },
   userInfo: {
     flex: 1,

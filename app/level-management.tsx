@@ -158,9 +158,9 @@ export default function LevelManagementScreen() {
           style={styles.backButton}
           onPress={() => router.back()}
         >
-          <BackIcon color="white" />
+          <BackIcon color={isDark ? 'black' : 'white'} />
         </TouchableOpacity>
-        <ThemedText style={styles.headerTitle}>Level Management</ThemedText>
+        <ThemedText style={[styles.headerTitle, { color: isDark ? 'black' : 'white' }]}>Level Management</ThemedText>
         <View style={styles.placeholder} />
       </LinearGradient>
 

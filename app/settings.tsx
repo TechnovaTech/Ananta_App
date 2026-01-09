@@ -35,11 +35,11 @@ export default function SettingsScreen() {
       >
         <View style={styles.headerContent}>
           <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-            <Ionicons name="arrow-back" size={24} color="white" />
+            <Ionicons name="arrow-back" size={24} color={isDark ? 'black' : 'white'} />
           </TouchableOpacity>
           
           <View style={styles.logoSection}>
-            <Text style={styles.appTitle}>Settings</Text>
+            <Text style={[styles.appTitle, { color: isDark ? 'black' : 'white' }]}>Settings</Text>
           </View>
           
           <View style={styles.headerActions}>

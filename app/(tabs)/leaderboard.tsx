@@ -57,11 +57,11 @@ export default function LeaderboardScreen() {
       >
         <View style={styles.headerContent}>
           <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-            <Ionicons name="arrow-back" size={24} color="white" />
+            <Ionicons name="arrow-back" size={24} color={isDark ? 'black' : 'white'} />
           </TouchableOpacity>
           
           <View style={styles.logoSection}>
-            <Text style={styles.appTitle}>Leaderboard</Text>
+            <Text style={[styles.appTitle, { color: isDark ? 'black' : 'white' }]}>Leaderboard</Text>
           </View>
           
           <View style={styles.headerActions}>
@@ -79,9 +79,9 @@ export default function LeaderboardScreen() {
             <Ionicons 
               name="trophy" 
               size={18} 
-              color={activeTab === 'earning' ? 'white' : (isDark ? '#f7c14d' : '#127d96')} 
+              color={activeTab === 'earning' ? (isDark ? 'black' : 'white') : (isDark ? '#f7c14d' : '#127d96')} 
             />
-            <Text style={[styles.tabText, { color: isDark ? '#f7c14d' : '#127d96' }, activeTab === 'earning' && styles.activeTabText]}>Earning</Text>
+            <Text style={[styles.tabText, { color: activeTab === 'earning' ? (isDark ? 'black' : 'white') : (isDark ? '#f7c14d' : '#127d96') }, activeTab === 'earning' && styles.activeTabText]}>Earning</Text>
           </TouchableOpacity>
           
           <TouchableOpacity 
@@ -91,9 +91,9 @@ export default function LeaderboardScreen() {
             <Ionicons 
               name="videocam" 
               size={18} 
-              color={activeTab === 'live' ? 'white' : (isDark ? '#f7c14d' : '#127d96')} 
+              color={activeTab === 'live' ? (isDark ? 'black' : 'white') : (isDark ? '#f7c14d' : '#127d96')} 
             />
-            <Text style={[styles.tabText, { color: isDark ? '#f7c14d' : '#127d96' }, activeTab === 'live' && styles.activeTabText]}>Live</Text>
+            <Text style={[styles.tabText, { color: activeTab === 'live' ? (isDark ? 'black' : 'white') : (isDark ? '#f7c14d' : '#127d96') }, activeTab === 'live' && styles.activeTabText]}>Live</Text>
           </TouchableOpacity>
         </View>
       </View>

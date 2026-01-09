@@ -93,9 +93,9 @@ export default function LiveHistoryScreen() {
           style={styles.backButton}
           onPress={() => router.push('/(tabs)/profile')}
         >
-          <Ionicons name="arrow-back" size={24} color="white" />
+          <Ionicons name="arrow-back" size={24} color={isDark ? 'black' : 'white'} />
         </TouchableOpacity>
-        <ThemedText style={styles.headerTitle}>Live Data & History</ThemedText>
+        <ThemedText style={[styles.headerTitle, { color: isDark ? 'black' : 'white' }]}>Live Data & History</ThemedText>
         <View style={styles.placeholder} />
       </LinearGradient>
 

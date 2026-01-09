@@ -69,9 +69,9 @@ export default function BandScreen() {
           style={styles.backButton}
           onPress={() => router.back()}
         >
-          <Ionicons name="arrow-back" size={24} color="white" />
+          <Ionicons name="arrow-back" size={24} color={isDark ? 'black' : 'white'} />
         </TouchableOpacity>
-        <ThemedText style={styles.headerTitle}>Banned Users</ThemedText>
+        <ThemedText style={[styles.headerTitle, { color: isDark ? 'black' : 'white' }]}>Banned Users</ThemedText>
         <View style={styles.placeholder} />
       </LinearGradient>
 

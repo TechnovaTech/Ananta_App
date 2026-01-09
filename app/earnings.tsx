@@ -25,9 +25,9 @@ export default function EarningsScreen() {
           style={styles.backButton}
           onPress={() => router.push('/(tabs)/profile')}
         >
-          <Ionicons name="arrow-back" size={24} color="white" />
+          <Ionicons name="arrow-back" size={24} color={isDark ? 'black' : 'white'} />
         </TouchableOpacity>
-        <ThemedText style={styles.headerTitle}>Earnings</ThemedText>
+        <ThemedText style={[styles.headerTitle, { color: isDark ? 'black' : 'white' }]}>Earnings</ThemedText>
         <View style={styles.placeholder} />
       </LinearGradient>
 

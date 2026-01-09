@@ -78,13 +78,13 @@ export default function EditProfileScreen() {
       
       {/* Header */}
       <LinearGradient
-        colors={['#127d96', '#15a3c7']}
+        colors={isDark ? ['#f7c14d', '#ffb300'] : ['#127d96', '#15a3c7']}
         style={styles.header}
       >
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color="white" />
+          <Ionicons name="arrow-back" size={24} color={isDark ? 'black' : 'white'} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Edit Profile</Text>
+        <Text style={[styles.headerTitle, { color: isDark ? 'black' : 'white' }]}>Edit Profile</Text>
         <View style={styles.placeholder} />
       </LinearGradient>
       
@@ -108,14 +108,14 @@ export default function EditProfileScreen() {
             
             <View style={styles.fieldContainer}>
               <View style={styles.fieldHeader}>
-                <Ionicons name="person" size={16} color="#127d96" />
+                <Ionicons name="person" size={16} color={isDark ? '#f7c14d' : '#127d96'} />
                 <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Username</Text>
               </View>
               <TextInput
                 style={[styles.textInput, { 
                   backgroundColor: isDark ? '#333' : '#f8f9fa',
                   color: isDark ? 'white' : '#333',
-                  borderColor: '#127d96'
+                  borderColor: isDark ? '#f7c14d' : '#127d96'
                 }]}
                 value={userName}
                 onChangeText={setUserName}
@@ -126,14 +126,14 @@ export default function EditProfileScreen() {
             
             <View style={styles.fieldContainer}>
               <View style={styles.fieldHeader}>
-                <Ionicons name="person-circle" size={16} color="#127d96" />
+                <Ionicons name="person-circle" size={16} color={isDark ? '#f7c14d' : '#127d96'} />
                 <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Name</Text>
               </View>
               <TextInput
                 style={[styles.textInput, { 
                   backgroundColor: isDark ? '#333' : '#f8f9fa',
                   color: isDark ? 'white' : '#333',
-                  borderColor: '#127d96'
+                  borderColor: isDark ? '#f7c14d' : '#127d96'
                 }]}
                 value={name}
                 onChangeText={setName}
@@ -144,14 +144,14 @@ export default function EditProfileScreen() {
             
             <View style={styles.fieldContainer}>
               <View style={styles.fieldHeader}>
-                <Ionicons name="male-female" size={16} color="#127d96" />
+                <Ionicons name="male-female" size={16} color={isDark ? '#f7c14d' : '#127d96'} />
                 <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Gender</Text>
               </View>
               <TextInput
                 style={[styles.textInput, { 
                   backgroundColor: isDark ? '#333' : '#f8f9fa',
                   color: isDark ? 'white' : '#333',
-                  borderColor: '#127d96'
+                  borderColor: isDark ? '#f7c14d' : '#127d96'
                 }]}
                 value={gender}
                 onChangeText={setGender}
@@ -162,14 +162,14 @@ export default function EditProfileScreen() {
             
             <View style={styles.fieldContainer}>
               <View style={styles.fieldHeader}>
-                <Ionicons name="calendar" size={16} color="#127d96" />
+                <Ionicons name="calendar" size={16} color={isDark ? '#f7c14d' : '#127d96'} />
                 <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Birthday</Text>
               </View>
               <TextInput
                 style={[styles.textInput, { 
                   backgroundColor: isDark ? '#333' : '#f8f9fa',
                   color: isDark ? 'white' : '#333',
-                  borderColor: '#127d96'
+                  borderColor: isDark ? '#f7c14d' : '#127d96'
                 }]}
                 value={birthday}
                 onChangeText={setBirthday}
@@ -180,14 +180,14 @@ export default function EditProfileScreen() {
             
             <View style={styles.fieldContainer}>
               <View style={styles.fieldHeader}>
-                <Ionicons name="document-text" size={16} color="#127d96" />
+                <Ionicons name="document-text" size={16} color={isDark ? '#f7c14d' : '#127d96'} />
                 <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Bio</Text>
               </View>
               <TextInput
                 style={[styles.textInput, styles.bioInput, { 
                   backgroundColor: isDark ? '#333' : '#f8f9fa',
                   color: isDark ? 'white' : '#333',
-                  borderColor: '#127d96'
+                  borderColor: isDark ? '#f7c14d' : '#127d96'
                 }]}
                 value={bio}
                 onChangeText={setBio}
@@ -205,14 +205,14 @@ export default function EditProfileScreen() {
             
             <View style={styles.fieldContainer}>
               <View style={styles.fieldHeader}>
-                <Ionicons name="home" size={16} color="#127d96" />
+                <Ionicons name="home" size={16} color={isDark ? '#f7c14d' : '#127d96'} />
                 <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Address Line 1</Text>
               </View>
               <TextInput
                 style={[styles.textInput, { 
                   backgroundColor: isDark ? '#333' : '#f8f9fa',
                   color: isDark ? 'white' : '#333',
-                  borderColor: '#127d96'
+                  borderColor: isDark ? '#f7c14d' : '#127d96'
                 }]}
                 value={addressLine1}
                 onChangeText={setAddressLine1}
@@ -223,14 +223,14 @@ export default function EditProfileScreen() {
             
             <View style={styles.fieldContainer}>
               <View style={styles.fieldHeader}>
-                <Ionicons name="business" size={16} color="#127d96" />
+                <Ionicons name="business" size={16} color={isDark ? '#f7c14d' : '#127d96'} />
                 <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>City</Text>
               </View>
               <TextInput
                 style={[styles.textInput, { 
                   backgroundColor: isDark ? '#333' : '#f8f9fa',
                   color: isDark ? 'white' : '#333',
-                  borderColor: '#127d96'
+                  borderColor: isDark ? '#f7c14d' : '#127d96'
                 }]}
                 value={city}
                 onChangeText={setCity}
@@ -241,14 +241,14 @@ export default function EditProfileScreen() {
             
             <View style={styles.fieldContainer}>
               <View style={styles.fieldHeader}>
-                <Ionicons name="map" size={16} color="#127d96" />
+                <Ionicons name="map" size={16} color={isDark ? '#f7c14d' : '#127d96'} />
                 <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>State</Text>
               </View>
               <TextInput
                 style={[styles.textInput, { 
                   backgroundColor: isDark ? '#333' : '#f8f9fa',
                   color: isDark ? 'white' : '#333',
-                  borderColor: '#127d96'
+                  borderColor: isDark ? '#f7c14d' : '#127d96'
                 }]}
                 value={state}
                 onChangeText={setState}
@@ -259,14 +259,14 @@ export default function EditProfileScreen() {
             
             <View style={styles.fieldContainer}>
               <View style={styles.fieldHeader}>
-                <Ionicons name="globe" size={16} color="#127d96" />
+                <Ionicons name="globe" size={16} color={isDark ? '#f7c14d' : '#127d96'} />
                 <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Country</Text>
               </View>
               <TextInput
                 style={[styles.textInput, { 
                   backgroundColor: isDark ? '#333' : '#f8f9fa',
                   color: isDark ? 'white' : '#333',
-                  borderColor: '#127d96'
+                  borderColor: isDark ? '#f7c14d' : '#127d96'
                 }]}
                 value={country}
                 onChangeText={setCountry}
@@ -277,14 +277,14 @@ export default function EditProfileScreen() {
             
             <View style={styles.fieldContainer}>
               <View style={styles.fieldHeader}>
-                <Ionicons name="mail" size={16} color="#127d96" />
+                <Ionicons name="mail" size={16} color={isDark ? '#f7c14d' : '#127d96'} />
                 <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Pin Code</Text>
               </View>
               <TextInput
                 style={[styles.textInput, { 
                   backgroundColor: isDark ? '#333' : '#f8f9fa',
                   color: isDark ? 'white' : '#333',
-                  borderColor: '#127d96'
+                  borderColor: isDark ? '#f7c14d' : '#127d96'
                 }]}
                 value={pinCode}
                 onChangeText={setPinCode}
@@ -301,14 +301,14 @@ export default function EditProfileScreen() {
             
             <View style={styles.fieldContainer}>
               <View style={styles.fieldHeader}>
-                <Ionicons name="location" size={16} color="#127d96" />
+                <Ionicons name="location" size={16} color={isDark ? '#f7c14d' : '#127d96'} />
                 <Text style={[styles.fieldLabel, { color: isDark ? '#ccc' : '#333' }]}>Location</Text>
               </View>
               <TextInput
                 style={[styles.textInput, { 
                   backgroundColor: isDark ? '#333' : '#f8f9fa',
                   color: isDark ? 'white' : '#333',
-                  borderColor: '#127d96'
+                  borderColor: isDark ? '#f7c14d' : '#127d96'
                 }]}
                 value={location}
                 onChangeText={setLocation}
@@ -324,11 +324,11 @@ export default function EditProfileScreen() {
       <View style={[styles.buttonContainer, { backgroundColor: isDark ? '#2a2a2a' : 'white' }]}>
         <TouchableOpacity style={styles.saveButton} onPress={saveProfile}>
           <LinearGradient
-            colors={['#127d96', '#15a3c7']}
+            colors={isDark ? ['#f7c14d', '#ffb300'] : ['#127d96', '#15a3c7']}
             style={styles.saveButtonGradient}
           >
-            <Ionicons name="checkmark-circle" size={20} color="white" />
-            <Text style={styles.saveButtonText}>Save Profile</Text>
+            <Ionicons name="checkmark-circle" size={20} color={isDark ? 'black' : 'white'} />
+            <Text style={[styles.saveButtonText, { color: isDark ? 'black' : 'white' }]}>Save Profile</Text>
           </LinearGradient>
         </TouchableOpacity>
       </View>

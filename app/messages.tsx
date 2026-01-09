@@ -77,9 +77,9 @@ export default function MessagesScreen() {
           style={styles.backButton}
           onPress={() => router.push('/(tabs)/profile')}
         >
-          <Ionicons name="arrow-back" size={24} color="white" />
+          <Ionicons name="arrow-back" size={24} color={isDark ? 'black' : 'white'} />
         </TouchableOpacity>
-        <ThemedText style={styles.headerTitle}>Messages</ThemedText>
+        <ThemedText style={[styles.headerTitle, { color: isDark ? 'black' : 'white' }]}>Messages</ThemedText>
         <View style={styles.placeholder} />
       </LinearGradient>
 

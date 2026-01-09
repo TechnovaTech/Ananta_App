@@ -68,9 +68,9 @@ export default function BlockScreen() {
           style={styles.backButton}
           onPress={() => router.back()}
         >
-          <Ionicons name="arrow-back" size={24} color="white" />
+          <Ionicons name="arrow-back" size={24} color={isDark ? 'black' : 'white'} />
         </TouchableOpacity>
-        <ThemedText style={styles.headerTitle}>Blocked Users</ThemedText>
+        <ThemedText style={[styles.headerTitle, { color: isDark ? 'black' : 'white' }]}>Blocked Users</ThemedText>
         <View style={styles.placeholder} />
       </LinearGradient>
 
@@ -81,9 +81,9 @@ export default function BlockScreen() {
           style={styles.infoCard}
         >
           <View style={styles.infoIcon}>
-            <Ionicons name="information-circle" size={24} color="white" />
+            <Ionicons name="information-circle" size={24} color={isDark ? 'black' : 'white'} />
           </View>
-          <ThemedText style={styles.infoText}>
+          <ThemedText style={[styles.infoText, { color: isDark ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.9)' }]}>
             Blocked users cannot send you messages or see your profile. You can unblock them anytime.
           </ThemedText>
         </LinearGradient>

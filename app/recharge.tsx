@@ -164,8 +164,8 @@ export default function RechargeScreen() {
             colors={isDark ? ['#f7c14d', '#ffb300'] : ['#127d96', '#15a3c7']}
             style={styles.proceedButton}
           >
-            <Text style={styles.proceedButtonText}>Proceed to Payment</Text>
-            <Ionicons name="arrow-forward" size={20} color="white" />
+            <Text style={[styles.proceedButtonText, { color: isDark ? 'black' : 'white' }]}>Proceed to Payment</Text>
+            <Ionicons name="arrow-forward" size={20} color={isDark ? 'black' : 'white'} />
           </LinearGradient>
         </TouchableOpacity>
       )}
@@ -215,8 +215,8 @@ export default function RechargeScreen() {
             <ActivityIndicator color="white" />
           ) : (
             <>
-              <Text style={styles.proceedButtonText}>Create Order</Text>
-              <Ionicons name="checkmark" size={20} color="white" />
+              <Text style={[styles.proceedButtonText, { color: isDark ? 'black' : 'white' }]}>Create Order</Text>
+              <Ionicons name="checkmark" size={20} color={isDark ? 'black' : 'white'} />
             </>
           )}
         </LinearGradient>
@@ -252,8 +252,8 @@ export default function RechargeScreen() {
               <ActivityIndicator color="white" />
             ) : (
               <>
-                <Text style={styles.proceedButtonText}>Complete Payment</Text>
-                <Ionicons name="card" size={20} color="white" />
+                <Text style={[styles.proceedButtonText, { color: isDark ? 'black' : 'white' }]}>Complete Payment</Text>
+                <Ionicons name="card" size={20} color={isDark ? 'black' : 'white'} />
               </>
             )}
           </LinearGradient>
@@ -288,10 +288,10 @@ export default function RechargeScreen() {
             colors={isDark ? ['#f7c14d', '#ffb300'] : ['#127d96', '#15a3c7']}
             style={styles.proceedButton}
           >
-            <Text style={styles.proceedButtonText}>
+            <Text style={[styles.proceedButtonText, { color: isDark ? 'black' : 'white' }]}>
               {paymentSuccess ? 'Back to Wallet' : 'Retry Payment'}
             </Text>
-            <Ionicons name={paymentSuccess ? "wallet" : "refresh"} size={20} color="white" />
+            <Ionicons name={paymentSuccess ? "wallet" : "refresh"} size={20} color={isDark ? 'black' : 'white'} />
           </LinearGradient>
         </TouchableOpacity>
       </View>
@@ -327,11 +327,11 @@ export default function RechargeScreen() {
               setOrderId(null);
             }
           }}>
-            <Ionicons name="arrow-back" size={24} color="white" />
+            <Ionicons name="arrow-back" size={24} color={isDark ? 'black' : 'white'} />
           </TouchableOpacity>
           
           <View style={styles.logoSection}>
-            <Text style={styles.appTitle}>Recharge</Text>
+            <Text style={[styles.appTitle, { color: isDark ? 'black' : 'white' }]}>Recharge</Text>
           </View>
           
           <View style={styles.headerActions}>

@@ -51,15 +51,15 @@ export default function WalletScreen() {
       >
         <View style={styles.headerContent}>
           <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-            <Ionicons name="arrow-back" size={24} color="white" />
+            <Ionicons name="arrow-back" size={24} color={isDark ? 'black' : 'white'} />
           </TouchableOpacity>
           
           <View style={styles.logoSection}>
-            <Text style={styles.appTitle}>My Wallet</Text>
+            <Text style={[styles.appTitle, { color: isDark ? 'black' : 'white' }]}>My Wallet</Text>
           </View>
           
           <TouchableOpacity style={styles.addButton} onPress={() => router.push('/recharge')}>
-            <Ionicons name="add" size={24} color="white" />
+            <Ionicons name="add" size={24} color={isDark ? 'black' : 'white'} />
           </TouchableOpacity>
         </View>
       </LinearGradient>
@@ -71,11 +71,11 @@ export default function WalletScreen() {
           style={styles.balanceCard}
         >
           <View style={styles.balanceHeader}>
-            <Ionicons name="diamond" size={32} color="white" />
-            <Text style={styles.balanceLabel}>Total Balance</Text>
+            <Ionicons name="diamond" size={32} color={isDark ? 'black' : 'white'} />
+            <Text style={[styles.balanceLabel, { color: isDark ? 'rgba(0,0,0,0.8)' : 'white' }]}>Total Balance</Text>
           </View>
-          <Text style={styles.balanceAmount}>{balance.toLocaleString()} Coins</Text>
-          <Text style={styles.balanceSubtext}>≈ ₹{(balance * 0.5).toLocaleString()}</Text>
+          <Text style={[styles.balanceAmount, { color: isDark ? 'black' : 'white' }]}>{balance.toLocaleString()} Coins</Text>
+          <Text style={[styles.balanceSubtext, { color: isDark ? 'rgba(0,0,0,0.7)' : 'white' }]}>≈ ₹{(balance * 0.5).toLocaleString()}</Text>
         </LinearGradient>
 
         {/* Quick Actions */}

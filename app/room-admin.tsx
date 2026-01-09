@@ -102,9 +102,9 @@ export default function RoomAdminScreen() {
         style={styles.header}
       >
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color="white" />
+          <Ionicons name="arrow-back" size={24} color={isDark ? 'black' : 'white'} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Room Admin</Text>
+        <Text style={[styles.headerTitle, { color: isDark ? 'black' : 'white' }]}>Room Admin</Text>
         <View style={styles.placeholder} />
       </LinearGradient>
       
@@ -229,8 +229,8 @@ export default function RoomAdminScreen() {
               colors={isDark ? ['#F7C14D', '#F7C14D'] : ['#127d96', '#15a3c7']}
               style={styles.actionButtonGradient}
             >
-              <Ionicons name="people" size={20} color="white" />
-              <Text style={styles.actionButtonText}>Invite Users</Text>
+              <Ionicons name="people" size={20} color={isDark ? 'black' : 'white'} />
+              <Text style={[styles.actionButtonText, { color: isDark ? 'black' : 'white' }]}>Invite Users</Text>
             </LinearGradient>
           </TouchableOpacity>
           

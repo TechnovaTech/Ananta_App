@@ -103,21 +103,21 @@ export default function HomeScreen() {
       >
         <Animated.View style={[styles.headerContent, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
           <View style={styles.logoSection}>
-            <Text style={styles.appTitle}>ANANTA</Text>
+            <Text style={[styles.appTitle, { color: isDark ? 'black' : 'white' }]}>ANANTA</Text>
           </View>
           
           <View style={styles.headerActions}>
             <TouchableOpacity style={styles.iconButton} onPress={() => router.push('/search')}>
-              <Ionicons name="search" size={22} color="white" />
+              <Ionicons name="search" size={22} color={isDark ? 'black' : 'white'} />
             </TouchableOpacity>
             <TouchableOpacity style={styles.iconButton} onPress={() => router.push('/notification')}>
-              <Ionicons name="notifications-outline" size={22} color="white" />
+              <Ionicons name="notifications-outline" size={22} color={isDark ? 'black' : 'white'} />
             </TouchableOpacity>
             <TouchableOpacity style={styles.iconButton} onPress={() => router.push('/settings')}>
-              <Ionicons name="settings-outline" size={22} color="white" />
+              <Ionicons name="settings-outline" size={22} color={isDark ? 'black' : 'white'} />
             </TouchableOpacity>
             <TouchableOpacity style={styles.iconButton} onPress={() => router.push('/wallet')}>
-              <Ionicons name="wallet-outline" size={22} color="white" />
+              <Ionicons name="wallet-outline" size={22} color={isDark ? 'black' : 'white'} />
             </TouchableOpacity>
           </View>
         </Animated.View>
@@ -133,9 +133,9 @@ export default function HomeScreen() {
             <Ionicons 
               name="videocam" 
               size={18} 
-              color={activeTab === 'video' ? 'white' : (isDark ? '#F7C14D' : '#127d96')} 
+              color={activeTab === 'video' ? (isDark ? 'black' : 'white') : (isDark ? '#F7C14D' : '#127d96')} 
             />
-            <Text style={[styles.tabText, activeTab === 'video' && styles.activeTabText, { color: activeTab === 'video' ? 'white' : (isDark ? '#F7C14D' : '#127d96') }]}>Video Live</Text>
+            <Text style={[styles.tabText, activeTab === 'video' && styles.activeTabText, { color: activeTab === 'video' ? (isDark ? 'black' : 'white') : (isDark ? '#F7C14D' : '#127d96') }]}>Video Live</Text>
           </TouchableOpacity>
           
           <TouchableOpacity 
@@ -145,9 +145,9 @@ export default function HomeScreen() {
             <Ionicons 
               name="musical-notes" 
               size={18} 
-              color={activeTab === 'audio' ? 'white' : (isDark ? '#F7C14D' : '#127d96')} 
+              color={activeTab === 'audio' ? (isDark ? 'black' : 'white') : (isDark ? '#F7C14D' : '#127d96')} 
             />
-            <Text style={[styles.tabText, activeTab === 'audio' && styles.activeTabText, { color: activeTab === 'audio' ? 'white' : (isDark ? '#F7C14D' : '#127d96') }]}>Audio Live</Text>
+            <Text style={[styles.tabText, activeTab === 'audio' && styles.activeTabText, { color: activeTab === 'audio' ? (isDark ? 'black' : 'white') : (isDark ? '#F7C14D' : '#127d96') }]}>Audio Live</Text>
           </TouchableOpacity>
           
           <TouchableOpacity 
@@ -282,7 +282,7 @@ export default function HomeScreen() {
                     ]}
                     onPress={() => handleFollow((activeTab === 'video' ? videos : audioStreams)[0].id)}
                   >
-                    <Text style={styles.followBtnText}>
+                    <Text style={[styles.followBtnText, { color: isDark ? 'black' : 'white' }]}>
                       {followedUsers.includes((activeTab === 'video' ? videos : audioStreams)[0].id) ? 'Following' : 'Follow'}
                     </Text>
                   </TouchableOpacity>
@@ -345,11 +345,67 @@ export default function HomeScreen() {
                 </TouchableOpacity>
               ))}
             </View>
+            
+            {/* Two additional medium cards below */}
+            <View style={styles.mediumCardsRow}>
+              {(activeTab === 'video' ? videos : audioStreams).slice(7, 9).map((item, index) => (
+                <TouchableOpacity 
+                  key={item.id} 
+                  style={[styles.mediumCard, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}
+                  onPress={() => {
+                    if (activeTab === 'video') {
+                      router.push({
+                        pathname: '/live/video',
+                        params: {
+                          title: item.title,
+                          user: item.user,
+                          location: item.location,
+                          views: (item as any).views,
+                          image: JSON.stringify(item.image)
+                        }
+                      });
+                    } else {
+                      router.push({
+                        pathname: '/live/audio',
+                        params: {
+                          title: item.title,
+                          user: item.user,
+                          location: item.location,
+                          listeners: (item as any).listeners,
+                          image: JSON.stringify(item.image)
+                        }
+                      });
+                    }
+                  }}
+                >
+                  <View style={styles.mediumCardImageContainer}>
+                    <Image source={item.image} style={styles.mediumCardImage} />
+                    {activeTab === 'audio' && (
+                      <View style={[styles.smallAudioIndicator, { backgroundColor: isDark ? 'rgba(247,193,77,0.9)' : 'rgba(18,125,150,0.9)' }]}>
+                        <Ionicons name="musical-notes" size={16} color="white" />
+                      </View>
+                    )}
+                    <View style={styles.smallLiveTag}>
+                      <Text style={styles.smallLiveTagText}>LIVE</Text>
+                    </View>
+                  </View>
+                  
+                  <View style={styles.mediumCardContent}>
+                    <Text style={[styles.mediumCardTitle, { color: isDark ? 'white' : '#333' }]} numberOfLines={1}>
+                      {item.title}
+                    </Text>
+                    <Text style={[styles.smallUserName, { color: isDark ? '#ccc' : '#666' }]}>
+                      {item.user}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </View>
           </View>
           
           <View style={styles.rightColumn}>
-            {/* Four smaller cards on right */}
-            {(activeTab === 'video' ? videos : audioStreams).slice(1, 5).map((item, index) => (
+            {/* Three smaller cards on right */}
+            {(activeTab === 'video' ? videos : audioStreams).slice(1, 4).map((item, index) => (
               <TouchableOpacity 
                 key={item.id} 
                 style={[styles.smallCard, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}
@@ -404,6 +460,61 @@ export default function HomeScreen() {
                 </View>
               </TouchableOpacity>
             ))}
+            
+            {/* Music session card moved below */}
+            <TouchableOpacity 
+              style={[styles.smallCard, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}
+              onPress={() => {
+                const item = (activeTab === 'video' ? videos : audioStreams)[5]; // Music session
+                if (activeTab === 'video') {
+                  router.push({
+                    pathname: '/live/video',
+                    params: {
+                      title: item.title,
+                      user: item.user,
+                      location: item.location,
+                      views: (item as any).views,
+                      image: JSON.stringify(item.image)
+                    }
+                  });
+                } else {
+                  router.push({
+                    pathname: '/live/audio',
+                    params: {
+                      title: item.title,
+                      user: item.user,
+                      location: item.location,
+                      listeners: (item as any).listeners,
+                      image: JSON.stringify(item.image)
+                    }
+                  });
+                }
+              }}
+            >
+              <View style={styles.smallCardImageContainer}>
+                <Image source={(activeTab === 'video' ? videos : audioStreams)[5].image} style={styles.smallCardImage} />
+                {activeTab === 'audio' && (
+                  <View style={[styles.smallAudioIndicator, { backgroundColor: isDark ? 'rgba(247,193,77,0.9)' : 'rgba(18,125,150,0.9)' }]}>
+                    <Ionicons name="musical-notes" size={16} color="white" />
+                  </View>
+                )}
+                <View style={styles.smallLiveTag}>
+                  <Text style={styles.smallLiveTagText}>LIVE</Text>
+                </View>
+              </View>
+              
+              <View style={styles.smallCardContent}>
+                <Text style={[styles.smallCardTitle, { color: isDark ? 'white' : '#333' }]} numberOfLines={1}>
+                  {(activeTab === 'video' ? videos : audioStreams)[5].title}
+                </Text>
+                <Text style={[styles.smallUserName, { color: isDark ? '#ccc' : '#666' }]}>
+                  {(activeTab === 'video' ? videos : audioStreams)[5].user}
+                </Text>
+                <Text style={[styles.smallViewerText, { color: isDark ? '#888' : '#999' }]}>
+                  {activeTab === 'video' ? `${((activeTab === 'video' ? videos : audioStreams)[5] as any).views} views` : `${((activeTab === 'video' ? videos : audioStreams)[5] as any).listeners} listening`}
+                </Text>
+              </View>
+            </TouchableOpacity>
           </View>
         </Animated.View>
         
@@ -485,7 +596,7 @@ export default function HomeScreen() {
                     ]}
                     onPress={() => handleFollow(item.id)}
                   >
-                    <Text style={styles.followBtnText}>
+                    <Text style={[styles.followBtnText, { color: isDark ? 'black' : 'white' }]}>
                       {followedUsers.includes(item.id) ? 'Following' : 'Follow'}
                     </Text>
                   </TouchableOpacity>

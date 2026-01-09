@@ -28,9 +28,9 @@ export default function PostScreen() {
           style={styles.backButton}
           onPress={() => router.push('/(tabs)/profile')}
         >
-          <Ionicons name="arrow-back" size={24} color="white" />
+          <Ionicons name="arrow-back" size={24} color={isDark ? 'black' : 'white'} />
         </TouchableOpacity>
-        <ThemedText style={styles.headerTitle}>Post</ThemedText>
+        <ThemedText style={[styles.headerTitle, { color: isDark ? 'black' : 'white' }]}>Post</ThemedText>
         <View style={styles.placeholder} />
       </LinearGradient>
 
