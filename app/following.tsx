@@ -22,9 +22,9 @@ export default function FollowingScreen() {
         <Text style={[styles.username, { color: isDark ? '#ccc' : '#666' }]}>{item.username}</Text>
       </View>
       <TouchableOpacity 
-        style={[styles.unfollowButton, { backgroundColor: isDark ? '#444' : '#e9ecef' }]}
+        style={[styles.unfollowButton, { backgroundColor: isDark ? '#f7c14d' : '#e9ecef' }]}
       >
-        <Text style={[styles.unfollowText, { color: isDark ? 'white' : '#333' }]}>Unfollow</Text>
+        <Text style={[styles.unfollowText, { color: isDark ? 'black' : '#333' }]}>Unfollow</Text>
       </TouchableOpacity>
     </View>
   );
@@ -33,7 +33,10 @@ export default function FollowingScreen() {
     <View style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f8f9fa' }]}>
       <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
       
-      <View style={[styles.header, { backgroundColor: isDark ? '#1a1a1a' : 'white', borderBottomColor: isDark ? '#333' : '#127d96' }]}>
+      <View style={[styles.header, { 
+        backgroundColor: isDark ? '#1a1a1a' : 'white', 
+        borderBottomColor: isDark ? '#f7c14d' : '#127d96' 
+      }]}>
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="chevron-back" size={24} color={isDark ? 'white' : '#333'} />
         </TouchableOpacity>

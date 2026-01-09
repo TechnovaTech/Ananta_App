@@ -86,7 +86,7 @@ export default function LiveHistoryScreen() {
   return (
     <ThemedView style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f8f9fa' }]}>
       <LinearGradient
-        colors={['#127d96', '#15a3c7']}
+        colors={isDark ? ['#f7c14d', '#ffb300'] : ['#127d96', '#15a3c7']}
         style={styles.header}
       >
         <TouchableOpacity 
@@ -103,7 +103,7 @@ export default function LiveHistoryScreen() {
         <TouchableOpacity 
           style={[styles.monthPicker, { 
             backgroundColor: isDark ? '#333' : '#f0f0f0',
-            borderColor: isDark ? '#555' : '#127d96'
+            borderColor: isDark ? '#f7c14d' : '#127d96'
           }]}
           onPress={() => setShowSidebar(!showSidebar)}
         >
@@ -121,7 +121,7 @@ export default function LiveHistoryScreen() {
               filteredHistoryItems.map((item) => (
                 <TouchableOpacity key={item.id} style={[styles.historyItem, { 
                   backgroundColor: isDark ? '#333' : '#F5F5F5',
-                  borderColor: isDark ? '#555' : '#126996'
+                  borderColor: isDark ? '#f7c14d' : '#126996'
                 }]}>
                   <Image source={item.image} style={styles.profileImage} />
                   <View style={styles.textContainer}>
@@ -149,7 +149,7 @@ export default function LiveHistoryScreen() {
             />
             <View style={[styles.sidebar, { 
               backgroundColor: isDark ? '#333' : '#f8f9fa',
-              borderLeftColor: isDark ? '#555' : '#127d96'
+              borderLeftColor: isDark ? '#f7c14d' : '#127d96'
             }]}>
               <ThemedText style={[styles.sidebarTitle, { color: isDark ? 'white' : '#333' }]}>Filter</ThemedText>
               <ScrollView showsVerticalScrollIndicator={false}>
@@ -157,12 +157,12 @@ export default function LiveHistoryScreen() {
                   <TouchableOpacity
                     key={month}
                     style={[styles.monthOption, {
-                      backgroundColor: selectedMonth === month ? (isDark ? '#127d96' : '#127d96') : 'transparent'
+                      backgroundColor: selectedMonth === month ? (isDark ? '#f7c14d' : '#127d96') : 'transparent'
                     }]}
                     onPress={() => handleMonthSelect(month)}
                   >
                     <ThemedText style={[styles.monthOptionText, { 
-                      color: selectedMonth === month ? 'white' : (isDark ? '#ccc' : '#333'),
+                      color: selectedMonth === month ? (isDark ? 'black' : 'white') : (isDark ? '#ccc' : '#333'),
                       fontWeight: selectedMonth === month ? 'bold' : 'normal'
                     }]}>
                       {month}

@@ -18,7 +18,7 @@ export default function EarningsScreen() {
   return (
     <ThemedView style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f8f9fa' }]}>
       <LinearGradient
-        colors={['#127d96', '#15a3c7']}
+        colors={isDark ? ['#f7c14d', '#ffb300'] : ['#127d96', '#15a3c7']}
         style={styles.header}
       >
         <TouchableOpacity 
@@ -33,10 +33,10 @@ export default function EarningsScreen() {
 
       <View style={styles.content}>
         <LinearGradient
-          colors={['#127d96', '#0a5d75']}
+          colors={isDark ? ['#f7c14d', '#ffb300'] : ['#127d96', '#0a5d75']}
           style={styles.iconContainer}
         >
-          <Ionicons name="diamond" size={60} color="white" />
+          <Ionicons name="diamond" size={60} color={isDark ? 'black' : 'white'} />
         </LinearGradient>
         <ThemedText style={[styles.comingSoonText, { color: isDark ? 'white' : '#333' }]}>Coming Soon</ThemedText>
         <ThemedText style={[styles.description, { color: isDark ? '#ccc' : '#666' }]}>

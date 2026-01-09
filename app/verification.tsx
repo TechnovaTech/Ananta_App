@@ -67,7 +67,7 @@ export default function VerificationScreen() {
     <View style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f8f9fa' }]}>
       {/* Header */}
       <LinearGradient
-        colors={['#127d96', '#15a3c7']}
+        colors={isDark ? ['#f7c14d', '#ffb300'] : ['#127d96', '#15a3c7']}
         style={styles.header}
       >
         <TouchableOpacity onPress={() => router.replace('/(tabs)/profile')} style={styles.backButton}>
@@ -81,7 +81,7 @@ export default function VerificationScreen() {
         {/* Document Type Selection */}
         <View style={[styles.section, { backgroundColor: isDark ? '#2a2a2a' : 'white' }]}>
           <View style={styles.sectionHeader}>
-            <Ionicons name="document-text" size={20} color="#127d96" />
+            <Ionicons name="document-text" size={20} color={isDark ? '#f7c14d' : '#127d96'} />
             <Text style={[styles.sectionTitle, { color: isDark ? 'white' : '#333' }]}>Select Document Type</Text>
           </View>
           <View style={styles.documentTypes}>
@@ -92,8 +92,8 @@ export default function VerificationScreen() {
                   styles.docTypeButton,
                   selectedDocType === doc.id && styles.selectedDocType,
                   { 
-                    backgroundColor: selectedDocType === doc.id ? '#127d96' : (isDark ? '#333' : '#f8f9fa'),
-                    borderColor: selectedDocType === doc.id ? '#127d96' : (isDark ? '#555' : '#dee2e6')
+                    backgroundColor: selectedDocType === doc.id ? (isDark ? '#f7c14d' : '#127d96') : (isDark ? '#333' : '#f8f9fa'),
+                    borderColor: selectedDocType === doc.id ? (isDark ? '#f7c14d' : '#127d96') : (isDark ? '#555' : '#dee2e6')
                   }
                 ]}
                 onPress={() => setSelectedDocType(doc.id)}
@@ -101,11 +101,11 @@ export default function VerificationScreen() {
                 <Ionicons 
                   name={doc.icon} 
                   size={20} 
-                  color={selectedDocType === doc.id ? '#fff' : (isDark ? 'white' : '#127d96')} 
+                  color={selectedDocType === doc.id ? (isDark ? 'black' : '#fff') : (isDark ? 'white' : '#127d96')} 
                 />
                 <Text style={[
                   styles.docTypeText,
-                  { color: selectedDocType === doc.id ? '#fff' : (isDark ? 'white' : '#127d96') }
+                  { color: selectedDocType === doc.id ? (isDark ? 'black' : '#fff') : (isDark ? 'white' : '#127d96') }
                 ]}>
                   {doc.name}
                 </Text>
@@ -117,7 +117,7 @@ export default function VerificationScreen() {
         {/* Upload Document */}
         <View style={[styles.section, { backgroundColor: isDark ? '#2a2a2a' : 'white' }]}>
           <View style={styles.sectionHeader}>
-            <Ionicons name="cloud-upload" size={20} color="#127d96" />
+            <Ionicons name="cloud-upload" size={20} color={isDark ? '#f7c14d' : '#127d96'} />
             <Text style={[styles.sectionTitle, { color: isDark ? 'white' : '#333' }]}>Upload Document</Text>
           </View>
           <TouchableOpacity style={styles.uploadArea} onPress={pickDocument}>
@@ -135,7 +135,7 @@ export default function VerificationScreen() {
                 backgroundColor: isDark ? '#333' : '#f8f9fa'
               }]}>
                 <View style={styles.uploadIcon}>
-                  <Ionicons name="cloud-upload-outline" size={40} color="#127d96" />
+                  <Ionicons name="cloud-upload-outline" size={40} color={isDark ? '#f7c14d' : '#127d96'} />
                 </View>
                 <Text style={[styles.uploadText, { color: isDark ? '#ccc' : '#666' }]}>Tap to upload document</Text>
                 <Text style={[styles.uploadSubtext, { color: isDark ? '#888' : '#999' }]}>JPG, PNG or PDF (Max 5MB)</Text>
@@ -147,12 +147,12 @@ export default function VerificationScreen() {
         {/* Document Details */}
         <View style={[styles.section, { backgroundColor: isDark ? '#2a2a2a' : 'white' }]}>
           <View style={styles.sectionHeader}>
-            <Ionicons name="information-circle" size={20} color="#127d96" />
+            <Ionicons name="information-circle" size={20} color={isDark ? '#f7c14d' : '#127d96'} />
             <Text style={[styles.sectionTitle, { color: isDark ? 'white' : '#333' }]}>Document Details</Text>
           </View>
           <View style={styles.form}>
             <View style={styles.inputContainer}>
-              <Ionicons name="person" size={16} color="#127d96" style={styles.inputIcon} />
+              <Ionicons name="person" size={16} color={isDark ? '#f7c14d' : '#127d96'} style={styles.inputIcon} />
               <TextInput
                 style={[styles.input, { 
                   backgroundColor: isDark ? '#333' : '#f8f9fa',
@@ -167,7 +167,7 @@ export default function VerificationScreen() {
             </View>
             
             <View style={styles.inputContainer}>
-              <Ionicons name="card" size={16} color="#127d96" style={styles.inputIcon} />
+              <Ionicons name="card" size={16} color={isDark ? '#f7c14d' : '#127d96'} style={styles.inputIcon} />
               <TextInput
                 style={[styles.input, { 
                   backgroundColor: isDark ? '#333' : '#f8f9fa',
@@ -182,7 +182,7 @@ export default function VerificationScreen() {
             </View>
             
             <View style={styles.inputContainer}>
-              <Ionicons name="calendar" size={16} color="#127d96" style={styles.inputIcon} />
+              <Ionicons name="calendar" size={16} color={isDark ? '#f7c14d' : '#127d96'} style={styles.inputIcon} />
               <TextInput
                 style={[styles.input, { 
                   backgroundColor: isDark ? '#333' : '#f8f9fa',
@@ -197,7 +197,7 @@ export default function VerificationScreen() {
             </View>
             
             <View style={styles.inputContainer}>
-              <Ionicons name="location" size={16} color="#127d96" style={styles.inputIcon} />
+              <Ionicons name="location" size={16} color={isDark ? '#f7c14d' : '#127d96'} style={styles.inputIcon} />
               <TextInput
                 style={[styles.input, styles.textArea, { 
                   backgroundColor: isDark ? '#333' : '#f8f9fa',
@@ -218,7 +218,7 @@ export default function VerificationScreen() {
         {/* Submit Button */}
         <TouchableOpacity style={styles.submitButton} onPress={submitVerification}>
           <LinearGradient
-            colors={['#127d96', '#15a3c7']}
+            colors={isDark ? ['#f7c14d', '#ffb300'] : ['#127d96', '#15a3c7']}
             style={styles.submitButtonGradient}
           >
             <Ionicons name="checkmark-circle" size={20} color="white" />

@@ -3,8 +3,10 @@ import { Colors } from '@/constants/theme';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
 import { Animated, Image, StyleSheet, TextInput, TouchableOpacity, View, Text, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
+import { useTheme } from '@/contexts/ThemeContext';
 
 export default function VideoLiveScreen() {
+  const { isDark } = useTheme();
   const params = useLocalSearchParams();
   const title = params.title as string || '#Love me like you do';
   const user = params.user as string || 'Micale clarke';
@@ -103,8 +105,8 @@ export default function VideoLiveScreen() {
           </View>
           
           <View style={styles.headerRight}>
-            <TouchableOpacity style={[styles.followButton, isFollowing && styles.followingButton]} onPress={handleFollow}>
-              <ThemedText style={[styles.followText, isFollowing && styles.followingText]}>
+            <TouchableOpacity style={[styles.followButton, { backgroundColor: isDark ? '#FFD700' : Colors.light.primary }, isFollowing && styles.followingButton]} onPress={handleFollow}>
+              <ThemedText style={[styles.followText, { color: isDark ? 'black' : 'white' }, isFollowing && styles.followingText]}>
                 {isFollowing ? 'Following' : 'Follow'}
               </ThemedText>
             </TouchableOpacity>
@@ -244,7 +246,6 @@ const styles = StyleSheet.create({
     opacity: 0.8,
   },
   followButton: {
-    backgroundColor: Colors.light.primary,
     paddingHorizontal: 15,
     paddingVertical: 5,
     borderRadius: 15,

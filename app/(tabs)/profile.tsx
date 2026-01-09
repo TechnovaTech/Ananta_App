@@ -80,7 +80,7 @@ export default function ProfileScreen() {
         
         <TouchableOpacity style={styles.editButton} onPress={() => router.push('/edit-profile')}>
           <LinearGradient
-            colors={['#127d96', '#15a3c7']}
+            colors={isDark ? ['#f7c14d', '#ffb300'] : ['#127d96', '#15a3c7']}
             style={styles.editButtonGradient}
           >
             <Ionicons name="create" size={16} color="white" />
@@ -90,10 +90,7 @@ export default function ProfileScreen() {
       </View>
       
       {/* Stats section */}
-      <LinearGradient
-        colors={['#127d96', '#0a5d75']}
-        style={styles.statsContainer}
-      >
+      <View style={[styles.statsContainer, { backgroundColor: isDark ? '#f7c14d' : '#127d96' }]}>
         <TouchableOpacity style={styles.statItem} onPress={() => router.push('/followers')}>
           <Ionicons name="people" size={20} color="white" />
           <Text style={styles.statNumber}>10K</Text>
@@ -111,15 +108,15 @@ export default function ProfileScreen() {
           <Text style={styles.statNumber}>200</Text>
           <Text style={styles.statLabel}>Coins</Text>
         </View>
-      </LinearGradient>
+      </View>
       
       {/* Action buttons */}
       <View style={styles.actionGrid}>
         {/* First row - 3 icons */}
         <View style={styles.actionRow}>
           <TouchableOpacity style={styles.actionButton} onPress={() => router.push('/verification')}>
-            <View style={[styles.actionIcon, { backgroundColor: '#127d96' }]}>
-              <Ionicons name="checkmark-circle" size={24} color="white" />
+            <View style={[styles.actionIcon, { backgroundColor: isDark ? '#f7c14d' : '#127d96' }]}>
+              <Ionicons name="checkmark-circle" size={24} color={isDark ? 'black' : 'white'} />
             </View>
             <Text style={[styles.actionText, { color: isDark ? 'white' : '#333' }]}>Verify</Text>
           </TouchableOpacity>

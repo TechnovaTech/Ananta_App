@@ -28,7 +28,7 @@ export default function LiveScreen() {
       
       {/* Modern Header */}
       <LinearGradient
-        colors={['#127d96', '#15a3c7']}
+        colors={isDark ? ['#f7c14d', '#ffb300'] : ['#127d96', '#15a3c7']}
         style={styles.header}
       >
         <View style={styles.headerContent}>
@@ -46,7 +46,7 @@ export default function LiveScreen() {
             style={[styles.liveOption, selectedType === 'video' && styles.selectedOption]}
             onPress={() => setSelectedType('video')}
           >
-            <View style={[styles.optionIcon, selectedType === 'video' && styles.selectedIcon]}>
+            <View style={[styles.optionIcon, { borderColor: isDark ? '#f7c14d' : Colors.light.primary }, selectedType === 'video' && { backgroundColor: isDark ? '#f7c14d' : Colors.light.primary }]}>
               <ThemedText style={styles.optionIconText}>📹</ThemedText>
             </View>
             <ThemedText style={[styles.optionText, { color: isDark ? 'white' : 'black' }]}>Video live</ThemedText>
@@ -56,7 +56,7 @@ export default function LiveScreen() {
             style={[styles.liveOption, selectedType === 'audio' && styles.selectedOption]}
             onPress={() => setSelectedType('audio')}
           >
-            <View style={[styles.optionIcon, selectedType === 'audio' && styles.selectedIcon]}>
+            <View style={[styles.optionIcon, { borderColor: isDark ? '#f7c14d' : Colors.light.primary }, selectedType === 'audio' && { backgroundColor: isDark ? '#f7c14d' : Colors.light.primary }]}>
               <ThemedText style={styles.optionIconText}>🎤</ThemedText>
             </View>
             <ThemedText style={[styles.optionText, { color: isDark ? 'white' : 'black' }]}>Audio live</ThemedText>
@@ -69,7 +69,7 @@ export default function LiveScreen() {
           disabled={!selectedType}
         >
           <LinearGradient
-            colors={selectedType ? ['#127d96', '#15a3c7'] : ['#ccc', '#999']}
+            colors={selectedType ? (isDark ? ['#f7c14d', '#ffb300'] : ['#127d96', '#15a3c7']) : ['#ccc', '#999']}
             style={styles.startLiveButton}
           >
             <ThemedText style={styles.startLiveText}>Start Live</ThemedText>
@@ -164,13 +164,9 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 40,
     borderWidth: 2,
-    borderColor: Colors.light.primary,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 15,
-  },
-  selectedIcon: {
-    backgroundColor: Colors.light.primary,
   },
   optionIconText: {
     fontSize: 30,

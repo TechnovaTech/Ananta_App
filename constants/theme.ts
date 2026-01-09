@@ -20,6 +20,10 @@ export const Colors = {
     primaryDark: '#1B3F47',
     secondary: '#E5E5E5',
     inputBackground: '#E5E5E5',
+    gradient: ['#127D96', '#15A3C7', '#1BB5D8'],
+    cardGradient: ['#FFFFFF', '#F8F9FA'],
+    accent: '#FFC107',
+    accentDark: '#FF8F00',
   },
   dark: {
     text: '#ECEDEE',
@@ -28,10 +32,14 @@ export const Colors = {
     icon: '#9BA1A6',
     tabIconDefault: '#9BA1A6',
     tabIconSelected: tintColorDark,
-    primary: '#127D96',
-    primaryDark: '#1B3F47',
+    primary: '#15A3C7',
+    primaryDark: '#127D96',
     secondary: '#333333',
     inputBackground: '#333333',
+    gradient: ['#1BB5D8', '#15A3C7', '#127D96'],
+    cardGradient: ['#2A2D30', '#1F2225'],
+    accent: '#FFD54F',
+    accentDark: '#FFC107',
   },
 };
 

@@ -21,7 +21,7 @@ export default function PostScreen() {
   return (
     <ThemedView style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f8f9fa' }]}>
       <LinearGradient
-        colors={['#127d96', '#15a3c7']}
+        colors={isDark ? ['#f7c14d', '#ffb300'] : ['#127d96', '#15a3c7']}
         style={styles.header}
       >
         <TouchableOpacity 
@@ -36,10 +36,10 @@ export default function PostScreen() {
 
       <View style={styles.content}>
         <LinearGradient
-          colors={['#127d96', '#0a5d75']}
+          colors={isDark ? ['#f7c14d', '#ffb300'] : ['#127d96', '#0a5d75']}
           style={styles.iconContainer}
         >
-          <Ionicons name="rocket" size={60} color="white" />
+          <Ionicons name="rocket" size={60} color={isDark ? 'black' : 'white'} />
         </LinearGradient>
         
         <ThemedText style={[styles.comingSoonText, { color: isDark ? 'white' : '#333' }]}>Coming Soon</ThemedText>

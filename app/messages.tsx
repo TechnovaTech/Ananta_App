@@ -70,7 +70,7 @@ export default function MessagesScreen() {
   return (
     <ThemedView style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f8f9fa' }]}>
       <LinearGradient
-        colors={['#127d96', '#15a3c7']}
+        colors={isDark ? ['#f7c14d', '#ffb300'] : ['#127d96', '#15a3c7']}
         style={styles.header}
       >
         <TouchableOpacity 
@@ -89,7 +89,7 @@ export default function MessagesScreen() {
             backgroundColor: isDark ? '#2a2a2a' : 'white'
           }]}>
             <View style={styles.avatarContainer}>
-              <Image source={conversation.avatar} style={styles.avatar} />
+              <Image source={conversation.avatar} style={[styles.avatar, { borderColor: isDark ? '#f7c14d' : '#127d96' }]} />
               {conversation.isOnline && <View style={styles.onlineIndicator} />}
             </View>
             
@@ -104,10 +104,10 @@ export default function MessagesScreen() {
                 </ThemedText>
                 {conversation.unread > 0 && (
                   <LinearGradient
-                    colors={['#127d96', '#15a3c7']}
+                    colors={isDark ? ['#f7c14d', '#ffb300'] : ['#127d96', '#15a3c7']}
                     style={styles.unreadBadge}
                   >
-                    <ThemedText style={styles.unreadCount}>{conversation.unread}</ThemedText>
+                    <ThemedText style={[styles.unreadCount, { color: isDark ? 'black' : 'white' }]}>{conversation.unread}</ThemedText>
                   </LinearGradient>
                 )}
               </View>
@@ -220,7 +220,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
   },
   unreadCount: {
-    color: 'white',
     fontSize: 13,
     fontWeight: 'bold',
   },

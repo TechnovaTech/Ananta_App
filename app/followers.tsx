@@ -22,9 +22,14 @@ export default function FollowersScreen() {
         <Text style={[styles.username, { color: isDark ? '#ccc' : '#666' }]}>{item.username}</Text>
       </View>
       <TouchableOpacity 
-        style={[styles.followButton, { backgroundColor: item.isFollowing ? '#127d96' : 'transparent', borderColor: '#127d96' }]}
+        style={[styles.followButton, { 
+          backgroundColor: item.isFollowing ? (isDark ? '#f7c14d' : '#127d96') : 'transparent', 
+          borderColor: isDark ? '#f7c14d' : '#127d96' 
+        }]}
       >
-        <Text style={[styles.followText, { color: item.isFollowing ? 'white' : '#127d96' }]}>
+        <Text style={[styles.followText, { 
+          color: item.isFollowing ? (isDark ? 'black' : 'white') : (isDark ? '#f7c14d' : '#127d96') 
+        }]}>
           {item.isFollowing ? 'Following' : 'Follow'}
         </Text>
       </TouchableOpacity>
@@ -35,7 +40,10 @@ export default function FollowersScreen() {
     <View style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f8f9fa' }]}>
       <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
       
-      <View style={[styles.header, { backgroundColor: isDark ? '#1a1a1a' : 'white', borderBottomColor: isDark ? '#333' : '#127d96' }]}>
+      <View style={[styles.header, { 
+        backgroundColor: isDark ? '#1a1a1a' : 'white', 
+        borderBottomColor: isDark ? '#f7c14d' : '#127d96' 
+      }]}>
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="chevron-back" size={24} color={isDark ? 'white' : '#333'} />
         </TouchableOpacity>

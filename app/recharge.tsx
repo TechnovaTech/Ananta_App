@@ -115,7 +115,7 @@ export default function RechargeScreen() {
             styles.planCard,
             {
               backgroundColor: isDark ? '#1a1a1a' : 'white',
-              borderColor: selectedPlan?.id === plan.id ? '#127d96' : 'transparent',
+              borderColor: selectedPlan?.id === plan.id ? (isDark ? '#f7c14d' : '#127d96') : 'transparent',
               borderWidth: selectedPlan?.id === plan.id ? 2 : 0,
             }
           ]}
@@ -139,16 +139,16 @@ export default function RechargeScreen() {
             </View>
             
             <View style={styles.planRight}>
-              <Text style={[styles.planPrice, { color: '#127d96' }]}>₹{plan.price}</Text>
+              <Text style={[styles.planPrice, { color: isDark ? '#f7c14d' : '#127d96' }]}>₹{plan.price}</Text>
               <View style={[
                 styles.selectButton,
                 {
-                  backgroundColor: selectedPlan?.id === plan.id ? '#127d96' : 'rgba(18,125,150,0.1)'
+                  backgroundColor: selectedPlan?.id === plan.id ? (isDark ? '#f7c14d' : '#127d96') : (isDark ? 'rgba(247,193,77,0.1)' : 'rgba(18,125,150,0.1)')
                 }
               ]}>
                 <Text style={[
                   styles.selectButtonText,
-                  { color: selectedPlan?.id === plan.id ? 'white' : '#127d96' }
+                  { color: selectedPlan?.id === plan.id ? (isDark ? 'black' : 'white') : (isDark ? '#f7c14d' : '#127d96') }
                 ]}>
                   {selectedPlan?.id === plan.id ? 'Selected' : 'Select'}
                 </Text>
@@ -161,7 +161,7 @@ export default function RechargeScreen() {
       {selectedPlan && (
         <TouchableOpacity style={styles.proceedButtonContainer} onPress={handleProceedToPayment}>
           <LinearGradient
-            colors={['#127d96', '#15a3c7']}
+            colors={isDark ? ['#f7c14d', '#ffb300'] : ['#127d96', '#15a3c7']}
             style={styles.proceedButton}
           >
             <Text style={styles.proceedButtonText}>Proceed to Payment</Text>
@@ -186,16 +186,16 @@ export default function RechargeScreen() {
           onPress={() => setPaymentMethod(method)}
         >
           <View style={styles.paymentLeft}>
-            <View style={styles.radioButton}>
+            <View style={[styles.radioButton, { borderColor: isDark ? '#f7c14d' : '#127d96' }]}>
               <View style={[
                 styles.radioInner,
-                { backgroundColor: paymentMethod === method ? '#127d96' : 'transparent' }
+                { backgroundColor: paymentMethod === method ? (isDark ? '#f7c14d' : '#127d96') : 'transparent' }
               ]} />
             </View>
             <Ionicons 
               name={method === 'UPI' ? 'phone-portrait' : method === 'Card' ? 'card' : 'wallet'} 
               size={24} 
-              color="#127d96" 
+              color={isDark ? '#f7c14d' : '#127d96'} 
             />
             <Text style={[styles.paymentText, { color: isDark ? 'white' : '#333' }]}>{method}</Text>
           </View>
@@ -208,7 +208,7 @@ export default function RechargeScreen() {
         disabled={loading}
       >
         <LinearGradient
-          colors={loading ? ['#ccc', '#999'] : ['#127d96', '#15a3c7']}
+          colors={loading ? ['#ccc', '#999'] : (isDark ? ['#f7c14d', '#ffb300'] : ['#127d96', '#15a3c7'])}
           style={styles.proceedButton}
         >
           {loading ? (
@@ -245,7 +245,7 @@ export default function RechargeScreen() {
           disabled={loading}
         >
           <LinearGradient
-            colors={loading ? ['#ccc', '#999'] : ['#127d96', '#15a3c7']}
+            colors={loading ? ['#ccc', '#999'] : (isDark ? ['#f7c14d', '#ffb300'] : ['#127d96', '#15a3c7'])}
             style={styles.proceedButton}
           >
             {loading ? (
@@ -285,7 +285,7 @@ export default function RechargeScreen() {
           onPress={() => paymentSuccess ? router.back() : setCurrentStep('order')}
         >
           <LinearGradient
-            colors={['#127d96', '#15a3c7']}
+            colors={isDark ? ['#f7c14d', '#ffb300'] : ['#127d96', '#15a3c7']}
             style={styles.proceedButton}
           >
             <Text style={styles.proceedButtonText}>
@@ -314,7 +314,7 @@ export default function RechargeScreen() {
       
       {/* Modern Header */}
       <LinearGradient
-        colors={['#127d96', '#15a3c7']}
+        colors={isDark ? ['#f7c14d', '#ffb300'] : ['#127d96', '#15a3c7']}
         style={styles.header}
       >
         <View style={styles.headerContent}>

@@ -42,6 +42,8 @@ export default function LeaderboardScreen() {
     require('@/assets/images/h2.png.png'),
     require('@/assets/images/h3.png.png'),
     require('@/assets/images/h4.png.png'),
+    require('@/assets/images/h1.png.png'),
+    require('@/assets/images/h2.png.png'),
   ];
 
   return (
@@ -50,7 +52,7 @@ export default function LeaderboardScreen() {
       
       {/* Modern Header */}
       <LinearGradient
-        colors={['#127d96', '#15a3c7']}
+        colors={isDark ? ['#f7c14d', '#ffb300'] : ['#127d96', '#15a3c7']}
         style={styles.header}
       >
         <View style={styles.headerContent}>
@@ -71,27 +73,27 @@ export default function LeaderboardScreen() {
       <View style={[styles.tabContainer, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}>
         <View style={styles.tabScrollContent}>
           <TouchableOpacity 
-            style={[styles.tab, activeTab === 'earning' && styles.activeTab]}
+            style={[styles.tab, { backgroundColor: isDark ? 'rgba(247,193,77,0.1)' : 'rgba(18,125,150,0.1)' }, activeTab === 'earning' && { backgroundColor: isDark ? '#f7c14d' : '#127d96' }]}
             onPress={() => setActiveTab('earning')}
           >
             <Ionicons 
               name="trophy" 
               size={18} 
-              color={activeTab === 'earning' ? 'white' : '#127d96'} 
+              color={activeTab === 'earning' ? 'white' : (isDark ? '#f7c14d' : '#127d96')} 
             />
-            <Text style={[styles.tabText, activeTab === 'earning' && styles.activeTabText]}>Earning</Text>
+            <Text style={[styles.tabText, { color: isDark ? '#f7c14d' : '#127d96' }, activeTab === 'earning' && styles.activeTabText]}>Earning</Text>
           </TouchableOpacity>
           
           <TouchableOpacity 
-            style={[styles.tab, activeTab === 'live' && styles.activeTab]}
+            style={[styles.tab, { backgroundColor: isDark ? 'rgba(247,193,77,0.1)' : 'rgba(18,125,150,0.1)' }, activeTab === 'live' && { backgroundColor: isDark ? '#f7c14d' : '#127d96' }]}
             onPress={() => setActiveTab('live')}
           >
             <Ionicons 
               name="videocam" 
               size={18} 
-              color={activeTab === 'live' ? 'white' : '#127d96'} 
+              color={activeTab === 'live' ? 'white' : (isDark ? '#f7c14d' : '#127d96')} 
             />
-            <Text style={[styles.tabText, activeTab === 'live' && styles.activeTabText]}>Live</Text>
+            <Text style={[styles.tabText, { color: isDark ? '#f7c14d' : '#127d96' }, activeTab === 'live' && styles.activeTabText]}>Live</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -227,7 +229,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 20,
-    backgroundColor: 'rgba(18,125,150,0.1)',
     gap: 6,
     marginHorizontal: 5,
   },
