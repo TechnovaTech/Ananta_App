@@ -98,7 +98,7 @@ export default function HomeScreen() {
       
       {/* Modern Header */}
       <LinearGradient
-        colors={['#127d96', '#15a3c7']}
+        colors={isDark ? ['#F7C14D', '#F7C14D'] : ['#127d96', '#15a3c7']}
         style={styles.header}
       >
         <Animated.View style={[styles.headerContent, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
@@ -127,43 +127,43 @@ export default function HomeScreen() {
       <View style={[styles.tabContainer, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.tabScrollContent}>
           <TouchableOpacity 
-            style={[styles.tab, activeTab === 'video' && styles.activeTab]}
+            style={[styles.tab, { backgroundColor: isDark ? 'rgba(247,193,77,0.1)' : 'rgba(18,125,150,0.1)' }, activeTab === 'video' && { backgroundColor: isDark ? '#F7C14D' : '#127d96' }]}
             onPress={() => setActiveTab('video')}
           >
             <Ionicons 
               name="videocam" 
               size={18} 
-              color={activeTab === 'video' ? 'white' : '#127d96'} 
+              color={activeTab === 'video' ? 'white' : (isDark ? '#F7C14D' : '#127d96')} 
             />
-            <Text style={[styles.tabText, activeTab === 'video' && styles.activeTabText]}>Video Live</Text>
+            <Text style={[styles.tabText, activeTab === 'video' && styles.activeTabText, { color: activeTab === 'video' ? 'white' : (isDark ? '#F7C14D' : '#127d96') }]}>Video Live</Text>
           </TouchableOpacity>
           
           <TouchableOpacity 
-            style={[styles.tab, activeTab === 'audio' && styles.activeTab]}
+            style={[styles.tab, { backgroundColor: isDark ? 'rgba(247,193,77,0.1)' : 'rgba(18,125,150,0.1)' }, activeTab === 'audio' && { backgroundColor: isDark ? '#F7C14D' : '#127d96' }]}
             onPress={() => setActiveTab('audio')}
           >
             <Ionicons 
               name="musical-notes" 
               size={18} 
-              color={activeTab === 'audio' ? 'white' : '#127d96'} 
+              color={activeTab === 'audio' ? 'white' : (isDark ? '#F7C14D' : '#127d96')} 
             />
-            <Text style={[styles.tabText, activeTab === 'audio' && styles.activeTabText]}>Audio Live</Text>
+            <Text style={[styles.tabText, activeTab === 'audio' && styles.activeTabText, { color: activeTab === 'audio' ? 'white' : (isDark ? '#F7C14D' : '#127d96') }]}>Audio Live</Text>
           </TouchableOpacity>
           
           <TouchableOpacity 
-            style={styles.tab}
+            style={[styles.tab, { backgroundColor: isDark ? 'rgba(247,193,77,0.1)' : 'rgba(18,125,150,0.1)' }]}
             onPress={() => router.push('/followers')}
           >
-            <Ionicons name="people" size={18} color="#127d96" />
-            <Text style={styles.tabText}>Followers</Text>
+            <Ionicons name="people" size={18} color={isDark ? '#F7C14D' : '#127d96'} />
+            <Text style={[styles.tabText, { color: isDark ? '#F7C14D' : '#127d96' }]}>Followers</Text>
           </TouchableOpacity>
           
           <TouchableOpacity 
-            style={styles.tab}
+            style={[styles.tab, { backgroundColor: isDark ? 'rgba(247,193,77,0.1)' : 'rgba(18,125,150,0.1)' }]}
             onPress={() => router.push('/following')}
           >
-            <Ionicons name="person-add" size={18} color="#127d96" />
-            <Text style={styles.tabText}>Following</Text>
+            <Ionicons name="person-add" size={18} color={isDark ? '#F7C14D' : '#127d96'} />
+            <Text style={[styles.tabText, { color: isDark ? '#F7C14D' : '#127d96' }]}>Following</Text>
           </TouchableOpacity>
         </ScrollView>
       </View>
@@ -185,7 +185,7 @@ export default function HomeScreen() {
             {bannerImages.map((image, index) => (
               <View key={index} style={styles.featuredCard}>
                 <Image source={image} style={styles.featuredImage} />
-                <View style={styles.playButton}>
+                <View style={[styles.playButton, { backgroundColor: isDark ? 'rgba(247,193,77,0.9)' : 'rgba(18,125,150,0.9)' }]}>
                   <Ionicons name="play" size={24} color="white" />
                 </View>
               </View>
@@ -197,7 +197,7 @@ export default function HomeScreen() {
             {bannerImages.map((_, index) => (
               <View 
                 key={index} 
-                style={[styles.indicator, currentBannerIndex === index && styles.activeIndicator]} 
+                style={[styles.indicator, { backgroundColor: isDark ? 'rgba(247,193,77,0.3)' : 'rgba(18,125,150,0.3)' }, currentBannerIndex === index && { backgroundColor: isDark ? '#F7C14D' : '#127d96' }]} 
               />
             ))}
           </View>
@@ -239,7 +239,7 @@ export default function HomeScreen() {
               <View style={styles.largeCardImageContainer}>
                 <Image source={bannerImages[currentBannerIndex]} style={styles.largeCardImage} />
                 {activeTab === 'audio' && (
-                  <View style={styles.audioIndicator}>
+                  <View style={[styles.audioIndicator, { backgroundColor: isDark ? 'rgba(247,193,77,0.9)' : 'rgba(18,125,150,0.9)' }]}>
                     <Ionicons name="musical-notes" size={24} color="white" />
                   </View>
                 )}
@@ -277,6 +277,7 @@ export default function HomeScreen() {
                   <TouchableOpacity 
                     style={[
                       styles.followBtn,
+                      { backgroundColor: isDark ? '#F7C14D' : '#127d96' },
                       followedUsers.includes((activeTab === 'video' ? videos : audioStreams)[0].id) && styles.followingBtn
                     ]}
                     onPress={() => handleFollow((activeTab === 'video' ? videos : audioStreams)[0].id)}
@@ -324,7 +325,7 @@ export default function HomeScreen() {
                   <View style={styles.mediumCardImageContainer}>
                     <Image source={item.image} style={styles.mediumCardImage} />
                     {activeTab === 'audio' && (
-                      <View style={styles.smallAudioIndicator}>
+                      <View style={[styles.smallAudioIndicator, { backgroundColor: isDark ? 'rgba(247,193,77,0.9)' : 'rgba(18,125,150,0.9)' }]}>
                         <Ionicons name="musical-notes" size={16} color="white" />
                       </View>
                     )}
@@ -381,7 +382,7 @@ export default function HomeScreen() {
                 <View style={styles.smallCardImageContainer}>
                   <Image source={item.image} style={styles.smallCardImage} />
                   {activeTab === 'audio' && (
-                    <View style={styles.smallAudioIndicator}>
+                    <View style={[styles.smallAudioIndicator, { backgroundColor: isDark ? 'rgba(247,193,77,0.9)' : 'rgba(18,125,150,0.9)' }]}>
                       <Ionicons name="musical-notes" size={16} color="white" />
                     </View>
                   )}
@@ -441,7 +442,7 @@ export default function HomeScreen() {
               <View style={styles.bottomCardImageContainer}>
                 <Image source={item.image} style={styles.bottomCardImage} />
                 {activeTab === 'audio' && (
-                  <View style={styles.audioIndicator}>
+                  <View style={[styles.audioIndicator, { backgroundColor: isDark ? 'rgba(247,193,77,0.9)' : 'rgba(18,125,150,0.9)' }]}>
                     <Ionicons name="musical-notes" size={20} color="white" />
                   </View>
                 )}
@@ -479,6 +480,7 @@ export default function HomeScreen() {
                   <TouchableOpacity 
                     style={[
                       styles.followBtn,
+                      { backgroundColor: isDark ? '#F7C14D' : '#127d96' },
                       followedUsers.includes(item.id) && styles.followingBtn
                     ]}
                     onPress={() => handleFollow(item.id)}

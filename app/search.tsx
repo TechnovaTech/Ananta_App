@@ -8,7 +8,7 @@ import { useTheme } from '@/contexts/ThemeContext';
 
 const BackIcon = ({ color, isDark }: { color: string; isDark?: boolean }) => (
   <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <Path d="M19 12H5M12 19L5 12L12 5" stroke={isDark ? '#127D96' : color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <Path d="M19 12H5M12 19L5 12L12 5" stroke={isDark ? '#F7C14D' : color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
   </Svg>
 );
 
@@ -20,7 +20,7 @@ export default function SearchScreen() {
     <ThemedView style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}>
       <View style={[styles.header, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-          <BackIcon color="#127D96" isDark={isDark} />
+          <BackIcon color={isDark ? '#F7C14D' : '#127D96'} isDark={isDark} />
         </TouchableOpacity>
         <ThemedText style={[styles.title, { color: isDark ? 'white' : 'black' }]}>Search</ThemedText>
       </View>

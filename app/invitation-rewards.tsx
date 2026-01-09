@@ -43,7 +43,7 @@ export default function InvitationRewardsScreen() {
     <ThemedView style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f8f9fa' }]}>
       {/* Header */}
       <LinearGradient
-        colors={['#127d96', '#15a3c7']}
+        colors={isDark ? ['#F7C14D', '#F7C14D'] : ['#127d96', '#15a3c7']}
         style={styles.header}
       >
         <TouchableOpacity 
@@ -59,7 +59,7 @@ export default function InvitationRewardsScreen() {
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Stats Card */}
         <LinearGradient
-          colors={['#127d96', '#0a5d75']}
+          colors={isDark ? ['#F7C14D', '#E6B143'] : ['#127d96', '#0a5d75']}
           style={styles.statsCard}
         >
           <View style={styles.statsIcon}>
@@ -84,15 +84,18 @@ export default function InvitationRewardsScreen() {
         {/* Invite Code */}
         <View style={[styles.inviteSection, { backgroundColor: isDark ? '#2a2a2a' : 'white' }]}>
           <ThemedText style={[styles.sectionTitle, { color: isDark ? 'white' : '#333' }]}>Your Invite Code</ThemedText>
-          <View style={styles.codeContainer}>
-            <ThemedText style={styles.inviteCode}>{inviteCode}</ThemedText>
-            <TouchableOpacity style={styles.copyButton}>
+          <View style={[styles.codeContainer, { 
+            backgroundColor: isDark ? 'rgba(247, 193, 77, 0.1)' : 'rgba(18, 125, 150, 0.1)',
+            borderColor: isDark ? '#F7C14D' : '#127d96'
+          }]}>
+            <ThemedText style={[styles.inviteCode, { color: isDark ? '#F7C14D' : '#127d96' }]}>{inviteCode}</ThemedText>
+            <TouchableOpacity style={[styles.copyButton, { backgroundColor: isDark ? '#F7C14D' : '#127d96' }]}>
               <Ionicons name="copy" size={20} color="white" />
             </TouchableOpacity>
           </View>
           <TouchableOpacity style={styles.shareButton} onPress={handleShare}>
             <LinearGradient
-              colors={['#127d96', '#15a3c7']}
+              colors={isDark ? ['#F7C14D', '#F7C14D'] : ['#127d96', '#15a3c7']}
               style={styles.shareButtonGradient}
             >
               <Ionicons name="share-social" size={20} color="white" />
@@ -111,7 +114,7 @@ export default function InvitationRewardsScreen() {
               tier.claimed && styles.claimedTier
             ]}>
               <View style={styles.tierLeft}>
-                <View style={[styles.tierIcon, { backgroundColor: tier.claimed ? '#00C851' : '#127d96' }]}>
+                <View style={[styles.tierIcon, { backgroundColor: tier.claimed ? '#00C851' : (isDark ? '#F7C14D' : '#127d96') }]}>
                   <Ionicons 
                     name={tier.claimed ? "checkmark" : "people"} 
                     size={20} 
@@ -151,8 +154,8 @@ export default function InvitationRewardsScreen() {
           {recentInvites.map((invite, index) => (
             <View key={index} style={[styles.inviteCard, { backgroundColor: isDark ? '#333' : '#f8f9fa' }]}>
               <View style={styles.inviteLeft}>
-                <View style={styles.avatarContainer}>
-                  <Ionicons name="person" size={20} color="#127d96" />
+                <View style={[styles.avatarContainer, { backgroundColor: isDark ? 'rgba(247, 193, 77, 0.1)' : 'rgba(18, 125, 150, 0.1)' }]}>
+                  <Ionicons name="person" size={20} color={isDark ? '#F7C14D' : '#127d96'} />
                 </View>
                 <View style={styles.inviteInfo}>
                   <ThemedText style={[styles.inviteName, { color: isDark ? 'white' : '#333' }]}>{invite.name}</ThemedText>

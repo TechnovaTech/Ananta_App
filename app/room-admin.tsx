@@ -64,7 +64,7 @@ export default function RoomAdminScreen() {
       <View style={styles.userLeft}>
         <View style={styles.avatarContainer}>
           <Image source={{ uri: user.avatar }} style={styles.userAvatar} />
-          <View style={[styles.roleIndicator, { backgroundColor: user.role === 'Host' ? '#127d96' : user.role === 'Moderator' ? '#FF6B35' : '#6C757D' }]}>
+          <View style={[styles.roleIndicator, { backgroundColor: user.role === 'Host' ? (isDark ? '#F7C14D' : '#127d96') : user.role === 'Moderator' ? '#FF6B35' : '#6C757D' }]}>
             <Ionicons 
               name={user.role === 'Host' ? 'crown' : user.role === 'Moderator' ? 'shield' : 'person'} 
               size={10} 
@@ -74,7 +74,7 @@ export default function RoomAdminScreen() {
         </View>
         <View style={styles.userInfo}>
           <Text style={[styles.userName, { color: isDark ? 'white' : '#333' }]}>{user.name}</Text>
-          <Text style={[styles.userRole, { color: user.role === 'Host' ? '#127d96' : user.role === 'Moderator' ? '#FF6B35' : '#6C757D' }]}>{user.role}</Text>
+          <Text style={[styles.userRole, { color: user.role === 'Host' ? (isDark ? '#F7C14D' : '#127d96') : user.role === 'Moderator' ? '#FF6B35' : '#6C757D' }]}>{user.role}</Text>
         </View>
       </View>
       <View style={styles.userActions}>
@@ -82,7 +82,7 @@ export default function RoomAdminScreen() {
           <Ionicons 
             name={user.isMuted ? "mic-off" : "mic"} 
             size={16} 
-            color={user.isMuted ? "#DC3545" : "#127d96"} 
+            color={user.isMuted ? "#DC3545" : (isDark ? '#F7C14D' : '#127d96')} 
           />
         </TouchableOpacity>
         <TouchableOpacity style={styles.actionBtn}>
@@ -98,7 +98,7 @@ export default function RoomAdminScreen() {
       
       {/* Header */}
       <LinearGradient
-        colors={['#127d96', '#15a3c7']}
+        colors={isDark ? ['#F7C14D', '#F7C14D'] : ['#127d96', '#15a3c7']}
         style={styles.header}
       >
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
@@ -111,7 +111,7 @@ export default function RoomAdminScreen() {
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Live Stats */}
         <LinearGradient
-          colors={['#127d96', '#0a5d75']}
+          colors={isDark ? ['#F7C14D', '#E6B143'] : ['#127d96', '#0a5d75']}
           style={styles.statsCard}
         >
           <Text style={styles.statsTitle}>Live Stats</Text>
@@ -148,60 +148,60 @@ export default function RoomAdminScreen() {
           
           <View style={styles.controlItem}>
             <View style={styles.controlLeft}>
-              <View style={styles.controlIcon}>
-                <Ionicons name="mic" size={20} color={micEnabled ? "#127d96" : "#6C757D"} />
+              <View style={[styles.controlIcon, { backgroundColor: isDark ? 'rgba(247, 193, 77, 0.1)' : 'rgba(18, 125, 150, 0.1)' }]}>
+                <Ionicons name="mic" size={20} color={micEnabled ? (isDark ? '#F7C14D' : '#127d96') : "#6C757D"} />
               </View>
               <Text style={[styles.controlText, { color: isDark ? 'white' : '#333' }]}>Enable Microphone</Text>
             </View>
             <Switch
               value={micEnabled}
               onValueChange={setMicEnabled}
-              trackColor={{ false: '#e9ecef', true: '#127d96' }}
+              trackColor={{ false: '#e9ecef', true: isDark ? '#F7C14D' : '#127d96' }}
               thumbColor={micEnabled ? '#fff' : '#f4f3f4'}
             />
           </View>
           
           <View style={styles.controlItem}>
             <View style={styles.controlLeft}>
-              <View style={styles.controlIcon}>
-                <Ionicons name="videocam" size={20} color={cameraEnabled ? "#127d96" : "#6C757D"} />
+              <View style={[styles.controlIcon, { backgroundColor: isDark ? 'rgba(247, 193, 77, 0.1)' : 'rgba(18, 125, 150, 0.1)' }]}>
+                <Ionicons name="videocam" size={20} color={cameraEnabled ? (isDark ? '#F7C14D' : '#127d96') : "#6C757D"} />
               </View>
               <Text style={[styles.controlText, { color: isDark ? 'white' : '#333' }]}>Enable Camera</Text>
             </View>
             <Switch
               value={cameraEnabled}
               onValueChange={setCameraEnabled}
-              trackColor={{ false: '#e9ecef', true: '#127d96' }}
+              trackColor={{ false: '#e9ecef', true: isDark ? '#F7C14D' : '#127d96' }}
               thumbColor={cameraEnabled ? '#fff' : '#f4f3f4'}
             />
           </View>
           
           <View style={styles.controlItem}>
             <View style={styles.controlLeft}>
-              <View style={styles.controlIcon}>
-                <Ionicons name="chatbubbles" size={20} color={chatEnabled ? "#127d96" : "#6C757D"} />
+              <View style={[styles.controlIcon, { backgroundColor: isDark ? 'rgba(247, 193, 77, 0.1)' : 'rgba(18, 125, 150, 0.1)' }]}>
+                <Ionicons name="chatbubbles" size={20} color={chatEnabled ? (isDark ? '#F7C14D' : '#127d96') : "#6C757D"} />
               </View>
               <Text style={[styles.controlText, { color: isDark ? 'white' : '#333' }]}>Enable Chat</Text>
             </View>
             <Switch
               value={chatEnabled}
               onValueChange={setChatEnabled}
-              trackColor={{ false: '#e9ecef', true: '#127d96' }}
+              trackColor={{ false: '#e9ecef', true: isDark ? '#F7C14D' : '#127d96' }}
               thumbColor={chatEnabled ? '#fff' : '#f4f3f4'}
             />
           </View>
           
           <View style={styles.controlItem}>
             <View style={styles.controlLeft}>
-              <View style={styles.controlIcon}>
-                <Ionicons name="gift" size={20} color={giftEnabled ? "#127d96" : "#6C757D"} />
+              <View style={[styles.controlIcon, { backgroundColor: isDark ? 'rgba(247, 193, 77, 0.1)' : 'rgba(18, 125, 150, 0.1)' }]}>
+                <Ionicons name="gift" size={20} color={giftEnabled ? (isDark ? '#F7C14D' : '#127d96') : "#6C757D"} />
               </View>
               <Text style={[styles.controlText, { color: isDark ? 'white' : '#333' }]}>Enable Gifts</Text>
             </View>
             <Switch
               value={giftEnabled}
               onValueChange={setGiftEnabled}
-              trackColor={{ false: '#e9ecef', true: '#127d96' }}
+              trackColor={{ false: '#e9ecef', true: isDark ? '#F7C14D' : '#127d96' }}
               thumbColor={giftEnabled ? '#fff' : '#f4f3f4'}
             />
           </View>
@@ -226,7 +226,7 @@ export default function RoomAdminScreen() {
           
           <TouchableOpacity style={styles.actionButton}>
             <LinearGradient
-              colors={['#127d96', '#15a3c7']}
+              colors={isDark ? ['#F7C14D', '#F7C14D'] : ['#127d96', '#15a3c7']}
               style={styles.actionButtonGradient}
             >
               <Ionicons name="people" size={20} color="white" />

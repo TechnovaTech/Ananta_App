@@ -84,7 +84,7 @@ export default function DailyTasksScreen() {
     <ThemedView style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f8f9fa' }]}>
       {/* Header */}
       <LinearGradient
-        colors={['#127d96', '#15a3c7']}
+        colors={isDark ? ['#F7C14D', '#F7C14D'] : ['#127d96', '#15a3c7']}
         style={styles.header}
       >
         <TouchableOpacity 
@@ -100,7 +100,7 @@ export default function DailyTasksScreen() {
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Progress Summary */}
         <LinearGradient
-          colors={['#127d96', '#0a5d75']}
+          colors={isDark ? ['#F7C14D', '#E6B143'] : ['#127d96', '#0a5d75']}
           style={styles.summaryCard}
         >
           <View style={styles.summaryItem}>
@@ -128,7 +128,7 @@ export default function DailyTasksScreen() {
               <View style={styles.taskIconContainer}>
                 <View style={[
                   styles.taskIcon,
-                  { backgroundColor: task.completed ? '#00C851' : '#127d96' }
+                  { backgroundColor: task.completed ? '#00C851' : (isDark ? '#F7C14D' : '#127d96') }
                 ]}>
                   <Ionicons 
                     name={task.completed ? 'checkmark' : task.icon} 
@@ -145,7 +145,7 @@ export default function DailyTasksScreen() {
                   {task.description}
                 </ThemedText>
                 <View style={styles.taskMeta}>
-                  <ThemedText style={styles.taskProgress}>Progress: {task.progress}</ThemedText>
+                  <ThemedText style={[styles.taskProgress, { color: isDark ? '#F7C14D' : '#127d96' }]}>Progress: {task.progress}</ThemedText>
                   <View style={styles.rewardContainer}>
                     <Ionicons name="diamond" size={14} color="#FFD700" />
                     <ThemedText style={styles.rewardText}>{task.reward}</ThemedText>
@@ -160,7 +160,10 @@ export default function DailyTasksScreen() {
                   <View 
                     style={[
                       styles.progressFill, 
-                      { width: `${(parseInt(task.progress.split('/')[0]) / parseInt(task.progress.split('/')[1])) * 100}%` }
+                      { 
+                        backgroundColor: isDark ? '#F7C14D' : '#127d96',
+                        width: `${(parseInt(task.progress.split('/')[0]) / parseInt(task.progress.split('/')[1])) * 100}%` 
+                      }
                     ]} 
                   />
                 </View>

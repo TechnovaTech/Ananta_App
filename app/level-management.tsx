@@ -85,7 +85,7 @@ const CheckIcon = ({ size = 20, color = '#00C851' }) => (
 );
 
 // Level Badge Component
-const LevelBadge = ({ level, size = 'small', showStar = true }) => {
+const LevelBadge = ({ level, size = 'small', showStar = true, isDark = false }) => {
   const badgeSize = size === 'large' ? 60 : size === 'medium' ? 40 : 24;
   const fontSize = size === 'large' ? 20 : size === 'medium' ? 14 : 10;
   
@@ -98,7 +98,7 @@ const LevelBadge = ({ level, size = 'small', showStar = true }) => {
         <ThemedText style={[styles.levelBadgeText, { fontSize }]}>{level}</ThemedText>
       </LinearGradient>
       {showStar && (
-        <View style={styles.starBadge}>
+        <View style={[styles.starBadge, { backgroundColor: isDark ? '#F7C14D' : '#127d96' }]}>
           <StarIcon size={size === 'large' ? 16 : 12} color="white" />
         </View>
       )}
@@ -151,7 +151,7 @@ export default function LevelManagementScreen() {
     <ThemedView style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f8f9fa' }]}>
       {/* Header */}
       <LinearGradient
-        colors={['#127d96', '#15a3c7']}
+        colors={isDark ? ['#F7C14D', '#F7C14D'] : ['#127d96', '#15a3c7']}
         style={styles.header}
       >
         <TouchableOpacity 
@@ -167,12 +167,12 @@ export default function LevelManagementScreen() {
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Current Level Card */}
         <LinearGradient
-          colors={['#127d96', '#0a5d75', '#083d4f']}
+          colors={isDark ? ['#F7C14D', '#E6B143', '#D4A03A'] : ['#127d96', '#0a5d75', '#083d4f']}
           style={styles.levelCard}
         >
           <View style={styles.levelHeader}>
             <View style={styles.levelInfo}>
-              <LevelBadge level={userLevel.currentLevel} size="large" />
+              <LevelBadge level={userLevel.currentLevel} size="large" isDark={isDark} />
               <View style={styles.levelTextContainer}>
                 <ThemedText style={styles.levelTitle}>Level {userLevel.currentLevel}</ThemedText>
                 <ThemedText style={styles.xpText}>
@@ -226,9 +226,9 @@ export default function LevelManagementScreen() {
                   styles.ladderItem,
                   {
                     backgroundColor: isCurrent 
-                      ? (isDark ? '#127d96' : '#e6f3f7')
+                      ? (isDark ? '#F7C14D' : '#e6f3f7')
                       : (isDark ? '#333' : '#f8f9fa'),
-                    borderColor: isCurrent ? '#127d96' : (isDark ? '#555' : '#e0e0e0'),
+                    borderColor: isCurrent ? (isDark ? '#F7C14D' : '#127d96') : (isDark ? '#555' : '#e0e0e0'),
                     opacity: isLocked ? 0.6 : 1
                   }
                 ]}
@@ -236,14 +236,14 @@ export default function LevelManagementScreen() {
                 <View style={styles.ladderLeft}>
                   <View style={styles.ladderIcon}>
                     {isCompleted && <CheckIcon size={20} />}
-                    {isCurrent && <LevelBadge level={levelData.level} size="medium" showStar={false} />}
+                    {isCurrent && <LevelBadge level={levelData.level} size="medium" showStar={false} isDark={isDark} />}
                     {isLocked && <LockIcon size={20} color={isDark ? '#666' : '#999'} />}
                   </View>
                   <View style={styles.ladderInfo}>
                     <ThemedText style={[
                       styles.ladderLevel,
                       { 
-                        color: isCurrent ? (isDark ? 'white' : '#127d96') : (isDark ? '#ccc' : '#333'),
+                        color: isCurrent ? (isDark ? 'white' : (isDark ? '#F7C14D' : '#127d96')) : (isDark ? '#ccc' : '#333'),
                         fontWeight: isCurrent ? 'bold' : 'normal'
                       }
                     ]}>
@@ -296,14 +296,14 @@ export default function LevelManagementScreen() {
           </ThemedText>
           
           <View style={[styles.userCard, { backgroundColor: isDark ? '#333' : '#f8f9fa' }]}>
-            <View style={styles.avatar}>
+            <View style={[styles.avatar, { backgroundColor: isDark ? '#F7C14D' : '#127d96' }]}>
               <ThemedText style={styles.avatarText}>👤</ThemedText>
             </View>
             <View style={styles.userInfo}>
               <ThemedText style={[styles.username, { color: isDark ? 'white' : '#333' }]}>
                 Your Username
               </ThemedText>
-              <View style={styles.levelBadgeSmall}>
+              <View style={[styles.levelBadgeSmall, { backgroundColor: isDark ? '#F7C14D' : '#127d96' }]}>
                 <ThemedText style={styles.levelBadgeSmallText}>Level {userLevel.currentLevel}</ThemedText>
                 <StarIcon size={12} color="#FFD700" />
               </View>

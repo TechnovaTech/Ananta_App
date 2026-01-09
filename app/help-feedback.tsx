@@ -26,7 +26,7 @@ export default function HelpFeedbackScreen() {
       
       {/* Modern Header */}
       <LinearGradient
-        colors={['#127d96', '#15a3c7']}
+        colors={isDark ? ['#F7C14D', '#F7C14D'] : ['#127d96', '#15a3c7']}
         style={styles.header}
       >
         <View style={styles.headerContent}>
@@ -54,7 +54,7 @@ export default function HelpFeedbackScreen() {
             >
               <View style={styles.helpLeft}>
                 <View style={styles.iconContainer}>
-                  <Ionicons name={item.icon as any} size={24} color="#127d96" />
+                  <Ionicons name={item.icon as any} size={24} color={isDark ? '#F7C14D' : '#127d96'} />
                 </View>
                 <View style={styles.textContainer}>
                   <Text style={[styles.helpTitle, { color: isDark ? 'white' : '#333' }]}>{item.title}</Text>
@@ -89,7 +89,7 @@ export default function HelpFeedbackScreen() {
             
             <TouchableOpacity style={styles.submitButtonContainer}>
               <LinearGradient
-                colors={['#127d96', '#15a3c7']}
+                colors={isDark ? ['#F7C14D', '#F7C14D'] : ['#127d96', '#15a3c7']}
                 style={styles.submitButton}
               >
                 <Ionicons name="send" size={20} color="white" />
@@ -102,7 +102,7 @@ export default function HelpFeedbackScreen() {
         {/* Contact Info */}
         <View style={[styles.contactCard, { backgroundColor: isDark ? '#1a1a1a' : 'white' }]}>
           <View style={styles.contactHeader}>
-            <Ionicons name="mail" size={24} color="#127d96" />
+            <Ionicons name="mail" size={24} color={isDark ? '#F7C14D' : '#127d96'} />
             <Text style={[styles.contactTitle, { color: isDark ? 'white' : '#333' }]}>Contact Information</Text>
           </View>
           
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: 'rgba(18,125,150,0.1)',
+    backgroundColor: 'rgba(247,193,77,0.1)',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 16,

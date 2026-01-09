@@ -61,7 +61,7 @@ export default function BlockScreen() {
     <ThemedView style={[styles.container, { backgroundColor: isDark ? '#1a1a1a' : '#f8f9fa' }]}>
       {/* Header */}
       <LinearGradient
-        colors={['#127d96', '#15a3c7']}
+        colors={isDark ? ['#F7C14D', '#F7C14D'] : ['#127d96', '#15a3c7']}
         style={styles.header}
       >
         <TouchableOpacity 
@@ -77,7 +77,7 @@ export default function BlockScreen() {
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Info Card */}
         <LinearGradient
-          colors={['#127d96', '#0a5d75']}
+          colors={isDark ? ['#F7C14D', '#E6B143'] : ['#127d96', '#0a5d75']}
           style={styles.infoCard}
         >
           <View style={styles.infoIcon}>

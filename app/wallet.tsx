@@ -46,7 +46,7 @@ export default function WalletScreen() {
       
       {/* Modern Header */}
       <LinearGradient
-        colors={['#127d96', '#15a3c7']}
+        colors={isDark ? ['#F7C14D', '#F7C14D'] : ['#127d96', '#15a3c7']}
         style={styles.header}
       >
         <View style={styles.headerContent}>
@@ -67,7 +67,7 @@ export default function WalletScreen() {
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Balance Card */}
         <LinearGradient
-          colors={['#127d96', '#0a5d75', '#083d4f']}
+          colors={isDark ? ['#F7C14D', '#E6B143', '#D4A03A'] : ['#127d96', '#0a5d75', '#083d4f']}
           style={styles.balanceCard}
         >
           <View style={styles.balanceHeader}>
@@ -114,7 +114,7 @@ export default function WalletScreen() {
           <View style={styles.sectionHeader}>
             <Text style={[styles.sectionTitle, { color: isDark ? 'white' : '#333' }]}>Recent Transactions</Text>
             <TouchableOpacity>
-              <Text style={styles.viewAllText}>View All</Text>
+              <Text style={[styles.viewAllText, { color: isDark ? '#F7C14D' : '#127d96' }]}>View All</Text>
             </TouchableOpacity>
           </View>
           
@@ -169,7 +169,7 @@ export default function WalletScreen() {
             </View>
             
             <View style={styles.statItem}>
-              <Text style={[styles.statValue, { color: '#127d96' }]}>12</Text>
+              <Text style={[styles.statValue, { color: isDark ? '#F7C14D' : '#127d96' }]}>12</Text>
               <Text style={[styles.statLabel, { color: isDark ? '#888' : '#666' }]}>Transactions</Text>
             </View>
           </View>
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: 'rgba(18,125,150,0.1)',
+    backgroundColor: 'rgba(247,193,77,0.1)',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 8,
@@ -296,7 +296,7 @@ const styles = StyleSheet.create({
   viewAllText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#127d96',
+    color: '#F7C14D',
   },
   transactionItem: {
     flexDirection: 'row',

@@ -30,7 +30,7 @@ export default function SettingsScreen() {
       
       {/* Modern Header */}
       <LinearGradient
-        colors={['#127d96', '#15a3c7']}
+        colors={isDark ? ['#F7C14D', '#F7C14D'] : ['#127d96', '#15a3c7']}
         style={styles.header}
       >
         <View style={styles.headerContent}>
@@ -79,7 +79,7 @@ export default function SettingsScreen() {
             >
               <View style={styles.leftSection}>
                 <View style={styles.iconContainer}>
-                  <Ionicons name={item.icon as any} size={24} color="#127d96" />
+                  <Ionicons name={item.icon as any} size={24} color={isDark ? '#F7C14D' : '#127d96'} />
                 </View>
                 <Text style={[styles.settingText, { color: isDark ? 'white' : '#333' }]}>{item.title}</Text>
               </View>
@@ -89,7 +89,7 @@ export default function SettingsScreen() {
                   <Switch
                     value={isDark}
                     onValueChange={toggleTheme}
-                    trackColor={{ false: '#767577', true: '#127d96' }}
+                    trackColor={{ false: '#767577', true: isDark ? '#F7C14D' : '#127d96' }}
                     thumbColor={isDark ? '#f4f3f4' : '#f4f3f4'}
                   />
                 ) : (
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: 'rgba(18,125,150,0.1)',
+    backgroundColor: 'rgba(247,193,77,0.1)',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 16,

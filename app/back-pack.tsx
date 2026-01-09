@@ -141,9 +141,9 @@ export default function BackPackScreen() {
       <Image source={{ uri: gift.image }} style={styles.itemImage} />
       <View style={styles.itemInfo}>
         <Text style={[styles.itemName, { color: isDark ? 'white' : '#333' }]}>{gift.name}</Text>
-        <Text style={styles.itemValue}>{gift.value}</Text>
+        <Text style={[styles.itemValue, { color: isDark ? '#F7C14D' : '#127d96' }]}>{gift.value}</Text>
       </View>
-      <View style={styles.quantityBadge}>
+      <View style={[styles.quantityBadge, { backgroundColor: isDark ? '#F7C14D' : '#127d96' }]}>
         <Text style={styles.quantityText}>{gift.quantity}</Text>
       </View>
     </View>
@@ -156,7 +156,7 @@ export default function BackPackScreen() {
         <Text style={[styles.itemName, { color: isDark ? 'white' : '#333' }]}>{item.name}</Text>
         <Text style={[styles.itemDescription, { color: isDark ? '#ccc' : '#666' }]}>{item.description}</Text>
       </View>
-      <View style={styles.quantityBadge}>
+      <View style={[styles.quantityBadge, { backgroundColor: isDark ? '#F7C14D' : '#127d96' }]}>
         <Text style={styles.quantityText}>{item.quantity}</Text>
       </View>
     </View>
@@ -168,7 +168,7 @@ export default function BackPackScreen() {
       
       {/* Header */}
       <LinearGradient
-        colors={['#127d96', '#15a3c7']}
+        colors={isDark ? ['#F7C14D', '#F7C14D'] : ['#127d96', '#15a3c7']}
         style={styles.header}
       >
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
@@ -184,7 +184,7 @@ export default function BackPackScreen() {
           style={[styles.tab, selectedTab === 'inventory' && styles.activeTab]}
           onPress={() => setSelectedTab('inventory')}
         >
-          <Text style={[styles.tabText, { color: selectedTab === 'inventory' ? '#127d96' : (isDark ? '#ccc' : '#666') }]}>
+          <Text style={[styles.tabText, { color: selectedTab === 'inventory' ? (isDark ? '#F7C14D' : '#127d96') : (isDark ? '#ccc' : '#666') }]}>
             Inventory
           </Text>
         </TouchableOpacity>
@@ -192,7 +192,7 @@ export default function BackPackScreen() {
           style={[styles.tab, selectedTab === 'backpack' && styles.activeTab]}
           onPress={() => setSelectedTab('backpack')}
         >
-          <Text style={[styles.tabText, { color: selectedTab === 'backpack' ? '#127d96' : (isDark ? '#ccc' : '#666') }]}>
+          <Text style={[styles.tabText, { color: selectedTab === 'backpack' ? (isDark ? '#F7C14D' : '#127d96') : (isDark ? '#ccc' : '#666') }]}>
             Back Pack
           </Text>
         </TouchableOpacity>
@@ -255,7 +255,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   activeTab: {
-    backgroundColor: 'rgba(18, 125, 150, 0.1)',
+    backgroundColor: 'rgba(247, 193, 77, 0.1)',
   },
   tabText: {
     fontSize: 16,

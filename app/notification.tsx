@@ -104,7 +104,7 @@ export default function NotificationScreen() {
         {notification.hasAction && (
           <TouchableOpacity style={styles.acceptButton}>
             <LinearGradient
-              colors={['#127d96', '#15a3c7']}
+              colors={isDark ? ['#F7C14D', '#F7C14D'] : ['#127d96', '#15a3c7']}
               style={styles.acceptButtonGradient}
             >
               <Text style={styles.acceptButtonText}>Accept</Text>
@@ -127,7 +127,7 @@ export default function NotificationScreen() {
       
       {/* Modern Header */}
       <LinearGradient
-        colors={['#127d96', '#15a3c7']}
+        colors={isDark ? ['#F7C14D', '#F7C14D'] : ['#127d96', '#15a3c7']}
         style={styles.header}
       >
         <View style={styles.headerContent}>
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     borderRadius: 10,
-    backgroundColor: '#127d96',
+    backgroundColor: '#F7C14D',
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 2,
